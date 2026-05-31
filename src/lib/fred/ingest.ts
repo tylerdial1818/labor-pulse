@@ -42,46 +42,47 @@ export async function refreshFredIndicators(input: { db?: DbClient; fred?: FredC
   const fred = input.fred ?? createFredClient();
   const observationStart = observationStartDate();
 
-  // Fetch every series concurrently; each one resolves to a result that records
-  // both its observations and its per-series status for the summary.
-  const results = await Promise.all(
-    getFredIndicators().map(async (indicator): Promise<FredRefreshResult & { observationsFetched: number }> => {
-      const attemptStartedAt = new Date().toISOString();
+  // Fetch series sequentially to stay within FRED's burst rate limit (the
+  // client retries transient 429/5xx with backoff). Payloads are small, so the
+  // whole refresh still finishes in a few seconds.
+  const results: Array<FredRefreshResult & { observationsFetched: number }> = [];
 
-      try {
-        const fetched = await fred.getObservations(indicator.id, { observationStart });
-        const observations = fetched.map((observation) => ({
-          seriesId: indicator.id,
-          geography: "US",
-          date: observation.date,
-          value: observation.value
-        }));
+  for (const indicator of getFredIndicators()) {
+    const attemptStartedAt = new Date().toISOString();
 
-        return {
-          seriesId: indicator.id,
-          observations,
-          status: "success",
-          message: null,
-          startedAt: attemptStartedAt,
-          completedAt: new Date().toISOString(),
-          observationsFetched: observations.length
-        };
-      } catch (error) {
-        const message = error instanceof Error ? error.message : "Unknown FRED refresh error.";
-        console.error("FRED refresh failed", { seriesId: indicator.id, message });
+    try {
+      const fetched = await fred.getObservations(indicator.id, { observationStart });
+      const observations = fetched.map((observation) => ({
+        seriesId: indicator.id,
+        geography: "US",
+        date: observation.date,
+        value: observation.value
+      }));
 
-        return {
-          seriesId: indicator.id,
-          observations: null,
-          status: "failed",
-          message,
-          startedAt: attemptStartedAt,
-          completedAt: new Date().toISOString(),
-          observationsFetched: 0
-        };
-      }
-    })
-  );
+      results.push({
+        seriesId: indicator.id,
+        observations,
+        status: "success",
+        message: null,
+        startedAt: attemptStartedAt,
+        completedAt: new Date().toISOString(),
+        observationsFetched: observations.length
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown FRED refresh error.";
+      console.error("FRED refresh failed", { seriesId: indicator.id, message });
+
+      results.push({
+        seriesId: indicator.id,
+        observations: null,
+        status: "failed",
+        message,
+        startedAt: attemptStartedAt,
+        completedAt: new Date().toISOString(),
+        observationsFetched: 0
+      });
+    }
+  }
 
   // Persist all series, observations, and log entries in a single write.
   await applyFredRefresh(

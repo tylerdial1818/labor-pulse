@@ -15,6 +15,12 @@ export type FredClient = {
   getObservations(seriesId: string, options?: { observationStart?: string }): Promise<ParsedFredObservation[]>;
 };
 
+const MAX_ATTEMPTS = 4;
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function getApiKey(apiKey?: string) {
   const resolved = apiKey ?? process.env.FRED_API_KEY;
 
@@ -36,20 +42,32 @@ async function fetchFredJson(path: string, params: Record<string, string>, optio
     url.searchParams.set(key, value);
   }
 
-  const response = await fetch(url, {
-    headers: {
-      accept: "application/json"
-    },
-    next: {
-      revalidate: 0
+  // FRED throttles bursts with 429s; retry transient throttling/5xx with
+  // backoff, honoring the Retry-After header when provided.
+  for (let attempt = 1; ; attempt += 1) {
+    const response = await fetch(url, {
+      headers: {
+        accept: "application/json"
+      },
+      next: {
+        revalidate: 0
+      }
+    });
+
+    if (response.ok) {
+      return response.json() as Promise<unknown>;
     }
-  });
 
-  if (!response.ok) {
-    throw new Error(`FRED request failed with status ${response.status}.`);
+    const retryable = response.status === 429 || response.status >= 500;
+
+    if (!retryable || attempt >= MAX_ATTEMPTS) {
+      throw new Error(`FRED request failed with status ${response.status}.`);
+    }
+
+    const retryAfter = Number(response.headers.get("retry-after"));
+    const backoffMs = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 500 * 2 ** (attempt - 1);
+    await sleep(backoffMs);
   }
-
-  return response.json() as Promise<unknown>;
 }
 
 export function createFredClient(options: FredClientOptions = {}): FredClient {
