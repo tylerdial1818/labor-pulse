@@ -303,3 +303,59 @@ export async function writeRefreshLog(
   });
   await writeLocalStore(store);
 }
+
+export type FredRefreshResult = {
+  seriesId: string;
+  observations: ObservationPoint[] | null;
+  status: RefreshStatus;
+  message: string | null;
+  startedAt: string;
+  completedAt: string;
+};
+
+// Applies a full FRED refresh in a SINGLE read-modify-write. Per-observation
+// writes would rewrite the entire store on every call (catastrophic against the
+// Neon-backed JSONB store), so all series, observations, and log entries are
+// merged in memory and persisted once.
+export async function applyFredRefresh(results: FredRefreshResult[], refreshedAt: string) {
+  const store = await readLocalStore();
+
+  // Keep the series catalog in sync (preserving last-refreshed timestamps).
+  const existingById = new Map(store.series.map((series) => [series.id, series]));
+  store.series = INDICATOR_CATALOG.map((indicator) => ({
+    ...indicator,
+    lastRefreshedAt: existingById.get(indicator.id)?.lastRefreshedAt ?? null
+  }));
+  const seriesById = new Map(store.series.map((series) => [series.id, series]));
+
+  let nextLogId = store.refreshLog.reduce((max, entry) => Math.max(max, entry.id), 0) + 1;
+
+  for (const result of results) {
+    if (result.observations) {
+      const incomingKeys = new Set(
+        result.observations.map((point) => `${point.seriesId}|${point.geography}|${point.date}`)
+      );
+      store.observations = store.observations.filter(
+        (point) => !incomingKeys.has(`${point.seriesId}|${point.geography}|${point.date}`)
+      );
+      store.observations.push(...result.observations);
+
+      const series = seriesById.get(result.seriesId);
+      if (series) {
+        series.lastRefreshedAt = refreshedAt;
+      }
+    }
+
+    store.refreshLog.push({
+      id: nextLogId++,
+      source: "FRED",
+      seriesId: result.seriesId,
+      status: result.status,
+      message: result.message,
+      startedAt: result.startedAt,
+      completedAt: result.completedAt
+    });
+  }
+
+  await writeLocalStore(store);
+}

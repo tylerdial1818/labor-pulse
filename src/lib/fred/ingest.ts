@@ -1,14 +1,30 @@
 import "server-only";
 
 import type { DbClient } from "@/lib/db/client";
-import { createDbClient } from "@/lib/db/client";
-import { markSeriesRefreshed, seedCatalog, upsertObservation, writeRefreshLog } from "@/lib/db/queries";
+import { applyFredRefresh } from "@/lib/db/queries";
+import type { FredRefreshResult } from "@/lib/db/queries";
 import { createFredClient } from "@/lib/fred/client";
 import type { FredClient } from "@/lib/fred/client";
 import { getFredIndicators } from "@/server/indicator-catalog";
 import type { FredRefreshSummary, RefreshAttemptSummary, RefreshStatus } from "@/server/labor-types";
 
+// Only pull a recent window. The dashboard surfaces ~36 trailing points and a
+// year-ago comparison, so a few years of history is plenty and keeps the FRED
+// payloads (and the persisted store) small enough to refresh well within the
+// serverless function time limit.
+const HISTORY_YEARS = 6;
+
+function observationStartDate(): string {
+  const start = new Date();
+  start.setUTCFullYear(start.getUTCFullYear() - HISTORY_YEARS);
+  return start.toISOString().slice(0, 10);
+}
+
 function summarizeStatus(attempts: RefreshAttemptSummary[]): RefreshStatus {
+  if (attempts.length === 0) {
+    return "failed";
+  }
+
   if (attempts.every((attempt) => attempt.status === "success")) {
     return "success";
   }
@@ -21,96 +37,78 @@ function summarizeStatus(attempts: RefreshAttemptSummary[]): RefreshStatus {
 }
 
 export async function refreshFredIndicators(input: { db?: DbClient; fred?: FredClient } = {}): Promise<FredRefreshSummary> {
+  void input.db;
   const startedAt = new Date().toISOString();
-  const db = input.db ?? createDbClient();
   const fred = input.fred ?? createFredClient();
-  const attempts: RefreshAttemptSummary[] = [];
+  const observationStart = observationStartDate();
 
-  await seedCatalog(db);
+  // Fetch every series concurrently; each one resolves to a result that records
+  // both its observations and its per-series status for the summary.
+  const results = await Promise.all(
+    getFredIndicators().map(async (indicator): Promise<FredRefreshResult & { observationsFetched: number }> => {
+      const attemptStartedAt = new Date().toISOString();
 
-  for (const indicator of getFredIndicators()) {
-    const attemptStartedAt = new Date().toISOString();
-
-    try {
-      const observations = await fred.getObservations(indicator.id);
-
-      for (const observation of observations) {
-        await upsertObservation(
-          {
-            seriesId: indicator.id,
-            geography: "US",
-            date: observation.date,
-            value: observation.value
-          },
-          db
-        );
-      }
-
-      await markSeriesRefreshed(indicator.id, db);
-
-      const completedAt = new Date().toISOString();
-
-      await writeRefreshLog(
-        {
-          source: "FRED",
+      try {
+        const fetched = await fred.getObservations(indicator.id, { observationStart });
+        const observations = fetched.map((observation) => ({
           seriesId: indicator.id,
+          geography: "US",
+          date: observation.date,
+          value: observation.value
+        }));
+
+        return {
+          seriesId: indicator.id,
+          observations,
           status: "success",
           message: null,
           startedAt: attemptStartedAt,
-          completedAt
-        },
-        db
-      );
+          completedAt: new Date().toISOString(),
+          observationsFetched: observations.length
+        };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown FRED refresh error.";
+        console.error("FRED refresh failed", { seriesId: indicator.id, message });
 
-      attempts.push({
-        seriesId: indicator.id,
-        status: "success",
-        observationsFetched: observations.length,
-        observationsUpserted: observations.length,
-        message: null
-      });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown FRED refresh error.";
-      const completedAt = new Date().toISOString();
-
-      console.error("FRED refresh failed", { seriesId: indicator.id, message });
-
-      try {
-        await writeRefreshLog(
-          {
-            source: "FRED",
-            seriesId: indicator.id,
-            status: "failed",
-            message,
-            startedAt: attemptStartedAt,
-            completedAt
-          },
-          db
-        );
-      } catch (logError) {
-        console.error("Failed to write FRED refresh log", {
+        return {
           seriesId: indicator.id,
-          message: logError instanceof Error ? logError.message : "Unknown refresh log error."
-        });
+          observations: null,
+          status: "failed",
+          message,
+          startedAt: attemptStartedAt,
+          completedAt: new Date().toISOString(),
+          observationsFetched: 0
+        };
       }
+    })
+  );
 
-      attempts.push({
-        seriesId: indicator.id,
-        status: "failed",
-        observationsFetched: 0,
-        observationsUpserted: 0,
-        message
-      });
-    }
-  }
+  // Persist all series, observations, and log entries in a single write.
+  await applyFredRefresh(
+    results.map((result) => ({
+      seriesId: result.seriesId,
+      observations: result.observations,
+      status: result.status,
+      message: result.message,
+      startedAt: result.startedAt,
+      completedAt: result.completedAt
+    })),
+    new Date().toISOString()
+  );
 
-  const completedAt = new Date().toISOString();
+  const attempts: RefreshAttemptSummary[] = results.map((result) => ({
+    seriesId: result.seriesId,
+    status: result.status,
+    observationsFetched: result.observationsFetched,
+    observationsUpserted: result.observations ? result.observations.length : 0,
+    message: result.message
+  }));
 
   return {
     source: "FRED",
     status: summarizeStatus(attempts),
     startedAt,
-    completedAt,
+    completedAt: new Date().toISOString(),
     attempts
   };
 }
