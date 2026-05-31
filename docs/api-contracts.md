@@ -51,10 +51,10 @@ type Response = {
 | Method | Server function |
 | Path | `src/server/dashboard-data.ts` |
 | Owner | Backend/API Agent |
-| Status | active starter |
-| Authentication | TODO: enforce before connecting sensitive data |
+| Status | planned replacement |
+| Authentication | public read, server-only data access |
 | Rate limits | Not applicable for local server function |
-| Source files | `src/server/dashboard-data.ts`, `src/types/analytics.ts` |
+| Source files | `src/server/dashboard-data.ts`, `src/types/**`, `src/lib/db/queries.ts` |
 
 #### Request Schema
 
@@ -66,17 +66,38 @@ type Request = void;
 
 ```ts
 type Response = {
-  revenueSeries: RevenuePoint[];
-  segmentPerformance: SegmentPerformance[];
-  accounts: AccountRow[];
-  healthMix: Array<{ health: string; count: number; share: number }>;
-  kpis: {
-    revenue: number;
-    growth: number;
-    attainment: number;
-    weightedWinRate: number;
+  categories: Array<{
+    id: "lagging" | "leading" | "tech_impact";
+    label: string;
+    blurb: string;
+    indicators: IndicatorCardViewModel[];
+  }>;
+  refreshedAt: string | null;
+};
+
+type IndicatorCardViewModel = {
+  id: string;
+  title: string;
+  category: "lagging" | "leading" | "tech_impact";
+  source: string;
+  sourceUrl: string;
+  frequency: "weekly" | "monthly" | "quarterly" | "ad_hoc";
+  unitLabel: string;
+  currentValue: number | null;
+  currentValueFormatted: string;
+  currentDate: string | null;
+  delta: {
+    value: number | null;
+    formatted: string;
+    periodLabel: string;
+    arrowDirection: "up" | "down" | "flat" | "none";
+    tone: "up" | "down" | "info" | "muted";
   };
-  updatedAt: string;
+  sparkline: Array<{ date: string; value: number | null }>;
+  lastUpdated: string | null;
+  isProxy: boolean;
+  methodologyNote?: string;
+  isStale: boolean;
 };
 ```
 
@@ -88,5 +109,46 @@ type Response = {
 
 #### Notes
 
-- TODO: Replace fixture-backed implementation with validated database or API adapter.
+- Replace fixture-backed implementation with validated database queries.
+- The dashboard must not call FRED, Anthropic, or OpenAI from the browser.
 - Any response shape change requires updates to `src/types`, dashboard components, tests, and this document.
+
+### Endpoint: `GET /api/indicators/[id]`
+
+| Field | Value |
+| --- | --- |
+| Method | GET |
+| Path | `/api/indicators/[id]` |
+| Owner | Backend/API Agent |
+| Status | planned |
+| Authentication | public |
+| Rate limits | Standard platform limits |
+| Source files | `src/app/api/indicators/[id]/route.ts`, `src/server/**`, `src/lib/db/queries.ts` |
+
+Returns indicator metadata, full observation history, source attribution, freshness, and methodology notes for detail pages and export flows.
+
+### Endpoint: `GET /api/definitions/[id]`
+
+| Field | Value |
+| --- | --- |
+| Method | GET |
+| Path | `/api/definitions/[id]` |
+| Owner | Backend/API Agent |
+| Status | planned |
+| Authentication | public |
+| Rate limits | Cache-first; platform/OpenAI limits apply on first generation |
+| Source files | `src/app/api/definitions/[id]/route.ts`, `src/lib/llm/**`, `src/lib/db/queries.ts` |
+
+Checks the database cache first. On cache miss, calls OpenAI using the definitions model, stores the prose result, and returns it. Prompts must prohibit numerical values, current statistics, and quantitative claims.
+
+### Endpoint: `GET /api/export/csv/[id]`
+
+Public CSV export for one indicator's full observation history. Include series ID, full series title, source, retrieval date, observation date, value, geography, and units.
+
+### Endpoint: `GET /api/export/png/[id]`
+
+Public PNG export for one indicator chart. The rendered image must include chart title, date range, and source attribution.
+
+### Endpoint: `GET /api/cron/refresh-fred`
+
+Service-only Vercel Cron route protected by `Authorization: Bearer $CRON_SECRET`. Refreshes all FRED-sourced indicators, validates responses with Zod, upserts observations, updates series freshness, writes `refresh_log`, and returns a structured summary. Partial failures must not erase last-good dashboard data.

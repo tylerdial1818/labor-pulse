@@ -6,21 +6,39 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        border: "hsl(var(--border))",
-        muted: "hsl(var(--muted))",
-        "muted-foreground": "hsl(var(--muted-foreground))",
-        panel: "hsl(var(--panel))",
-        primary: "hsl(var(--primary))",
-        "primary-foreground": "hsl(var(--primary-foreground))",
-        accent: "hsl(var(--accent))",
-        success: "hsl(var(--success))",
-        warning: "hsl(var(--warning))",
-        danger: "hsl(var(--danger))"
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        border: "var(--border)",
+        muted: "var(--muted)",
+        "muted-foreground": "var(--muted-foreground)",
+        panel: "var(--panel)",
+        primary: "var(--primary)",
+        "primary-foreground": "var(--primary-foreground)",
+        accent: "var(--accent)",
+        "accent-foreground": "var(--accent-foreground)",
+        success: "var(--success)",
+        warning: "var(--warning)",
+        danger: "var(--danger)",
+        navy: "var(--lp-navy)",
+        ink: "var(--lp-ink)",
+        sub: "var(--lp-sub)",
+        faint: "var(--lp-faint)",
+        paper: "var(--lp-paper)",
+        rule: "var(--lp-rule)",
+        hair: "var(--lp-hair)",
+        up: "var(--lp-up)",
+        down: "var(--lp-down)"
+      },
+      fontFamily: {
+        serif: ["var(--lp-serif)", "Georgia", "serif"],
+        sans: ["var(--lp-sans)", "Helvetica Neue", "Helvetica", "Arial", "system-ui", "sans-serif"]
       },
       boxShadow: {
-        soft: "0 18px 45px -30px rgb(15 23 42 / 0.45)"
+        soft: "none"
+      },
+      borderRadius: {
+        DEFAULT: "0.125rem",
+        badge: "10px"
       }
     }
   },

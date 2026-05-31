@@ -6,109 +6,137 @@ This is the first strategic document for any client-facing analytical web applic
 
 | Field | Value |
 | --- | --- |
-| Project name | TODO |
-| One-sentence description | TODO |
-| Current stage | discovery, prototype, build, validation, production, maintenance |
-| Primary owner | TODO |
-| Last updated | TODO |
+| Project name | Labor Pulse |
+| One-sentence description | Public US labor market monitor for researchers, combining lagging, leading, and technology/AI impact indicators with defensible source attribution. |
+| Current stage | build |
+| Primary owner | Architect/Integrator Agent |
+| Last updated | 2026-05-30 |
 
 ## 2. Problem Statement
 
 Describe the problem in plain language.
 
-- **Problem being solved:** TODO
-- **Who experiences it:** TODO
-- **Why it matters:** TODO
-- **Current pain points:** TODO
+- **Problem being solved:** Researchers need a single, citable dashboard for tracking US labor market direction without mixing deterministic data with generated claims.
+- **Who experiences it:** Workforce and labor policy researchers preparing executive-level briefings.
+- **Why it matters:** Executive audiences need clear, source-backed labor market signals and explicit caveats around technology and AI impact.
+- **Current pain points:** Indicators are scattered across sources, leading and lagging signals are often conflated, and AI impact proxies are easy to overstate.
 
 ## 3. Target Users
 
-- **Primary users:** TODO
-- **Secondary users:** TODO
-- **User roles/personas:** TODO
-- **Technical sophistication:** low, moderate, high, mixed
-- **Access needs:** public, private, invite-only, SSO, admin-only, client-specific
+- **Primary users:** Workforce and labor policy researchers on executive insights teams.
+- **Secondary users:** Public-sector researchers, higher-ed researchers, policy analysts, and economic journalists.
+- **User roles/personas:** Researcher producing charts, source notes, and concise interpretations for senior leadership.
+- **Technical sophistication:** moderate
+- **Access needs:** public
 
 ## 4. Core Workflows
 
 | Workflow name | User | Trigger | Desired outcome | Success criteria |
 | --- | --- | --- | --- | --- |
-| TODO | TODO | TODO | TODO | TODO |
+| Default browsing | Researcher | Opens `/` | Understand current and directional US labor market conditions | Three tabs expose all 15 indicators with current values, deltas, sparklines, and update dates |
+| Indicator drilldown | Researcher | Clicks an indicator card | Review full history, definition, methodology, and source | Detail route shows chart, time windows, definition, source attribution, and exports |
+| Source verification | Researcher | Opens `/sources` | Verify provenance and freshness | Sources table and refresh log show successful and failed ingestion runs |
 
 ## 5. Success Metrics
 
 ### Product Success Metrics
 
-- TODO
+- Dashboard is credible enough for executive-facing screenshots.
+- Users can export chart PNGs and CSV data for external reports.
+- Dashboard loads in under 1 second on cached data.
 
 ### Analytical / Business Metrics
 
-- TODO
+- 15 v1 indicators across lagging, leading, and technology/AI impact categories.
+- Current value, prior-period delta, sparkline, freshness, source attribution, and caveats where applicable.
+- LLM usage is limited to cached plain-English definitions and methodology summaries.
 
 ### Adoption / Usage Metrics
 
-- TODO
+- Public researcher use of dashboard, source verification, drilldown, and exports.
+- No authentication or personalization in v1.
 
 ### Performance Metrics
 
-- TODO
+- Dashboard loads in under 1 second on cached data.
+- Typecheck, lint, tests, and production build pass before handoff.
+- Dashboard and indicator detail pages meet Lighthouse accessibility score target of 90 or higher.
 
 ## 6. Non-Goals
 
 List what this project is intentionally not trying to do. Future agents should treat these as scope boundaries.
 
-- TODO
+- State-level drilldown
+- Industry-level disaggregation
+- News, research paper, or RSS feeds
+- LLM-powered briefing builder
+- Item tagging or content classification
+- User authentication, accounts, or personalization
+- Email alerts or notifications
+- International or non-US data
+- Paid data sources
+- WARN Act notices
+- Job posting volume or skill demand data
+- Chat interfaces or conversational agents
+- Marketing landing pages or hero sections
 
 ## 7. Constraints
 
-- **Timeline constraints:** TODO
-- **Budget constraints:** TODO
-- **Data constraints:** TODO
-- **Privacy/security constraints:** TODO
-- **Technical constraints:** TODO
-- **Deployment constraints:** TODO
+- **Timeline constraints:** Build v1 in phased multi-agent workstreams.
+- **Budget constraints:** Use Vercel, Neon, FRED, OpenAI, and public sources only.
+- **Data constraints:** National US data only in v1; schema must preserve a future `geography` field for state-level support.
+- **Privacy/security constraints:** Public aggregate data only; no accounts or user-specific state in v1.
+- **Technical constraints:** Next.js App Router, TypeScript strict mode, Tailwind, shadcn/ui, Recharts, Drizzle, Neon, Zod validation, OpenAI SDK.
+- **Deployment constraints:** Vercel with daily cron at 08:00 UTC for FRED refreshes.
 
 ## 8. Data Sources
 
 | Source name | Owner | Access method | Refresh frequency | Sensitivity level | Notes |
 | --- | --- | --- | --- | --- | --- |
-| TODO | TODO | TODO | TODO | public, internal, confidential, restricted | TODO |
+| FRED API | Federal Reserve Bank of St. Louis | API key query parameter | Daily refresh, source frequencies vary | public | 14 FRED-sourced labor market indicators |
+| Anthropic Economic Index | Anthropic | Manual downloaded file import | Ad hoc releases | public | Claude-specific AI usage signal; not a broad AI labor market measure |
 
 ## 9. Authentication & Access Model
 
-- **Access model:** public URL, private URL, security-locked URL, invite-only, SSO, internal-only
-- **User roles:** TODO
-- **Auth provider:** TODO
-- **Permissions:** TODO
-- **Sensitive routes:** TODO
+- **Access model:** public URL
+- **User roles:** none in v1
+- **Auth provider:** none in v1
+- **Permissions:** public read access; cron endpoint protected by bearer secret
+- **Sensitive routes:** `/api/cron/refresh-fred` service-only via `CRON_SECRET`
 
 ## 10. Deployment Target
 
-- **Hosting platform:** TODO
-- **Environment strategy:** local, preview, staging, production
-- **Required environment variables:** TODO
-- **Production URL:** TODO
-- **Staging URL:** TODO
+- **Hosting platform:** Vercel
+- **Environment strategy:** local, preview, production
+- **Required environment variables:** `DATABASE_URL`, `FRED_API_KEY`, `OPENAI_API_KEY`, optional `OPENAI_MODEL_DEFINITIONS`, `CRON_SECRET`
+- **Production URL:** TBD
+- **Staging URL:** Vercel preview deployments
 
 ## 11. Design Direction
 
-- **Aesthetic references:** TODO
-- **Brand guidelines:** TODO
-- **Tone:** executive, analytical, operational, editorial, technical, other
-- **Accessibility requirements:** TODO
-- **Responsive design priorities:** TODO
+- **Aesthetic references:** `design_handoff_laborpulse_dashboard` Editorial dashboard handoff.
+- **Brand guidelines:** Newspaper-grade analytical tool with serif masthead and numerals, hairline rules, navy accent, semantic green/maroon only for labor-market direction.
+- **Tone:** executive, analytical, editorial
+- **Accessibility requirements:** AA contrast, visible focus states, semantic landmarks, color never as the only meaning carrier.
+- **Responsive design priorities:** Dashboard tab list collapses to a select at narrow widths; chart, card, and table dimensions remain stable.
 
 ## 12. Key Risks
 
 | Risk | Likelihood | Impact | Mitigation | Owner |
 | --- | --- | --- | --- | --- |
-| TODO | low, medium, high | low, medium, high | TODO | TODO |
+| LLM-generated definitions accidentally include numbers | medium | high | Prompt and validation must prohibit quantitative claims; all numbers come from database only | Backend/API Agent |
+| Tech and AI indicators are overinterpreted | medium | high | Persistent caveat banner and methodology notes on proxy indicators | Product/UX + Frontend |
+| External data shape drift | medium | medium | Zod-validate all FRED responses and log skipped records | Backend/API Agent |
+| Anthropic Economic Index release format is unknown | medium | medium | Build manual import script after confirming latest public file format | Data Model + Analytics Agent |
 
 ## 13. Open Questions
 
 | Question | Owner | Priority | Status |
 | --- | --- | --- | --- |
-| TODO | TODO | low, medium, high | open, blocked, answered |
+| Confirm initial FRED backfill depth; recommendation is maximum available history | Architect/Integrator | medium | open |
+| Confirm production domain | Deployment/DevOps | low | open |
+| Confirm Anthropic Economic Index file shape before ingestion script | Data Model + Analytics | high | open |
+| Decide whether analytics/monitoring are deferred for v1 | Architect/Integrator | low | open |
 
 ## 14. Agent Guidance
 
@@ -125,4 +153,4 @@ Future agents must:
 
 | Date | Editor | Change summary |
 | --- | --- | --- |
-| TODO | TODO | TODO |
+| 2026-05-30 | Codex | Promoted Labor Pulse v1 brief into the project charter for build kickoff. |

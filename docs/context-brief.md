@@ -4,79 +4,90 @@ This is the shared operating context for all AI agents working in this repositor
 
 ## Project Mission
 
-TODO: Describe the decision-making product this analytical web app enables and the client/business outcome it should improve.
+Labor Pulse is a public US labor market monitor for researchers preparing executive-facing reports. It provides a defensible source of truth for lagging, leading, and technology/AI impact indicators, with visible provenance, freshness, caveats, and exportable chart/data outputs.
 
 ## Target Users
 
 | User group | Needs | Success signal |
 | --- | --- | --- |
-| TODO | TODO | TODO |
+| Workforce and labor policy researcher | Quickly understand US labor market conditions and cite defensible sources | Can export chart PNGs and CSVs with visible source/freshness metadata |
+| Policy analyst or economic journalist | Compare leading and lagging indicators without overstating proxy signals | Uses indicator detail pages and methodology notes in external analysis |
 
 ## Primary Workflows
 
-1. TODO: User opens the app and understands the current analytical state.
-2. TODO: User filters, drills into, or compares data.
-3. TODO: User exports, shares, or acts on insights.
+1. User opens `/` and sees the Lagging tab by default with 6 indicator cards.
+2. User switches between Lagging, Leading, and Tech & AI Impact tabs; Tech & AI always shows a methodology caveat.
+3. User opens `/indicators/[id]` for full history, definition, source attribution, time windows, and exports.
+4. User opens `/sources` to verify source freshness and refresh logs.
 
 ## Current Implementation Status
 
 | Area | Status | Notes |
 | --- | --- | --- |
-| App shell | Starter complete | Dashboard shell, filters, KPI cards, charts, table, and states exist. |
-| Data | Placeholder | Sample data lives in `src/lib/data-processing/sample-data.ts`. |
-| Analytics | Starter complete | Pure metric functions and tests exist in `src/lib/analytics` and `src/tests`. |
-| Auth | Placeholder | Auth-ready config exists in `src/lib/auth/auth-options.ts`. |
-| Deployment | Ready for setup | Vercel-oriented docs exist; client-specific setup still required. |
+| App shell | Replace starter | Current sales dashboard template must become Labor Pulse dashboard, detail, sources, and about routes. |
+| Data | Local v1 complete | Server-only local JSON store seeds all 15 indicators; FRED refresh and Anthropic import paths are scaffolded for live credentials. |
+| Analytics | Planned | Define current value, monthly YoY delta, weekly 4-week delta, formatting, freshness, and proxy caveats. |
+| Auth | v1 omitted | Public app; no user auth. Cron route must require `CRON_SECRET`. |
+| Deployment | Planned | Vercel target with daily 08:00 UTC cron for FRED refresh. |
 
 ## Active Workstreams
 
 | Workstream | Agent owner | Status | Files in scope | Dependencies |
 | --- | --- | --- | --- | --- |
-| TODO | TODO | TODO | TODO | TODO |
+| Architecture/contracts | Architect/Integrator | in progress | `docs/**`, `src/types/**`, `src/config/**` | Must precede backend/frontend implementation |
+| Data model + analytics | Data Model + Analytics Agent | ready to start | `src/types/**`, `src/lib/analytics/**`, `src/lib/data-processing/**`, `src/tests/**`, metric/data docs | Depends on Labor Pulse indicator catalog contract |
+| Backend/API | Backend/API Agent | ready after contract review | `src/server/**`, `src/lib/db/**`, API routes, `.env.example`, deployment docs | Depends on data schema/types |
+| Frontend/dashboard | Frontend/Dashboard Agent | ready after view-model contract | `src/app/**`, `src/features/**`, layout/forms/states/ui components | Depends on dashboard view-model props |
+| Visualization/design polish | Visualization/Design Polish Agent | ready after frontend skeleton | `src/components/charts/**`, design tokens, responsive/a11y polish | Must follow Editorial handoff exactly |
 
 ## Current Architecture Decisions
 
-- Next.js App Router with React, TypeScript, Tailwind, and Recharts.
+- Next.js App Router with React, TypeScript, Tailwind, shadcn/ui, and Recharts.
 - Business logic belongs in `src/lib/analytics`, `src/lib/data-processing`, or `src/server`.
 - UI components should consume typed view models and avoid direct data fetching.
 - Contracts live in `docs/api-contracts.md`, `docs/data-contracts.md`, and `src/types`.
+- Labor Pulse uses a deterministic-first rule: every number, delta, and trend comes from the database; LLM output is cached prose only and never quantitative.
+- The design source of truth is `/Users/tylerdial/Downloads/design_handoff_laborpulse_dashboard`, especially `README.md`, `tokens.css`, and screenshots.
 
 ## Deployment Target
 
-Default target: Vercel for Next.js deployments.
-
-TODO: Replace with client-approved platform, domains, preview strategy, and production approval flow.
+Target: Vercel for Next.js with preview deployments and production promotion after validation. Daily FRED refresh runs at 08:00 UTC via Vercel Cron.
 
 ## Authentication Model
 
-Default state: auth-ready placeholder.
-
-TODO: Define public, invite-only, SSO, password-protected, or internal-only access. Document provider, roles, tenant model, and callback URLs.
+Public app, no user authentication in v1. Service-only cron route requires `Authorization: Bearer $CRON_SECRET`.
 
 ## Key Data Sources
 
 | Source | Owner | Refresh cadence | Grain | Access method | Status |
 | --- | --- | --- | --- | --- | --- |
-| Sample dashboard data | Template | Static | Month/account/segment | Local fixture | Placeholder |
+| FRED API | Federal Reserve Bank of St. Louis | Daily app refresh; source frequencies weekly/monthly | Series/date/geography | Server-side API client | 14 indicators; validate with Zod before storing |
+| Anthropic Economic Index | Anthropic | Ad hoc | Release/occupation usage share | Manual import script | Direct Claude usage signal; file shape still needs confirmation |
 
 ## Known Risks
 
-- Metric definitions must be client-approved before production use.
-- Sample data must be replaced before client delivery.
-- Auth provider, roles, and tenant isolation are not yet configured.
-- Exports and downstream sharing rules must be reviewed for sensitive data.
+- FRED and Anthropic data cannot be fetched from the browser.
+- Methodology notes must prevent overclaiming Tech & AI proxy indicators.
+- LLM definitions must never include numerical values or quantitative claims.
+- Anthropic Economic Index release format is not confirmed.
+- Design fidelity depends on replacing the starter dashboard look with the Editorial handoff.
 
 ## Current Priorities
 
-1. TODO: Confirm product brief and user workflows.
-2. TODO: Confirm data sources and metric definitions.
-3. TODO: Configure auth and deployment environment.
+1. Establish shared Labor Pulse contracts, types, metrics, and docs.
+2. Build validated data ingestion, persistence, server read models, and export endpoints.
+3. Rebuild the dashboard/detail/sources/about UI using the Editorial design handoff.
+4. Validate accessibility, mobile behavior, build, tests, and deployment readiness.
 
 ## Files Owned By Active Agents
 
 | Agent | Owned files | Coordination required with | Notes |
 | --- | --- | --- | --- |
-| TODO | TODO | TODO | TODO |
+| Architect/Integrator | `docs/**`, `src/types/**`, `src/config/**` | all implementation agents | Owns contract drift and final integration |
+| Data Model + Analytics | `src/lib/analytics/**`, `src/lib/data-processing/**`, `src/types/**`, `src/tests/**`, metric/data docs | Backend, Frontend, Visualization | Owns formulas and view-model expectations |
+| Backend/API | `src/server/**`, `src/lib/db/**`, API routes, `.env.example`, deployment docs | Data, Security, Frontend | Owns persistence, ingestion, exports, and server-only data access |
+| Frontend/Dashboard | `src/app/**`, `src/features/**`, layout/forms/states/ui | Backend, Visualization | Owns routes and screen composition |
+| Visualization/Design Polish | `src/components/charts/**`, `src/styles/globals.css`, visual components with coordination | Frontend, Architect | Owns Editorial token fidelity, charts, responsive polish |
 
 ## Update Rules
 

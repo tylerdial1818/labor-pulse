@@ -1,0 +1,6252 @@
+{
+  "series": [
+    {
+      "id": "UNRATE",
+      "title": "Unemployment Rate",
+      "shortTitle": "Unemployment Rate",
+      "category": "lagging",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/UNRATE",
+      "units": "Percent",
+      "unitLabel": "%",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": "{state}UR",
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "PAYEMS",
+      "title": "Nonfarm Payroll Employment",
+      "shortTitle": "Nonfarm Payrolls",
+      "category": "lagging",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/PAYEMS",
+      "units": "Thousands of Persons",
+      "unitLabel": "jobs",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "CIVPART",
+      "title": "Labor Force Participation Rate",
+      "shortTitle": "Labor Force Participation",
+      "category": "lagging",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/CIVPART",
+      "units": "Percent",
+      "unitLabel": "%",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "CES0500000003",
+      "title": "Average Hourly Earnings, Total Private",
+      "shortTitle": "Average Hourly Earnings",
+      "category": "lagging",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/CES0500000003",
+      "units": "Dollars per Hour",
+      "unitLabel": "/hr",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "EMRATIO",
+      "title": "Employment-Population Ratio",
+      "shortTitle": "Employment-Population Ratio",
+      "category": "lagging",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/EMRATIO",
+      "units": "Percent",
+      "unitLabel": "%",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "U6RATE",
+      "title": "U-6 Total Underemployment Rate",
+      "shortTitle": "U-6 Underemployment",
+      "category": "lagging",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/U6RATE",
+      "units": "Percent",
+      "unitLabel": "%",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "ICSA",
+      "title": "Initial Jobless Claims",
+      "shortTitle": "Initial Jobless Claims",
+      "category": "leading",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/ICSA",
+      "units": "Number",
+      "unitLabel": "claims",
+      "frequency": "weekly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "JTSJOL",
+      "title": "Job Openings (JOLTS)",
+      "shortTitle": "Job Openings",
+      "category": "leading",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/JTSJOL",
+      "units": "Thousands",
+      "unitLabel": "openings",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "JTSQUR",
+      "title": "Quits Rate",
+      "shortTitle": "Quits Rate",
+      "category": "leading",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/JTSQUR",
+      "units": "Percent",
+      "unitLabel": "%",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "JTSLDR",
+      "title": "Layoffs and Discharges Rate",
+      "shortTitle": "Layoffs & Discharges",
+      "category": "leading",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/JTSLDR",
+      "units": "Percent",
+      "unitLabel": "%",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "TEMPHELPS",
+      "title": "Temporary Help Services Employment",
+      "shortTitle": "Temporary Help Employment",
+      "category": "leading",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/TEMPHELPS",
+      "units": "Thousands of Persons",
+      "unitLabel": "jobs",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "AWHAETP",
+      "title": "Average Weekly Hours, All Employees",
+      "shortTitle": "Average Weekly Hours",
+      "category": "leading",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/AWHAETP",
+      "units": "Hours",
+      "unitLabel": "hrs",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": false,
+      "methodologyNote": null,
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "USPBS",
+      "title": "Professional and Business Services Employment",
+      "shortTitle": "Professional & Business Services",
+      "category": "tech_impact",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/USPBS",
+      "units": "Thousands of Persons",
+      "unitLabel": "jobs",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": true,
+      "methodologyNote": "Proxy indicator for AI labor market exposure, not a direct measurement of AI adoption or displacement. Use as directional labor-market context only.",
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "USINFO",
+      "title": "Information Sector Employment",
+      "shortTitle": "Information Employment",
+      "category": "tech_impact",
+      "source": "FRED",
+      "sourceUrl": "https://fred.stlouisfed.org/series/USINFO",
+      "units": "Thousands of Persons",
+      "unitLabel": "jobs",
+      "frequency": "monthly",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "isProxy": true,
+      "methodologyNote": "Proxy indicator for AI labor market exposure, not a direct measurement of AI adoption or displacement. Use as directional labor-market context only.",
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    },
+    {
+      "id": "ANTHROPIC_ECONOMIC_INDEX",
+      "title": "Anthropic Economic Index",
+      "shortTitle": "Anthropic Economic Index",
+      "category": "tech_impact",
+      "source": "Anthropic Economic Index",
+      "sourceUrl": "https://www.anthropic.com/economic-index",
+      "units": "Usage share",
+      "unitLabel": "%",
+      "frequency": "ad_hoc",
+      "seasonalAdjustment": null,
+      "isProxy": true,
+      "methodologyNote": "Measures Claude usage in Anthropic Economic Index releases, not all AI tools or total labor-market automation. Release format and coverage can change between publications.",
+      "stateSeriesPattern": null,
+      "lastRefreshedAt": "2026-05-30T08:00:00.000Z"
+    }
+  ],
+  "observations": [
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 3.9
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 3.913
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 3.924
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 3.934
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 3.94
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 3.944
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 3.944
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 3.941
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 3.936
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 3.93
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 3.922
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 3.916
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 3.911
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 3.909
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 3.909
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 3.913
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 3.921
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 3.931
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 3.942
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 3.955
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 3.968
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 3.979
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 3.988
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 3.994
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 3.997
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 3.997
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 3.994
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 3.988
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 3.982
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 3.975
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 3.968
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 3.964
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 3.962
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 3.963
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 3.967
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 3.975
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 3.985
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 3.997
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 4.01
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 4.022
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 4.033
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 4.042
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 4.048
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 4.051
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 4.05
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 4.046
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 4.041
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 4.034
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 4.027
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 4.02
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 4.016
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 4.015
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 4.017
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 4.022
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 4.03
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 4.04
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 4.052
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 4.065
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 4.077
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 3.9
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 4.096
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 4.102
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 4.104
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 4.103
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 4.099
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 4.093
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 4.086
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 4.079
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 4.073
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 4.069
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 4.068
+    },
+    {
+      "seriesId": "UNRATE",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 4.1
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 157700
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 158033.663
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 158332.92
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 158567.153
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 158712.902
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 158756.447
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 158695.321
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 158538.579
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 158305.801
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 158024.939
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 157729.237
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 157453.575
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 157230.623
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 157087.253
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 157041.573
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 157100.937
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 157261.136
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 157506.86
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 157813.384
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 158149.29
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 158479.924
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 158771.216
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 158993.422
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 159124.407
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 159152.077
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 159075.712
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 158906.045
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 158664.078
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 158378.776
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 158083.871
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 157814.154
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 157601.643
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 157472.059
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 157441.992
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 157517.079
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 157691.379
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 157948.029
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 158261.102
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 158598.459
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 158925.287
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 159207.933
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 159417.607
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 159533.552
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 159545.331
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 159453.972
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 159271.859
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 159021.366
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 158732.393
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 158439.079
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 158176.04
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 157974.557
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 157859.138
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 157844.814
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 157935.487
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 158123.502
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 158390.487
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 158709.375
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 159047.388
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 159369.641
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 157700
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 159839.651
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 159940.318
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 159936.229
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 159830.159
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 159636.112
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 159377.774
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 159085.911
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 158794.979
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 158539.332
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 158349.437
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 158248.526
+    },
+    {
+      "seriesId": "PAYEMS",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 159200
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 62.7
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 62.821
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 62.929
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 63.012
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 63.059
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 63.067
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 63.033
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 62.962
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 62.86
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 62.74
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 62.614
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 62.496
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 62.399
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 62.333
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 62.305
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 62.319
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 62.372
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 62.459
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 62.57
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 62.692
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 62.812
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 62.917
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 62.995
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 63.037
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 63.038
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 62.998
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 62.922
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 62.817
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 62.695
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 62.569
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 62.453
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 62.36
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 62.299
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 62.278
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 62.298
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 62.357
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 62.448
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 62.561
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 62.684
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 62.803
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 62.904
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 62.977
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 63.013
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 63.008
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 62.962
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 62.881
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 62.773
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 62.649
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 62.524
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 62.411
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 62.322
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 62.267
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 62.252
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 62.278
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 62.342
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 62.437
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 62.553
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 62.676
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 62.793
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 62.7
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 62.958
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 62.988
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 62.977
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 62.926
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 62.839
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 62.728
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 62.604
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 62.48
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 62.369
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 62.285
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 62.236
+    },
+    {
+      "seriesId": "CIVPART",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 62.6
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 33.89
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 33.978
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 34.058
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 34.123
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 34.169
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 34.192
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 34.193
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 34.172
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 34.134
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 34.086
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 34.034
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 33.987
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 33.952
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 33.934
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 33.937
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 33.964
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 34.013
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 34.082
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 34.163
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 34.251
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 34.338
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 34.416
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 34.479
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 34.522
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 34.542
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 34.539
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 34.515
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 34.475
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 34.426
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 34.374
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 34.329
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 34.295
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 34.281
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 34.288
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 34.318
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 34.37
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 34.441
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 34.524
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 34.612
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 34.698
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 34.775
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 34.835
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 34.874
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 34.891
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 34.884
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 34.858
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 34.816
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 34.766
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 34.715
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 34.67
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 34.64
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 34.628
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 34.639
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 34.672
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 34.728
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 34.801
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 34.885
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 34.973
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 35.058
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 33.89
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 35.19
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 35.226
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 35.239
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 35.229
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 35.2
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 35.157
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 35.106
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 35.055
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 35.013
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 34.984
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 34.976
+    },
+    {
+      "seriesId": "CES0500000003",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 35.2
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 59.9
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 60.019
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 60.125
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 60.207
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 60.256
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 60.265
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 60.236
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 60.17
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 60.076
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 59.963
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 59.845
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 59.735
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 59.644
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 59.584
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 59.56
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 59.576
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 59.63
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 59.716
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 59.825
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 59.945
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 60.063
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 60.166
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 60.243
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 60.286
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 60.29
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 60.255
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 60.184
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 60.086
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 59.972
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 59.855
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 59.746
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 59.66
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 59.604
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 59.586
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 59.608
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 59.667
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 59.758
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 59.869
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 59.99
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 60.106
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 60.206
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 60.279
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 60.316
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 60.314
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 60.273
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 60.197
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 60.097
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 59.981
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 59.864
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 59.758
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 59.676
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 59.626
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 59.614
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 59.641
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 59.706
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 59.8
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 59.913
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 60.034
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 60.149
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 59.9
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 60.313
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 60.345
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 60.336
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 60.29
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 60.21
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 60.106
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 59.99
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 59.874
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 59.771
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 59.693
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 59.648
+    },
+    {
+      "seriesId": "EMRATIO",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 60
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 7.1
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 7.119
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 7.136
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 7.15
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 7.16
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 7.165
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 7.166
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 7.162
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 7.154
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 7.144
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 7.134
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 7.124
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 7.117
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 7.114
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 7.115
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 7.121
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 7.131
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 7.146
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 7.164
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 7.183
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 7.201
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 7.218
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 7.231
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 7.241
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 7.245
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 7.245
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 7.24
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 7.232
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 7.222
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 7.212
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 7.203
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 7.196
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 7.193
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 7.195
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 7.202
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 7.213
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 7.228
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 7.246
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 7.265
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 7.283
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 7.3
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 7.313
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 7.321
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 7.325
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 7.324
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 7.319
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 7.311
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 7.3
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 7.29
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 7.281
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 7.275
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 7.273
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 7.275
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 7.283
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 7.295
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 7.31
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 7.329
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 7.347
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 7.366
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 7.1
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 7.394
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 7.402
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 7.405
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 7.403
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 7.398
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 7.389
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 7.378
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 7.368
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 7.36
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 7.354
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 7.353
+    },
+    {
+      "seriesId": "U6RATE",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 7.4
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-04-05",
+      "value": 215000
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-04-12",
+      "value": 215536
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-04-19",
+      "value": 216023
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-04-26",
+      "value": 216421
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-05-03",
+      "value": 216696
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-05-10",
+      "value": 216828
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-05-17",
+      "value": 216816
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-05-24",
+      "value": 216671
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-05-31",
+      "value": 216420
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-06-07",
+      "value": 216102
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-06-14",
+      "value": 215764
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-06-21",
+      "value": 215454
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-06-28",
+      "value": 215217
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-07-05",
+      "value": 215090
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-07-12",
+      "value": 215099
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-07-19",
+      "value": 215254
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-07-26",
+      "value": 215549
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-08-02",
+      "value": 215962
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-08-09",
+      "value": 216460
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-08-16",
+      "value": 216999
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-08-23",
+      "value": 217530
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-08-30",
+      "value": 218007
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-09-06",
+      "value": 218388
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-09-13",
+      "value": 218642
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-09-20",
+      "value": 218753
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-09-27",
+      "value": 218719
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-10-04",
+      "value": 218556
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-10-11",
+      "value": 218292
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-10-18",
+      "value": 217969
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-10-25",
+      "value": 217632
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 217329
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-11-08",
+      "value": 217107
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-11-15",
+      "value": 216999
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-11-22",
+      "value": 217030
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-11-29",
+      "value": 217207
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-12-06",
+      "value": 217521
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-12-13",
+      "value": 217950
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-12-20",
+      "value": 218456
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2025-12-27",
+      "value": 218997
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-01-03",
+      "value": 219523
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-01-10",
+      "value": 219988
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-01-17",
+      "value": 220351
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-01-24",
+      "value": 220585
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-01-31",
+      "value": 220673
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-02-07",
+      "value": 220619
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-02-14",
+      "value": 220439
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-02-21",
+      "value": 220163
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-02-28",
+      "value": 219834
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-03-07",
+      "value": 219500
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-03-14",
+      "value": 219207
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-03-21",
+      "value": 218999
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-03-28",
+      "value": 218912
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-04-04",
+      "value": 218964
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-04-11",
+      "value": 219162
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-04-18",
+      "value": 219496
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-04-25",
+      "value": 215000
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-05-02",
+      "value": 220454
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-05-09",
+      "value": 220995
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-05-16",
+      "value": 221515
+    },
+    {
+      "seriesId": "ICSA",
+      "geography": "US",
+      "date": "2026-05-23",
+      "value": 221000
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 8500
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 8510.268
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 8518.785
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 8523.994
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 8524.701
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 8520.208
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 8510.389
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 8495.705
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 8477.153
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 8456.154
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 8434.4
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 8413.666
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 8395.614
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 8381.61
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 8372.578
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 8368.889
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 8370.331
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 8376.125
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 8385.012
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 8395.394
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 8405.508
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 8413.62
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 8418.217
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 8418.172
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 8412.872
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 8402.277
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 8386.936
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 8367.916
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 8346.692
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 8324.978
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 8304.546
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 8287.025
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 8273.723
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 8265.485
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 8262.597
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 8264.756
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 8271.106
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 8280.326
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 8290.782
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 8300.702
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 8308.374
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 8312.333
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 8311.524
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 8305.414
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 8294.057
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 8278.083
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 8258.629
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 8237.218
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 8215.585
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 8195.493
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 8178.533
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 8165.952
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 8158.515
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 8156.419
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 8159.277
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 8166.152
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 8175.668
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 8186.157
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 8195.845
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 8500
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 8206.341
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 8204.754
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 8197.837
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 8185.732
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 8169.15
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 8149.297
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 8127.739
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 8106.228
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 8086.512
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 8070.141
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 8058.298
+    },
+    {
+      "seriesId": "JTSJOL",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 8100
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 2.2
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 2.208
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 2.216
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 2.221
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 2.224
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 2.223
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 2.219
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 2.212
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 2.202
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 2.192
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 2.18
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 2.169
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 2.16
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 2.154
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 2.15
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 2.15
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 2.153
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 2.159
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 2.166
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 2.175
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 2.183
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 2.19
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 2.195
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 2.197
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 2.196
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 2.191
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 2.184
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 2.174
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 2.163
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 2.152
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 2.141
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 2.133
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 2.127
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 2.124
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 2.124
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 2.127
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 2.133
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 2.141
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 2.149
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 2.158
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 2.164
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 2.169
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 2.171
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 2.169
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 2.164
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 2.156
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 2.146
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 2.135
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 2.124
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 2.113
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 2.105
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 2.099
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 2.097
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 2.098
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 2.101
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 2.108
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 2.116
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 2.124
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 2.132
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 2.2
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 2.143
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 2.144
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 2.142
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 2.136
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 2.128
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 2.118
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 2.107
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 2.096
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 2.085
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 2.077
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 2.072
+    },
+    {
+      "seriesId": "JTSQUR",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 2.1
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 1
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 1.011
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 1.021
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 1.029
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 1.035
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 1.037
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 1.036
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 1.032
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 1.025
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 1.017
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 1.008
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 1
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 0.994
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 0.99
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 0.99
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 0.992
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 0.998
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 1.007
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 1.017
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 1.028
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 1.039
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 1.049
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 1.057
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 1.062
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 1.063
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 1.062
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 1.057
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 1.05
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 1.042
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 1.034
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 1.026
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 1.02
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 1.017
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 1.016
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 1.02
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 1.026
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 1.035
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 1.045
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 1.057
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 1.068
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 1.077
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 1.084
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 1.089
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 1.09
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 1.088
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 1.083
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 1.076
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 1.067
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 1.059
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 1.051
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 1.046
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 1.043
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 1.043
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 1.047
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 1.054
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 1.063
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 1.073
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 1.085
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 1.096
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 1
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 1.112
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 1.116
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 1.116
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 1.114
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 1.108
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 1.101
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 1.093
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 1.084
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 1.077
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 1.072
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 1.069
+    },
+    {
+      "seriesId": "JTSLDR",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 1.1
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 2820
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 2823.61
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 2826.637
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 2828.561
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 2828.985
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 2827.675
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 2824.59
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 2819.883
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 2813.887
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 2807.075
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 2800.011
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 2793.288
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 2787.458
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 2782.978
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 2780.155
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 2779.113
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 2779.782
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 2781.901
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 2785.051
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 2788.699
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 2792.258
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 2795.15
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 2796.87
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 2797.043
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 2795.464
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 2792.121
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 2787.195
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 2781.043
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 2774.155
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 2767.105
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 2760.483
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 2754.83
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 2750.584
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 2748.026
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 2747.251
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 2748.158
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 2750.462
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 2753.724
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 2757.397
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 2760.891
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 2763.636
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 2765.144
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 2765.062
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 2763.213
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 2759.615
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 2754.478
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 2748.182
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 2741.232
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 2734.209
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 2727.7
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 2722.234
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 2718.228
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 2715.937
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 2715.426
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 2716.566
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 2719.046
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 2722.406
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 2726.09
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 2729.507
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 2820
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 2733.381
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 2733.04
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 2730.922
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 2727.075
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 2721.735
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 2715.306
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 2708.307
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 2701.325
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 2694.941
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 2689.672
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 2685.912
+    },
+    {
+      "seriesId": "TEMPHELPS",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 2700
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 34.3
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 34.367
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 34.427
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 34.473
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 34.5
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 34.505
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 34.487
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 34.449
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 34.394
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 34.329
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 34.261
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 34.197
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 34.144
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 34.109
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 34.094
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 34.103
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 34.133
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 34.181
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 34.242
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 34.31
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 34.377
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 34.435
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 34.479
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 34.502
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 34.504
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 34.483
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 34.441
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 34.385
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 34.319
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 34.251
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 34.188
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 34.138
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 34.105
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 34.094
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 34.106
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 34.139
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 34.19
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 34.252
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 34.321
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 34.386
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 34.443
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 34.483
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 34.504
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 34.502
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 34.478
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 34.434
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 34.375
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 34.308
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 34.241
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 34.18
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 34.132
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 34.102
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 34.095
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 34.109
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 34.145
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 34.198
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 34.263
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 34.331
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 34.396
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 34.3
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 34.488
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 34.505
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 34.5
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 34.472
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 34.426
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 34.366
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 34.298
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 34.231
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 34.171
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 34.126
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 34.1
+    },
+    {
+      "seriesId": "AWHAETP",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 34.3
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 22920
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 22967.884
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 23010.776
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 23044.234
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 23064.851
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 23070.64
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 23061.24
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 23037.966
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 23003.66
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 22962.376
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 22918.939
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 22878.41
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 22845.53
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 22824.196
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 22817.038
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 22825.121
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 22847.836
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 22882.96
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 22926.907
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 22975.117
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 23022.562
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 23064.298
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 23096.01
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 23114.485
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 23117.97
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 23106.359
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 23081.21
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 23045.57
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 23003.642
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 22960.321
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 22920.655
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 22889.289
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 22869.956
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 22865.063
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 22875.428
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 22900.189
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 22936.899
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 22981.795
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 23030.216
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 23077.108
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 23117.59
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 23147.484
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 23163.777
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 23164.956
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 23151.169
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 23124.214
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 23087.337
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 23044.877
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 23001.787
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 22963.089
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 22933.324
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 22916.046
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 22913.437
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 22926.064
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 22952.815
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 22991.024
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 23036.764
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 23085.28
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 23131.509
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 22920
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 23198.647
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 23212.723
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 23211.6
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 23195.679
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 23166.992
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 23128.977
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 23086.097
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 23043.352
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 23005.728
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 22977.643
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 22962.471
+    },
+    {
+      "seriesId": "USPBS",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 23100
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2020-05-01",
+      "value": 3015
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2020-06-01",
+      "value": 3020.678
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2020-07-01",
+      "value": 3025.708
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2020-08-01",
+      "value": 3029.513
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2020-09-01",
+      "value": 3031.65
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2020-10-01",
+      "value": 3031.861
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2020-11-01",
+      "value": 3030.1
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2020-12-01",
+      "value": 3026.537
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-01-01",
+      "value": 3021.541
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-02-01",
+      "value": 3015.639
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-03-01",
+      "value": 3009.457
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-04-01",
+      "value": 3003.653
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-05-01",
+      "value": 2998.842
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-06-01",
+      "value": 2995.531
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-07-01",
+      "value": 2994.061
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-08-01",
+      "value": 2994.57
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-09-01",
+      "value": 2996.98
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-10-01",
+      "value": 3001.001
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-11-01",
+      "value": 3006.168
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2021-12-01",
+      "value": 3011.888
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-01-01",
+      "value": 3017.509
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-02-01",
+      "value": 3022.389
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-03-01",
+      "value": 3025.967
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-04-01",
+      "value": 3027.826
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-05-01",
+      "value": 3027.738
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-06-01",
+      "value": 3025.69
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-07-01",
+      "value": 3021.883
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-08-01",
+      "value": 3016.714
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-09-01",
+      "value": 3010.728
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-10-01",
+      "value": 3004.562
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-11-01",
+      "value": 2998.87
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2022-12-01",
+      "value": 2994.256
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-01-01",
+      "value": 2991.204
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-02-01",
+      "value": 2990.028
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-03-01",
+      "value": 2990.834
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-04-01",
+      "value": 2993.509
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-05-01",
+      "value": 2997.736
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-06-01",
+      "value": 3003.026
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-07-01",
+      "value": 3008.774
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-08-01",
+      "value": 3014.324
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-09-01",
+      "value": 3019.04
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-10-01",
+      "value": 3022.382
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-11-01",
+      "value": 3023.958
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2023-12-01",
+      "value": 3023.57
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-01-01",
+      "value": 3021.239
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-02-01",
+      "value": 3017.198
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-03-01",
+      "value": 3011.868
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-04-01",
+      "value": 3005.814
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-05-01",
+      "value": 2999.677
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-06-01",
+      "value": 2994.111
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-07-01",
+      "value": 2989.705
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-08-01",
+      "value": 2986.92
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-09-01",
+      "value": 2986.041
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-10-01",
+      "value": 2987.14
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-11-01",
+      "value": 2990.074
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2024-12-01",
+      "value": 2994.496
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-01-01",
+      "value": 2999.895
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-02-01",
+      "value": 3005.656
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-03-01",
+      "value": 3011.119
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-04-01",
+      "value": 3015
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-05-01",
+      "value": 3018.757
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-06-01",
+      "value": 3020.045
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-07-01",
+      "value": 3019.358
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-08-01",
+      "value": 3016.75
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-09-01",
+      "value": 3012.484
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-10-01",
+      "value": 3007.006
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-11-01",
+      "value": 3000.897
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2025-12-01",
+      "value": 2994.805
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2026-01-01",
+      "value": 2989.378
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2026-02-01",
+      "value": 2985.191
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2026-03-01",
+      "value": 2982.68
+    },
+    {
+      "seriesId": "USINFO",
+      "geography": "US",
+      "date": "2026-04-01",
+      "value": 3000
+    },
+    {
+      "seriesId": "ANTHROPIC_ECONOMIC_INDEX",
+      "geography": "US",
+      "date": "2025-09-30",
+      "value": 18
+    },
+    {
+      "seriesId": "ANTHROPIC_ECONOMIC_INDEX",
+      "geography": "US",
+      "date": "2025-12-31",
+      "value": 20
+    },
+    {
+      "seriesId": "ANTHROPIC_ECONOMIC_INDEX",
+      "geography": "US",
+      "date": "2026-03-27",
+      "value": 23
+    }
+  ],
+  "definitions": [],
+  "refreshLog": [
+    {
+      "id": 1,
+      "source": "Local seed",
+      "seriesId": null,
+      "status": "success",
+      "message": "Seeded v1 indicator catalog and sample observation history.",
+      "startedAt": "2026-05-30T08:00:00.000Z",
+      "completedAt": "2026-05-30T08:00:00.000Z"
+    }
+  ]
+}

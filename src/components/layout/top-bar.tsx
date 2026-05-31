@@ -1,26 +1,38 @@
-import { CalendarDays, Download, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import type { Route } from "next";
+
+const navItems = [
+  { href: "/", label: "Dashboard", current: true },
+  { href: "/sources", label: "Sources", current: false },
+  { href: "/about", label: "About", current: false }
+] satisfies Array<{ href: Route; label: string; current: boolean }>;
 
 export function TopBar() {
   return (
-    <header className="flex flex-col gap-4 border-b border-border bg-panel/80 px-4 py-4 backdrop-blur md:flex-row md:items-center md:justify-between lg:px-8">
-      <div>
-        <p className="text-sm font-medium text-muted-foreground">Executive overview</p>
-        <h2 className="mt-1 text-2xl font-semibold tracking-normal text-foreground">Revenue and account health</h2>
-      </div>
-      <div className="flex flex-wrap items-center gap-2">
-        <Button variant="secondary" type="button">
-          <Search aria-hidden="true" className="h-4 w-4" />
-          Search
-        </Button>
-        <Button variant="secondary" type="button">
-          <CalendarDays aria-hidden="true" className="h-4 w-4" />
-          May 2026
-        </Button>
-        <Button type="button">
-          <Download aria-hidden="true" className="h-4 w-4" />
-          Export
-        </Button>
+    <header className="border-b-2 border-ink">
+      <div className="mx-auto flex max-w-[1180px] flex-col gap-5 px-4 py-[18px] sm:px-6 md:flex-row md:items-end md:justify-between md:py-5 lg:px-8">
+        <Link href="/" className="inline-flex w-fit items-end gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-navy">
+          <span className="whitespace-nowrap font-serif text-[23px] font-bold leading-none tracking-[-0.015em] text-ink">LaborPulse</span>
+          <span className="whitespace-nowrap pb-[1px] font-sans text-[10.5px] font-semibold uppercase leading-none tracking-[0.16em] text-navy">
+            US Labor Market Monitor
+          </span>
+        </Link>
+        <nav aria-label="Primary navigation" className="flex items-center gap-[26px] font-sans text-[13.5px] font-medium">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={item.current ? "page" : undefined}
+              className={
+                item.current
+                  ? "border-b-2 border-navy pb-[3px] font-semibold text-ink"
+                  : "pb-[5px] text-sub transition-colors hover:text-ink"
+              }
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </header>
   );

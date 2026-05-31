@@ -1,7 +1,22 @@
 import { describe, expect, it } from "vitest";
-import { revenueGrowth, sumRevenue, targetAttainment, weightedWinRate } from "@/lib/analytics/metrics";
+import {
+  buildIndicatorMetricSummary,
+  buildSparklineHistory,
+  calculateDeltaMetric,
+  formatDeltaMetric,
+  formatIndicatorValue,
+  getComparisonDate,
+  getCurrentObservation,
+  revenueGrowth,
+  sumRevenue,
+  targetAttainment,
+  weightedWinRate
+} from "@/lib/analytics/metrics";
 import { filterAccounts, filterRevenueByPeriod, filterSegmentPerformance } from "@/lib/data-processing/dashboard-filters";
+import { parseFredObservationValue, toLaborPulseObservations } from "@/lib/data-processing/observations";
 import { accountRows, revenueSeries, segmentPerformance } from "@/lib/data-processing/sample-data";
+import { getIndicatorById, getIndicatorsByCategory, indicatorCatalog } from "@/lib/indicators/catalog";
+import type { Observation } from "@/types/labor-pulse";
 
 describe("analytics metrics", () => {
   it("sums revenue points", () => {
@@ -44,6 +59,137 @@ describe("analytics metrics", () => {
   it("filters segment performance by selected segment", () => {
     expect(filterSegmentPerformance(segmentPerformance, { segment: "SMB", region: "All", period: "12m" })).toEqual([
       { segment: "SMB", pipeline: 4_200_000, winRate: 0.46, cycleDays: 29, revenue: 5_300_000 }
+    ]);
+  });
+});
+
+describe("labor pulse indicator catalog", () => {
+  it("defines the v1 15-indicator catalog across the required categories", () => {
+    expect(indicatorCatalog).toHaveLength(15);
+    expect(getIndicatorsByCategory("lagging")).toHaveLength(6);
+    expect(getIndicatorsByCategory("leading")).toHaveLength(6);
+    expect(getIndicatorsByCategory("tech_impact")).toHaveLength(3);
+  });
+
+  it("requires methodology notes for Tech and AI proxy indicators", () => {
+    const techIndicators = getIndicatorsByCategory("tech_impact");
+
+    expect(techIndicators.every((indicator) => indicator.isProxy)).toBe(true);
+    expect(techIndicators.every((indicator) => Boolean(indicator.methodologyNote))).toBe(true);
+  });
+});
+
+describe("labor pulse metric helpers", () => {
+  const unemployment = getIndicatorById("UNRATE");
+  const claims = getIndicatorById("ICSA");
+
+  if (!unemployment || !claims) {
+    throw new Error("Expected test indicators to exist in the catalog.");
+  }
+
+  const observations: Observation[] = [
+    { seriesId: "UNRATE", geography: "US", date: "2024-04-01", value: 3.5 },
+    { seriesId: "UNRATE", geography: "US", date: "2025-04-01", value: 3.8 },
+    { seriesId: "UNRATE", geography: "US", date: "2025-05-01", value: null },
+    { seriesId: "UNRATE", geography: "CA", date: "2025-05-01", value: 5.1 },
+    { seriesId: "ICSA", geography: "US", date: "2025-04-05", value: 225_000 },
+    { seriesId: "ICSA", geography: "US", date: "2025-05-03", value: 210_000 }
+  ];
+
+  it("uses the latest non-null observation as the current value", () => {
+    expect(getCurrentObservation(unemployment, observations)).toEqual({
+      seriesId: "UNRATE",
+      geography: "US",
+      date: "2025-04-01",
+      value: 3.8
+    });
+  });
+
+  it("compares monthly indicators to the same date 12 months prior", () => {
+    const delta = calculateDeltaMetric(unemployment, observations);
+
+    expect(getComparisonDate("2025-04-01", "monthly")).toBe("2024-04-01");
+    expect(delta).toMatchObject({
+      status: "available",
+      value: 0.2999999999999998,
+      currentDate: "2025-04-01",
+      comparisonDate: "2024-04-01",
+      comparisonValue: 3.5
+    });
+  });
+
+  it("compares weekly indicators to four weeks prior", () => {
+    expect(calculateDeltaMetric(claims, observations)).toMatchObject({
+      status: "available",
+      value: -15_000,
+      currentDate: "2025-05-03",
+      comparisonDate: "2025-04-05",
+      comparisonValue: 225_000
+    });
+  });
+
+  it("returns unavailable instead of zero when comparison history is missing", () => {
+    const delta = calculateDeltaMetric(unemployment, [
+      { seriesId: "UNRATE", geography: "US", date: "2025-04-01", value: 3.8 }
+    ]);
+
+    expect(delta).toEqual({
+      status: "unavailable",
+      reason: "missing_comparison_observation",
+      currentDate: "2025-04-01",
+      comparisonDate: "2024-04-01"
+    });
+  });
+
+  it("preserves null observations as sparkline gaps", () => {
+    expect(buildSparklineHistory(unemployment, observations)).toEqual([
+      { date: "2024-04-01", value: 3.5 },
+      { date: "2025-04-01", value: 3.8 },
+      { date: "2025-05-01", value: null }
+    ]);
+  });
+
+  it("builds a deterministic indicator metric summary", () => {
+    expect(buildIndicatorMetricSummary(unemployment, observations)).toMatchObject({
+      geography: "US",
+      current: { date: "2025-04-01", value: 3.8 },
+      delta: { status: "available", comparisonDate: "2024-04-01" },
+      lastUpdatedAt: "2025-05-01"
+    });
+  });
+
+  it("formats current values and deltas from stored numeric values", () => {
+    const payrolls = getIndicatorById("PAYEMS");
+
+    expect(formatIndicatorValue(unemployment, 3.8)).toEqual({ status: "available", text: "3.8%" });
+    expect(formatDeltaMetric(unemployment, calculateDeltaMetric(unemployment, observations))).toEqual({
+      status: "available",
+      text: "+0.3 pp"
+    });
+
+    if (!payrolls) throw new Error("Expected PAYEMS to exist in the catalog.");
+
+    expect(formatIndicatorValue(payrolls, 158_000)).toEqual({ status: "available", text: "158.0M jobs" });
+    expect(formatIndicatorValue(payrolls, null)).toEqual({ status: "unavailable", text: "not available" });
+  });
+});
+
+describe("labor pulse observation processing", () => {
+  it("maps FRED missing values to null, not zero", () => {
+    expect(parseFredObservationValue(".")).toBeNull();
+    expect(parseFredObservationValue("0")).toBe(0);
+    expect(parseFredObservationValue("not-a-number")).toBeNull();
+  });
+
+  it("defaults observations to US geography for v1.5 readiness", () => {
+    expect(
+      toLaborPulseObservations("UNRATE", [
+        { date: "2025-01-01", value: "4.0" },
+        { date: "2025-02-01", value: "." }
+      ])
+    ).toEqual([
+      { seriesId: "UNRATE", geography: "US", date: "2025-01-01", value: 4 },
+      { seriesId: "UNRATE", geography: "US", date: "2025-02-01", value: null }
     ]);
   });
 });

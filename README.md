@@ -1,15 +1,16 @@
-# Analytical Web App Template
+# Labor Pulse
 
-Production-minded starter for polished, client-facing analytical web applications. It uses Next.js, TypeScript, Tailwind, Recharts, testable metric logic, auth-ready boundaries, and Codex agent workflows designed for parallel implementation.
+Labor Pulse is a public US labor market monitor for researchers preparing executive-facing reports. It shows lagging, leading, and technology/AI impact indicators with visible source attribution, methodology caveats, drilldowns, and CSV/PNG exports.
 
 ## Stack
 
-- Next.js App Router with React and TypeScript
-- Tailwind CSS for a restrained premium interface system
-- Recharts for dashboard visualizations
-- NextAuth-ready auth boundary
-- API/data access seams in `src/server`, `src/lib/db`, and `src/lib/data-processing`
-- Vitest for testable analytics and utility logic
+- Next.js App Router, React, TypeScript, Tailwind CSS
+- Editorial dashboard design from `design_handoff_laborpulse_dashboard`
+- Server-only local JSON store for v1 local operation
+- FRED refresh API scaffolding with Zod-style validation helpers
+- OpenAI definition endpoint, cache-first, prose-only
+- Native SVG charts in the app and server-side PNG export
+- Vitest coverage for indicator catalog and metric helpers
 
 ## Quick Start
 
@@ -20,6 +21,8 @@ npm run dev
 ```
 
 Open `http://localhost:3000`.
+
+The local v1 store is created automatically at `data/labor-pulse-store.json` on first read. It seeds all 15 v1 indicators and enough observation history for dashboard cards, drilldowns, source logs, CSV export, and PNG export.
 
 ## Commands
 
@@ -32,34 +35,42 @@ npm run check
 npm run build
 ```
 
-## Template Workflow
+## Environment
 
-1. Copy this repository into a new client or product repository.
-2. Fill out `docs/project-charter.md` to define the strategic direction.
-3. Fill out `docs/product-brief-template.md` before implementation.
-4. Define metrics in `docs/metric-definitions.md`.
-5. Replace sample data in `src/lib/data-processing/sample-data.ts` with database or API adapters.
-6. Configure auth in `src/lib/auth`.
-7. Assign Codex agents using `docs/agent-tasks/*.md`.
-8. Keep business logic in `src/lib` or `src/server`; keep components presentation-focused.
+Required for local app display:
 
-## Where Codex Agents Start
+```bash
+NEXT_PUBLIC_APP_NAME="Labor Pulse"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+CRON_SECRET="replace-with-strong-random-secret"
+```
 
-Future agents should read `AGENTS.md` and `docs/project-charter.md` first, then:
+Required for live integrations:
 
-- Strategic project charter: `docs/project-charter.md`
-- Shared operating context: `docs/context-brief.md`
-- Role runbook: `docs/agent-runbook.md`
-- Architecture decisions: `docs/decision-log.md`
-- API contracts: `docs/api-contracts.md`
-- Data contracts: `docs/data-contracts.md`
-- Final merge gate: `docs/integration-checklist.md`
-- Product/UX work: `docs/product-brief-template.md`, `docs/design-system.md`, `src/components`
-- Analytics work: `docs/metric-definitions.md`, `src/lib/analytics`, `src/lib/data-processing`
-- API/backend work: `src/server`, `src/lib/db`, `src/types`
-- Dashboard work: `src/features/dashboard`, `src/components/charts`, `src/components/layout`
-- Security work: `docs/security-model.md`, `src/lib/auth`, `.env.example`
+```bash
+FRED_API_KEY="..."
+OPENAI_API_KEY="..."
+OPENAI_MODEL_DEFINITIONS="gpt-4o-mini"
+DATABASE_URL="..." # reserved for Neon/Postgres production migration
+```
 
-## Customization TODOs
+## Routes
 
-Search for `TODO:` markers before client delivery. They identify app-specific decisions such as auth provider setup, database adapter selection, and sample-data replacement.
+- `/` dashboard with Lagging, Leading, and Tech & AI Impact tabs
+- `/indicators/[id]` detail page with time windows, chart, definition, source, CSV and PNG downloads
+- `/sources` source table and refresh log
+- `/about` project/methodology overview
+- `/api/cron/refresh-fred` protected FRED refresh route
+- `/api/definitions/[id]` cached generated definition route
+- `/api/export/csv/[id]` CSV export
+- `/api/export/png/[id]` PNG chart export
+
+## Data Rules
+
+- All displayed numbers, deltas, and chart points come from stored observations.
+- LLM output is limited to explanatory prose definitions and is rejected if it contains numerical content.
+- Tech & AI indicators remain visibly caveated as proxy or scoped AI-usage signals.
+
+## Agent Context
+
+Future Codex agents should read `AGENTS.md`, `docs/project-charter.md`, and `docs/context-brief.md` first. Contracts and acceptance notes live in `docs/api-contracts.md`, `docs/data-contracts.md`, `docs/metric-definitions.md`, `docs/security-model.md`, and `docs/integration-checklist.md`.
