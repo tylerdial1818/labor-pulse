@@ -3,6 +3,8 @@ import "server-only";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import { neon } from "@neondatabase/serverless";
+
 import { INDICATOR_CATALOG } from "@/server/indicator-catalog";
 import type { DefinitionResponse, IndicatorSeries, ObservationPoint, RefreshStatus } from "@/server/labor-types";
 
@@ -150,6 +152,70 @@ function buildInitialStore(): LocalStoreData {
   };
 }
 
+// Persistence backend selection.
+//
+// Vercel's serverless filesystem is read-only, so the bundled JSON file works
+// for reads but every write throws EROFS. When DATABASE_URL is present we
+// persist the store as a single JSONB row in Postgres (Neon) instead, which
+// keeps all existing query logic intact while making writes durable. The
+// file-backed path remains the default for local development.
+
+const STORE_KEY = "labor-pulse";
+const databaseUrl = process.env.DATABASE_URL;
+const useNeon = Boolean(databaseUrl);
+
+type NeonSql = ReturnType<typeof neon>;
+let cachedSql: NeonSql | null = null;
+let schemaReady: Promise<void> | null = null;
+
+function getSql(): NeonSql {
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL is required for the Neon-backed store.");
+  }
+
+  if (!cachedSql) {
+    cachedSql = neon(databaseUrl);
+  }
+
+  return cachedSql;
+}
+
+async function ensureSchema(sql: NeonSql) {
+  if (!schemaReady) {
+    schemaReady = (async () => {
+      await sql`create table if not exists app_store (id text primary key, data jsonb not null)`;
+    })();
+  }
+
+  await schemaReady;
+}
+
+async function readNeonStore(): Promise<LocalStoreData> {
+  const sql = getSql();
+  await ensureSchema(sql);
+
+  const rows = (await sql`select data from app_store where id = ${STORE_KEY}`) as { data: LocalStoreData }[];
+
+  if (rows.length > 0) {
+    return rows[0].data;
+  }
+
+  const seeded = buildInitialStore();
+  await writeNeonStore(seeded);
+  return seeded;
+}
+
+async function writeNeonStore(data: LocalStoreData) {
+  const sql = getSql();
+  await ensureSchema(sql);
+
+  await sql`
+    insert into app_store (id, data)
+    values (${STORE_KEY}, ${JSON.stringify(data)}::jsonb)
+    on conflict (id) do update set data = excluded.data
+  `;
+}
+
 async function ensureStoreFile() {
   try {
     await readFile(STORE_PATH, "utf8");
@@ -160,11 +226,20 @@ async function ensureStoreFile() {
 }
 
 export async function readLocalStore(): Promise<LocalStoreData> {
+  if (useNeon) {
+    return readNeonStore();
+  }
+
   await ensureStoreFile();
   return JSON.parse(await readFile(STORE_PATH, "utf8")) as LocalStoreData;
 }
 
 export async function writeLocalStore(data: LocalStoreData) {
+  if (useNeon) {
+    await writeNeonStore(data);
+    return;
+  }
+
   await mkdir(path.dirname(STORE_PATH), { recursive: true });
   await writeFile(STORE_PATH, `${JSON.stringify(data, null, 2)}\n`);
 }

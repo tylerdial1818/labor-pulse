@@ -1,6 +1,9 @@
 import { TopBar } from "@/components/layout/top-bar";
 import { getSourcesData } from "@/lib/db/queries";
 
+// Render per request so the refresh log and last-refresh times stay live.
+export const dynamic = "force-dynamic";
+
 export default async function SourcesPage() {
   const data = await getSourcesData();
 
