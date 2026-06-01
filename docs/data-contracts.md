@@ -98,7 +98,7 @@ type Observation = {
 1. Fetch FRED series metadata and observations server-side.
 2. Validate response payloads with Zod before insertion.
 3. Convert `"."` observation values to `null`.
-4. Upsert by `(seriesId, geography, date)`.
+4. Upsert by `(seriesId, geography, date)` into normalized `observations` when `DATABASE_URL` is configured; local development can still fall back to the JSON store.
 5. Compute current value as the latest non-null observation.
 6. Compute monthly deltas against 12 months prior and weekly deltas against 4 weeks prior.
 
@@ -130,3 +130,39 @@ type Observation = {
 - Measures Claude usage specifically, not all AI tools.
 - Treat as directional context only.
 - Do not merge with FRED observations unless the schema explicitly preserves release/source semantics.
+
+### Source: Eloundou et al. GPTs are GPTs Occupation Exposure
+
+| Field | Value |
+| --- | --- |
+| Owner | Data Model + Analytics Agent |
+| Status | scaffolded |
+| Refresh frequency | Manual or ad hoc when upstream repository changes |
+| Grain | O*NET-SOC occupation |
+| Access method | Original OpenAI GitHub CSV: `https://raw.githubusercontent.com/openai/GPTs-are-GPTs/main/data/occ_level.csv` |
+| Source files | `src/lib/ai-impact/eloundou.ts`, `scripts/ingest-eloundou-exposure.ts`, `src/lib/db/relational-store.ts` |
+
+#### Schema
+
+```ts
+type AiExposureScore = {
+  occupationSocCode: string;
+  occupationTitle: string;
+  exposureScore: number; // dv_rating_beta, 0-1
+  exposureCategory: "low" | "moderate" | "high";
+};
+```
+
+#### Transformation Logic
+
+1. Fetch original `occ_level.csv`.
+2. Validate required columns: `O*NET-SOC Code`, `Title`, and `dv_rating_beta`.
+3. Use `dv_rating_beta` as the default exposure score.
+4. Categorize scores as low `<0.33`, moderate `0.33-0.66`, high `>=0.66`.
+5. Upsert into relational `ai_exposure_scores`.
+
+#### Caveats
+
+- This is potential task exposure to LLMs and complementary tools, not observed adoption or employment displacement.
+- Do not present exposure scores as layoff risk, automation probability, or net job impact.
+- Keep source attribution visible on AI Impact surfaces.

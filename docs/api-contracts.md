@@ -152,3 +152,21 @@ Public PNG export for one indicator chart. The rendered image must include chart
 ### Endpoint: `GET /api/cron/refresh-fred`
 
 Service-only Vercel Cron route protected by `Authorization: Bearer $CRON_SECRET`. Refreshes all FRED-sourced indicators, validates responses with Zod, upserts observations, updates series freshness, writes `refresh_log`, and returns a structured summary. Partial failures must not erase last-good dashboard data.
+
+When `DATABASE_URL` is configured, refresh writes to normalized Neon tables (`series`, `observations`, `refresh_log`) after ensuring schema/catalog existence. Local development without relational data falls back to the JSON store.
+
+### Endpoint: `GET /api/insights`
+
+Public feed endpoint. Query params: `category`, `tags`, `since`, `limit`, `sort`. Returns qualitative insight summaries from the dedicated insights store.
+
+### Endpoint: `GET /api/cron/refresh-insights`
+
+Optional service cron route. Protected by `Authorization: Bearer $CRON_SECRET` when `CRON_SECRET` is set. Fetches configured qualitative sources, summarizes new items with OpenAI when configured, and falls back to deterministic summaries.
+
+### Endpoint: `GET /api/composites/[id]`
+
+Public composite detail endpoint. Returns composite definition, historical observations, current value, and deterministic interpretation.
+
+### Endpoint: `POST /api/briefings`
+
+Creates a deterministic local briefing from selected indicator, composite, insight, and geography inputs. When `DATABASE_URL` is configured, generated briefings are stored in normalized Neon `briefings`.

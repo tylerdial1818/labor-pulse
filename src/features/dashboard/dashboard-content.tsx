@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { useMemo, useState } from "react";
+import { CompositesStrip } from "@/components/dashboard/composites-strip";
 import { IndicatorSparkline, type PulseChartPoint } from "@/components/charts/labor-pulse-charts";
 import { cn } from "@/lib/utils/cn";
 import type { LaborDashboardData } from "@/server/labor-types";
@@ -50,6 +51,7 @@ export function DashboardContent({ data }: { data: LaborDashboardData }) {
   return (
     <>
       <PageHeader />
+      <CompositesStrip composites={data.composites ?? []} />
       <section aria-labelledby="dashboard-tabs">
         <h2 id="dashboard-tabs" className="sr-only">
           Indicator groups

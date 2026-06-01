@@ -2,6 +2,23 @@ import "server-only";
 
 import type { DbClient } from "@/lib/db/client";
 import { readLocalStore, resetLocalStore, writeLocalStore } from "@/lib/db/local-store";
+import {
+  applyRelationalFredRefresh,
+  createRelationalBriefing,
+  getRelationalBriefing,
+  hasRelationalSeries,
+  isRelationalStoreConfigured,
+  listRelationalBriefings,
+  readRelationalAiExposureScores,
+  readRelationalCompositeObservations,
+  readRelationalObservations,
+  readRelationalRefreshLog,
+  readRelationalSeries,
+  replaceRelationalCompositeObservations,
+  seedRelationalCatalog
+} from "@/lib/db/relational-store";
+import { calculateAllComposites, COMPOSITE_DEFINITIONS, interpretComposite } from "@/lib/composites/calculate";
+import { buildHistoricalContext } from "@/lib/context/calculate";
 import { CATEGORY_LABELS, INDICATOR_CATALOG, getCatalogIndicator } from "@/server/indicator-catalog";
 import type {
   DefinitionResponse,
@@ -13,6 +30,7 @@ import type {
   RefreshStatus,
   SourcesPageData
 } from "@/server/labor-types";
+import type { BriefingInput, HistoricalContext, InsightCategory, StoredBriefing } from "@/types/v15";
 
 const STALE_AFTER_MS = 1000 * 60 * 60 * 24 * 10;
 const unfavorableWhenRising = new Set(["UNRATE", "U6RATE", "ICSA", "JTSLDR"]);
@@ -157,6 +175,9 @@ function toIndicatorCard(series: IndicatorSeries, observations: ObservationPoint
 
 export async function seedCatalog(db?: DbClient) {
   void db;
+  if (isRelationalStoreConfigured()) {
+    await seedRelationalCatalog();
+  }
   const store = await readLocalStore();
   const existingById = new Map(store.series.map((series) => [series.id, series]));
   store.series = INDICATOR_CATALOG.map((indicator) => ({
@@ -178,25 +199,34 @@ export async function getIndicatorDetail(seriesId: string, db?: DbClient): Promi
     return null;
   }
 
-  const store = await readLocalStore();
-  const storedSeries = store.series.find((series) => series.id === seriesId);
+  const useRelational = await hasRelationalSeries();
+  const store = useRelational ? null : await readLocalStore();
+  const storedSeries = useRelational
+    ? (await readRelationalSeries()).find((series) => series.id === seriesId)
+    : store?.series.find((series) => series.id === seriesId);
   const series = storedSeries ?? { ...catalog, lastRefreshedAt: null };
-  const observations = store.observations
-    .filter((observation) => observation.seriesId === seriesId && observation.geography === "US")
-    .sort((a, b) => a.date.localeCompare(b.date));
+  const observations = useRelational
+    ? await readRelationalObservations(seriesId)
+    : (store?.observations ?? [])
+        .filter((observation) => observation.seriesId === seriesId && observation.geography === "US")
+        .sort((a, b) => a.date.localeCompare(b.date));
 
   return {
     series,
     observations,
-    refreshedAt: series.lastRefreshedAt
+    refreshedAt: series.lastRefreshedAt,
+    context: buildHistoricalContext(seriesId, observations)
   };
 }
 
 export async function getDashboardData(db?: DbClient): Promise<LaborDashboardData> {
   void db;
-  const store = await readLocalStore();
-  const cards = store.series.map((series) => {
-    const observations = store.observations
+  const useRelational = await hasRelationalSeries();
+  const store = useRelational ? null : await readLocalStore();
+  const seriesRows = useRelational ? await readRelationalSeries() : store?.series ?? [];
+  const allObservations = useRelational ? await readRelationalObservations() : store?.observations ?? [];
+  const cards = seriesRows.map((series) => {
+    const observations = allObservations
       .filter((observation) => observation.seriesId === series.id && observation.geography === "US")
       .sort((a, b) => a.date.localeCompare(b.date));
 
@@ -214,14 +244,164 @@ export async function getDashboardData(db?: DbClient): Promise<LaborDashboardDat
       ...CATEGORY_LABELS[category],
       indicators: cards.filter((card) => card.category === category)
     })),
-    refreshedAt
+    refreshedAt,
+    composites: await getCompositeSummaries()
   };
 }
 
-export async function getSourcesData(): Promise<SourcesPageData> {
+export async function recomputeComposites() {
+  if (await hasRelationalSeries()) {
+    const observations = await readRelationalObservations();
+    const compositeObservations = calculateAllComposites(observations);
+    await replaceRelationalCompositeObservations(compositeObservations);
+    return compositeObservations;
+  }
+
   const store = await readLocalStore();
-  const sources = Array.from(new Set(store.series.map((series) => series.source))).map((source) => {
-    const indicators = store.series.filter((series) => series.source === source);
+  store.composites = COMPOSITE_DEFINITIONS;
+  store.compositeObservations = calculateAllComposites(store.observations);
+  await writeLocalStore(store);
+  return store.compositeObservations;
+}
+
+export async function getCompositeSummaries() {
+  const useRelational = await hasRelationalSeries();
+  const store = useRelational ? null : await readLocalStore();
+  const storedComposites = useRelational ? await readRelationalCompositeObservations() : store?.compositeObservations ?? [];
+  const sourceObservations = useRelational ? await readRelationalObservations() : store?.observations ?? [];
+  const observations = storedComposites.length > 0 ? storedComposites : calculateAllComposites(sourceObservations);
+
+  return COMPOSITE_DEFINITIONS.map((definition) => {
+    const history = observations.filter((row) => row.compositeId === definition.id).sort((a, b) => a.date.localeCompare(b.date));
+    const current = history.at(-1);
+    return current
+      ? {
+          id: definition.id,
+          name: definition.name,
+          description: definition.description,
+          currentValue: current.value,
+          asOfDate: current.date,
+          interpretation: interpretComposite(definition, current.value),
+          methodologyNote: definition.methodologyNote,
+          history: history.slice(-36)
+        }
+      : null;
+  }).filter((summary): summary is NonNullable<typeof summary> => summary !== null);
+}
+
+export async function getCompositeDetail(id: string) {
+  const useRelational = await hasRelationalSeries();
+  const store = useRelational ? null : await readLocalStore();
+  const definition = COMPOSITE_DEFINITIONS.find((item) => item.id === id);
+  if (!definition) return null;
+  const storedComposites = useRelational ? await readRelationalCompositeObservations() : store?.compositeObservations ?? [];
+  const sourceObservations = useRelational ? await readRelationalObservations() : store?.observations ?? [];
+  const observations = (storedComposites.length > 0 ? storedComposites : calculateAllComposites(sourceObservations))
+    .filter((row) => row.compositeId === id)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const current = observations.at(-1);
+  return {
+    definition,
+    observations,
+    current: current
+      ? {
+          value: current.value,
+          date: current.date,
+          interpretation: interpretComposite(definition, current.value)
+        }
+      : null
+  };
+}
+
+export async function getHistoricalContext(seriesId: string): Promise<HistoricalContext | null> {
+  if (await hasRelationalSeries()) {
+    return buildHistoricalContext(seriesId, await readRelationalObservations(seriesId));
+  }
+
+  const store = await readLocalStore();
+  return buildHistoricalContext(
+    seriesId,
+    store.observations.filter((observation) => observation.seriesId === seriesId && observation.geography === "US")
+  );
+}
+
+export async function listInsights(filters: { category?: InsightCategory; tags?: string[]; since?: string; limit?: number; sort?: "asc" | "desc" } = {}) {
+  const store = await readLocalStore();
+  const limit = Math.min(Math.max(filters.limit ?? 20, 1), 100);
+  return store.insights
+    .filter((insight) => (filters.category ? insight.category === filters.category : true))
+    .filter((insight) => (filters.since ? insight.publishedAt >= filters.since : true))
+    .filter((insight) => (filters.tags?.length ? filters.tags.every((tag) => insight.tags.includes(tag)) : true))
+    .sort((a, b) => (filters.sort === "asc" ? a.publishedAt.localeCompare(b.publishedAt) : b.publishedAt.localeCompare(a.publishedAt)))
+    .slice(0, limit);
+}
+
+export async function getAiExposureScores() {
+  if (isRelationalStoreConfigured()) {
+    const relationalScores = await readRelationalAiExposureScores();
+    if (relationalScores.length > 0) {
+      return relationalScores;
+    }
+  }
+
+  const store = await readLocalStore();
+  return store.aiExposureScores.sort((a, b) => b.exposureScore - a.exposureScore);
+}
+
+export async function createBriefing(input: BriefingInput, content: string, model: string): Promise<StoredBriefing> {
+  if (isRelationalStoreConfigured()) {
+    return createRelationalBriefing({
+      theme: input.theme,
+      selectedSeriesIds: input.seriesIds,
+      selectedCompositeIds: input.compositeIds,
+      selectedInsightIds: input.insightIds,
+      geography: input.geography,
+      content,
+      model
+    });
+  }
+
+  const store = await readLocalStore();
+  const briefing: StoredBriefing = {
+    id: store.briefings.reduce((max, item) => Math.max(max, item.id), 0) + 1,
+    theme: input.theme,
+    selectedSeriesIds: input.seriesIds,
+    selectedCompositeIds: input.compositeIds,
+    selectedInsightIds: input.insightIds,
+    geography: input.geography,
+    content,
+    model,
+    createdAt: new Date().toISOString()
+  };
+  store.briefings.push(briefing);
+  await writeLocalStore(store);
+  return briefing;
+}
+
+export async function listBriefings() {
+  if (isRelationalStoreConfigured()) {
+    return listRelationalBriefings();
+  }
+
+  const store = await readLocalStore();
+  return store.briefings.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function getBriefing(id: number) {
+  if (isRelationalStoreConfigured()) {
+    return getRelationalBriefing(id);
+  }
+
+  const store = await readLocalStore();
+  return store.briefings.find((briefing) => briefing.id === id) ?? null;
+}
+
+export async function getSourcesData(): Promise<SourcesPageData> {
+  const useRelational = await hasRelationalSeries();
+  const store = useRelational ? null : await readLocalStore();
+  const seriesRows = useRelational ? await readRelationalSeries() : store?.series ?? [];
+  const sources = Array.from(new Set(seriesRows.map((series) => series.source))).map((source) => {
+    const indicators = seriesRows.filter((series) => series.source === source);
     const lastRefresh = indicators
       .map((indicator) => indicator.lastRefreshedAt)
       .filter((value): value is string => value !== null)
@@ -239,7 +419,17 @@ export async function getSourcesData(): Promise<SourcesPageData> {
 
   return {
     sources,
-    refreshLog: store.refreshLog.sort((a, b) => b.startedAt.localeCompare(a.startedAt)).slice(0, 20)
+    refreshLog: useRelational
+      ? (await readRelationalRefreshLog()).map((entry) => ({
+          id: entry.id,
+          source: entry.source,
+          seriesId: entry.series_id,
+          status: entry.status,
+          message: entry.message,
+          startedAt: new Date(entry.started_at).toISOString(),
+          completedAt: entry.completed_at ? new Date(entry.completed_at).toISOString() : null
+        }))
+      : (store?.refreshLog ?? []).sort((a, b) => b.startedAt.localeCompare(a.startedAt)).slice(0, 20)
   };
 }
 
@@ -318,6 +508,11 @@ export type FredRefreshResult = {
 // Neon-backed JSONB store), so all series, observations, and log entries are
 // merged in memory and persisted once.
 export async function applyFredRefresh(results: FredRefreshResult[], refreshedAt: string) {
+  if (isRelationalStoreConfigured()) {
+    await applyRelationalFredRefresh(results, refreshedAt);
+    return;
+  }
+
   const store = await readLocalStore();
 
   // Keep the series catalog in sync (preserving last-refreshed timestamps).

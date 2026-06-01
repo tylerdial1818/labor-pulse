@@ -70,12 +70,23 @@ export type DashboardCategoryViewModel = {
 export type LaborDashboardData = {
   categories: DashboardCategoryViewModel[];
   refreshedAt: string | null;
+  composites?: Array<{
+    id: string;
+    name: string;
+    description: string;
+    currentValue: number;
+    asOfDate: string;
+    interpretation: { label: string; color: "green" | "yellow" | "orange" | "red" | "gray" };
+    methodologyNote: string;
+    history: Array<{ compositeId: string; geography: string; date: string; value: number }>;
+  }>;
 };
 
 export type IndicatorDetailResponse = {
   series: IndicatorSeries;
   observations: ObservationPoint[];
   refreshedAt: string | null;
+  context?: import("@/types/v15").HistoricalContext | null;
 };
 
 export type DefinitionResponse = {

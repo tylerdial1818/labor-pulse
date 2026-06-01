@@ -24,11 +24,11 @@ Labor Pulse is a public US labor market monitor for researchers preparing execut
 
 | Area | Status | Notes |
 | --- | --- | --- |
-| App shell | Replace starter | Current sales dashboard template must become Labor Pulse dashboard, detail, sources, and about routes. |
-| Data | Local v1 complete | Server-only local JSON store seeds all 15 indicators; FRED refresh and Anthropic import paths are scaffolded for live credentials. |
-| Analytics | Planned | Define current value, monthly YoY delta, weekly 4-week delta, formatting, freshness, and proxy caveats. |
+| App shell | v1.5 in progress | Dashboard, detail, sources, about, insights, AI impact, composites, and briefing routes exist locally. |
+| Data | Relational v1.5 scaffold | Normalized Neon schema is initialized when `DATABASE_URL` is configured; local JSON/JSONB fallback remains for development. |
+| Analytics | v1.5 in progress | Current values, deltas, chart axes, composite calculations, and deterministic historical context are implemented with tests. |
 | Auth | v1 omitted | Public app; no user auth. Cron route must require `CRON_SECRET`. |
-| Deployment | Planned | Vercel target with daily 08:00 UTC cron for FRED refresh. |
+| Deployment | Planned | Vercel target with daily 08:00 UTC FRED cron; optional 09:00 UTC insights cron requires tier/quota confirmation. |
 
 ## Active Workstreams
 
@@ -63,6 +63,8 @@ Public app, no user authentication in v1. Service-only cron route requires `Auth
 | --- | --- | --- | --- | --- | --- |
 | FRED API | Federal Reserve Bank of St. Louis | Daily app refresh; source frequencies weekly/monthly | Series/date/geography | Server-side API client | 14 indicators; validate with Zod before storing |
 | Anthropic Economic Index | Anthropic | Ad hoc | Release/occupation usage share | Manual import script | Direct Claude usage signal; file shape still needs confirmation |
+| Qualitative insight sources | BLS, Federal Reserve, Indeed, Brookings, NBER, LinkedIn | Daily app refresh where public source allows | Article/release summary | Server-side fetch with deterministic fallback summaries | Seeded local feed active; live source robustness needs production monitoring |
+| Eloundou GPT exposure | OpenAI GPTs-are-GPTs repository | Manual/ad hoc | O*NET-SOC occupation | Original `occ_level.csv` ingestion | 923 occupation exposure rows imported into Neon locally |
 
 ## Known Risks
 

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Download } from "lucide-react";
 
+import { HistoricalContext } from "@/components/indicators/historical-context";
 import { TimeSeriesChart } from "@/components/charts/labor-pulse-charts";
 import { cn } from "@/lib/utils/cn";
 import type { DefinitionResponse, IndicatorDetailResponse } from "@/server/labor-types";
@@ -58,6 +59,8 @@ export function IndicatorDetailContent({ detail, definition }: { detail: Indicat
         </div>
         <TimeSeriesChart data={chartData} label={`${detail.series.shortTitle} history`} units={detail.series.units} />
       </section>
+
+      <HistoricalContext context={detail.context ?? null} />
 
       {detail.series.methodologyNote ? (
         <section className="border border-rule bg-[var(--lp-navy-tint)] px-5 py-4" aria-label="Methodology note">

@@ -1,3 +1,5 @@
+import { neon } from "@neondatabase/serverless";
+
 export type DbClient = {
   query<T>(statement: string, params?: unknown[]): Promise<T[]>;
 };
@@ -9,9 +11,23 @@ export function createDbClient(): DbClient {
     return cachedClient;
   }
 
+  const databaseUrl = process.env.DATABASE_URL;
+
+  if (!databaseUrl) {
+    cachedClient = {
+      async query() {
+        throw new Error("Direct SQL queries require DATABASE_URL. The local file-backed Labor Pulse store is active.");
+      }
+    };
+
+    return cachedClient;
+  }
+
+  const sql = neon(databaseUrl);
+
   cachedClient = {
-    async query() {
-      throw new Error("Direct SQL queries are not available in the local file-backed Labor Pulse store.");
+    async query<T>(statement: string, params: unknown[] = []) {
+      return (await sql.query(statement, params)) as T[];
     }
   };
 

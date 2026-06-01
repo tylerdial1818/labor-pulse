@@ -11,7 +11,11 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "npm run typecheck && npm run lint && npm run test"
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "db:seed-catalog": "tsx scripts/seed-catalog.ts",
+    "ingest:economic-index": "tsx scripts/ingest-economic-index.ts",
+    "ingest:eloundou": "tsx scripts/ingest-eloundou-exposure.ts",
+    "check:links": "tsx scripts/check-source-links.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
@@ -38,6 +42,7 @@
     "playwright": "^1.60.0",
     "postcss": "^8.5.10",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.22.4",
     "typescript": "^5.7.2",
     "vitest": "^4.1.7"
   },

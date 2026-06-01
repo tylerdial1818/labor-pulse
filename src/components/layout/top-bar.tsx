@@ -3,9 +3,12 @@ import type { Route } from "next";
 
 const navItems = [
   { href: "/", label: "Dashboard", current: true },
+  { href: "/insights", label: "Insights", current: false },
+  { href: "/ai-impact", label: "AI Impact", current: false },
+  { href: "/briefings", label: "Briefings", current: false },
   { href: "/sources", label: "Sources", current: false },
   { href: "/about", label: "About", current: false }
-] satisfies Array<{ href: Route; label: string; current: boolean }>;
+] satisfies Array<{ href: string; label: string; current: boolean }>;
 
 export function TopBar() {
   return (
@@ -21,7 +24,7 @@ export function TopBar() {
           {navItems.map((item) => (
             <Link
               key={item.href}
-              href={item.href}
+              href={item.href as Route}
               aria-current={item.current ? "page" : undefined}
               className={
                 item.current

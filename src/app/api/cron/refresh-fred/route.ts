@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { recomputeComposites } from "@/lib/db/queries";
 import { refreshFredIndicators } from "@/lib/fred/ingest";
 
 export const dynamic = "force-dynamic";
@@ -22,9 +23,10 @@ export async function GET(request: Request) {
 
   try {
     const summary = await refreshFredIndicators();
+    const compositeObservations = summary.status === "failed" ? [] : await recomputeComposites();
     const status = summary.status === "failed" ? 500 : 200;
 
-    return NextResponse.json(summary, { status });
+    return NextResponse.json({ ...summary, compositesRecomputed: compositeObservations.length }, { status });
   } catch (error) {
     console.error("FRED cron refresh failed before series attempts", {
       message: error instanceof Error ? error.message : "Unknown cron refresh error."

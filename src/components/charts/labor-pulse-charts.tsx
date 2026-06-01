@@ -22,17 +22,27 @@ const toneColor: Record<Tone, string> = {
 function getExtent(data: NumericPoint[]) {
   const min = Math.min(...data.map((point) => point.value));
   const max = Math.max(...data.map((point) => point.value));
+  const padding = (max - min || Math.max(Math.abs(max), 1)) * 0.06;
 
-  return { min, max, range: max - min || 1 };
+  return { min: min - padding, max: max + padding, range: max - min + padding * 2 || 1 };
+}
+
+function parseDateMs(date: string) {
+  const parsed = new Date(`${date}T00:00:00.000Z`).getTime();
+  return Number.isFinite(parsed) ? parsed : 0;
 }
 
 function scaledPoints(data: NumericPoint[], width: number, height: number, padding = 2) {
   const { min, range } = getExtent(data);
+  const times = data.map((point) => parseDateMs(point.date));
+  const minTime = Math.min(...times);
+  const maxTime = Math.max(...times);
+  const timeRange = maxTime - minTime || 1;
 
-  return data.map((point, index) => ({
+  return data.map((point) => ({
     date: point.date,
     value: point.value,
-    x: padding + (index / Math.max(data.length - 1, 1)) * (width - padding * 2),
+    x: padding + ((parseDateMs(point.date) - minTime) / timeRange) * (width - padding * 2),
     y: padding + (height - padding * 2) - ((point.value - min) / range) * (height - padding * 2)
   }));
 }
@@ -58,6 +68,22 @@ function formatAxisDate(date: string) {
   if (Number.isNaN(parsed.getTime())) return date;
 
   return new Intl.DateTimeFormat("en", { month: "short", year: "2-digit" }).format(parsed);
+}
+
+function valueTicks(min: number, max: number, count = 5) {
+  if (count < 2 || min === max) return [max, min];
+
+  return Array.from({ length: count }, (_, index) => max - ((max - min) / (count - 1)) * index);
+}
+
+function xTicks(points: NumericPoint[], count = 5) {
+  if (points.length <= count) return points;
+
+  return Array.from({ length: count }, (_, index) => points[Math.round((index / (count - 1)) * (points.length - 1))]);
+}
+
+function yForValue(value: number, min: number, range: number, plot: { top: number; bottom: number }) {
+  return plot.top + (plot.bottom - plot.top) - ((value - min) / range) * (plot.bottom - plot.top);
 }
 
 export function IndicatorSparkline({ data, tone, unitLabel }: { data: PulseChartPoint[]; tone: Tone; unitLabel?: string }) {
@@ -116,20 +142,19 @@ export function TimeSeriesChart({ data, label, units }: { data: PulseChartPoint[
   }
 
   const plot = { left: 74, right: 878, top: 22, bottom: 286 };
-  const { min, max } = getExtent(points);
-  const midpoint = min + (max - min) / 2;
+  const { min, max, range } = getExtent(points);
   const scaled = scaledPoints(points, plot.right - plot.left, plot.bottom - plot.top, 0).map((point) => ({
     ...point,
     x: point.x + plot.left,
     y: point.y + plot.top
   }));
-  const firstPoint = points[0];
-  const lastPoint = points.at(-1);
-  const yTicks = [
-    { value: max, y: plot.top },
-    { value: midpoint, y: plot.top + (plot.bottom - plot.top) / 2 },
-    { value: min, y: plot.bottom }
-  ];
+  const last = scaled.at(-1);
+  const yTicks = valueTicks(min, max).map((value) => ({ value, y: yForValue(value, min, range, plot) }));
+  const xAxisTicks = xTicks(points).map((point) => {
+    const scaledPoint = scaled.find((item) => item.date === point.date) ?? scaled[0];
+    return { ...point, x: scaledPoint.x };
+  });
+  const zeroY = min < 0 && max > 0 ? yForValue(0, min, range, plot) : null;
 
   return (
     <svg className="h-[340px] w-full" viewBox="0 0 900 340" role="img" aria-label={label}>
@@ -137,26 +162,40 @@ export function TimeSeriesChart({ data, label, units }: { data: PulseChartPoint[
         {units ? `Value (${units})` : "Value"}
       </text>
       {yTicks.map((tick) => (
-        <g key={tick.y}>
+        <g key={tick.value}>
           <line x1={plot.left} x2={plot.right} y1={tick.y} y2={tick.y} stroke="var(--lp-hair)" />
           <text x={plot.left - 10} y={tick.y + 4} textAnchor="end" fill="var(--lp-sub)" fontSize="11" fontFamily="var(--font-sans, sans-serif)">
             {formatAxisValue(tick.value)}
           </text>
         </g>
       ))}
+      {zeroY !== null ? (
+        <g>
+          <line x1={plot.left} x2={plot.right} y1={zeroY} y2={zeroY} stroke="var(--lp-sub)" strokeDasharray="4 5" opacity="0.55" />
+          <text x={plot.right + 6} y={zeroY + 4} fill="var(--lp-sub)" fontSize="10" fontFamily="var(--font-sans, sans-serif)">
+            0
+          </text>
+        </g>
+      ) : null}
       <line x1={plot.left} x2={plot.left} y1={plot.top} y2={plot.bottom} stroke="var(--lp-hair)" />
       <line x1={plot.left} x2={plot.right} y1={plot.bottom} y2={plot.bottom} stroke="var(--lp-hair)" />
       <path d={linePath(scaled)} fill="none" stroke="var(--lp-navy)" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
-      {firstPoint ? (
-        <text x={plot.left} y="312" fill="var(--lp-sub)" fontSize="11" fontFamily="var(--font-sans, sans-serif)">
-          {formatAxisDate(firstPoint.date)}
-        </text>
-      ) : null}
-      {lastPoint ? (
-        <text x={plot.right} y="312" textAnchor="end" fill="var(--lp-sub)" fontSize="11" fontFamily="var(--font-sans, sans-serif)">
-          {formatAxisDate(lastPoint.date)}
-        </text>
-      ) : null}
+      {last ? <circle cx={last.x} cy={last.y} r="3.2" fill="var(--lp-navy)" stroke="var(--lp-paper)" strokeWidth="2" /> : null}
+      {xAxisTicks.map((tick, index) => (
+        <g key={tick.date}>
+          <line x1={tick.x} x2={tick.x} y1={plot.bottom} y2={plot.bottom + 5} stroke="var(--lp-hair)" />
+          <text
+            x={tick.x}
+            y="312"
+            textAnchor={index === 0 ? "start" : index === xAxisTicks.length - 1 ? "end" : "middle"}
+            fill="var(--lp-sub)"
+            fontSize="11"
+            fontFamily="var(--font-sans, sans-serif)"
+          >
+            {formatAxisDate(tick.date)}
+          </text>
+        </g>
+      ))}
       <text x={(plot.left + plot.right) / 2} y="332" textAnchor="middle" fill="var(--lp-sub)" fontSize="11" fontFamily="var(--font-sans, sans-serif)">
         Observation date
       </text>

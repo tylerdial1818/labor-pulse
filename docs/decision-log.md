@@ -14,6 +14,30 @@ Use this lightweight ADR-style log for architecture, data, security, deployment,
 
 ## Decisions
 
+### 2026-05-31: Use relational Neon tables for production data before v1.5 deployment
+
+- **Decision:** Keep the local JSON/JSONB fallback for development, but initialize and use normalized Neon tables for production observations, refresh logs, composites, briefings, and AI exposure scores when `DATABASE_URL` is configured.
+- **Rationale:** Labor Pulse needs indexed, auditable, source-attributed records as it moves from a polished dashboard into an analyst workflow tool.
+- **Alternatives considered:** Continue using only the single-row JSONB app store, or replace the local fallback entirely.
+- **Consequences:** Production deployment now needs a schema/catalog initialization step and a first authenticated FRED refresh. Local development remains simple.
+- **Owner:** Architect/Integrator Agent
+
+### 2026-05-31: Use original Eloundou occupation exposure data
+
+- **Decision:** AI exposure ingestion targets the original OpenAI `GPTs-are-GPTs` `occ_level.csv`, using `dv_rating_beta` as the default score.
+- **Rationale:** The original research dataset is more citable and defensible than derived exposure tables, and `dv_rating_beta` is a middle estimate that includes direct LLM exposure plus partial complementary-tool exposure.
+- **Alternatives considered:** Use a maintained third-party derived dataset, manually seed a small exposure table, or delay the exposure layer.
+- **Consequences:** The UI and docs must state that these scores represent potential task exposure, not observed AI adoption, displacement, layoffs, or net job impact.
+- **Owner:** Data Model + Analytics Agent
+
+### 2026-05-31: Adapt v1.5 to the local-store architecture before production schema work
+
+- **Decision:** v1.5 features use the existing server-only JSON/Neon JSONB store pattern instead of introducing Drizzle migrations mid-build. Composites, historical context, insights, AI impact scaffolds, and briefings are integrated through typed query helpers and dedicated local stores where appropriate.
+- **Rationale:** The current app is already functional on the local-store abstraction. Preserving that architecture lets v1.5 ship and validate product workflows immediately while keeping future relational schema migration explicit.
+- **Alternatives considered:** Implement the pasted Drizzle schema directly, block work on a database migration, or leave v1.5 as a plan only.
+- **Consequences:** Production hardening should include a relational schema pass for durable multi-entity data, but current UI/API flows are testable locally and on the existing Neon JSONB store.
+- **Owner:** Architect/Integrator Agent
+
 ### 2026-05-30: Use a server-only local store for v1 local completeness
 
 - **Decision:** Labor Pulse v1 runs locally from `data/labor-pulse-store.json`, seeded automatically with the v1 indicator catalog and observation history. Production Neon/Postgres remains the intended deployment migration path.

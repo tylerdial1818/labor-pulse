@@ -7,6 +7,7 @@ import { neon } from "@neondatabase/serverless";
 
 import { INDICATOR_CATALOG } from "@/server/indicator-catalog";
 import type { DefinitionResponse, IndicatorSeries, ObservationPoint, RefreshStatus } from "@/server/labor-types";
+import type { AiExposureScore, CompositeDefinition, CompositeObservation, StoredBriefing, StoredInsight } from "@/types/v15";
 
 type StoredDefinition = Omit<DefinitionResponse, "cached">;
 
@@ -20,10 +21,15 @@ export type RefreshLogEntry = {
   completedAt: string | null;
 };
 
-type LocalStoreData = {
+export type LocalStoreData = {
   series: IndicatorSeries[];
   observations: ObservationPoint[];
   definitions: StoredDefinition[];
+  composites: CompositeDefinition[];
+  compositeObservations: CompositeObservation[];
+  insights: StoredInsight[];
+  briefings: StoredBriefing[];
+  aiExposureScores: AiExposureScore[];
   refreshLog: RefreshLogEntry[];
 };
 
@@ -121,6 +127,103 @@ function buildAnthropicRows(): ObservationPoint[] {
   ];
 }
 
+const compositeDefinitions: CompositeDefinition[] = [
+  {
+    id: "sahm_rule",
+    name: "Sahm Rule Recession Indicator",
+    description: "Three-month average unemployment rate minus its prior 12-month low.",
+    category: "recession_signal",
+    inputSeries: ["UNRATE"],
+    methodologyNote:
+      "Calculated as the three-month moving average of the unemployment rate less the lowest value of that average over the prior 12 months.",
+    thresholdInterpretation: [
+      { label: "Normal", range: [null, 0], color: "green" },
+      { label: "Caution", range: [0, 0.5], color: "yellow" },
+      { label: "Recession signal", range: [0.5, null], color: "red" }
+    ]
+  },
+  {
+    id: "labor_tightness",
+    name: "Labor Market Tightness",
+    description: "Percentile-style blend of openings, quits, and wage pressure.",
+    category: "tightness",
+    inputSeries: ["JTSJOL", "UNRATE", "JTSQUR", "CES0500000003"],
+    methodologyNote:
+      "A standardized blend of job openings, quits, and wage growth proxies. Higher readings indicate tighter labor-market conditions.",
+    thresholdInterpretation: [
+      { label: "Slack", range: [null, -0.5], color: "green" },
+      { label: "Balanced", range: [-0.5, 0.5], color: "yellow" },
+      { label: "Tight", range: [0.5, null], color: "orange" }
+    ]
+  },
+  {
+    id: "labor_stress",
+    name: "Labor Market Stress",
+    description: "Standardized blend of claims, layoffs, and weekly-hours pressure.",
+    category: "stress",
+    inputSeries: ["ICSA", "JTSLDR", "AWHAETP"],
+    methodologyNote:
+      "A standardized blend of initial claims, layoffs and discharges, and the inverse of weekly hours. Higher readings indicate more labor-market stress.",
+    thresholdInterpretation: [
+      { label: "Low stress", range: [null, -0.5], color: "green" },
+      { label: "Watch", range: [-0.5, 0.5], color: "yellow" },
+      { label: "Elevated stress", range: [0.5, null], color: "red" }
+    ]
+  }
+];
+
+const seededInsights: StoredInsight[] = [
+  {
+    id: 1,
+    sourceName: "BLS Employment Situation",
+    sourceUrl: "https://www.bls.gov/news.release/empsit.htm",
+    title: "Payroll growth remains the main read on labor-market momentum",
+    publishedAt: "2026-05-01T12:30:00.000Z",
+    summary:
+      "The employment situation release remains the primary monthly checkpoint for payroll growth, unemployment, labor-force participation, and wage pressure. Labor Pulse treats it as a quantitative anchor and avoids inferring hiring-practice shifts without supporting qualitative evidence.",
+    category: "employment_situation",
+    tags: ["payrolls", "unemployment", "wages"],
+    rawContent: "Seeded local placeholder for the Employment Situation insight source.",
+    ingestedAt: DEFAULT_REFRESHED_AT,
+    summaryModel: "deterministic-seed"
+  },
+  {
+    id: 2,
+    sourceName: "Federal Reserve Beige Book",
+    sourceUrl: "https://www.federalreserve.gov/monetarypolicy/beigebook/",
+    title: "Regional hiring anecdotes add texture to national data",
+    publishedAt: "2026-04-30T18:00:00.000Z",
+    summary:
+      "Regional reports can reveal employer behavior that national time series do not capture directly, including hiring standards, wage bargaining, and staffing constraints. Labor Pulse uses these qualitative notes as context, not as substitutes for measured indicators.",
+    category: "beige_book",
+    tags: ["regional", "hiring-practices", "wages"],
+    rawContent: "Seeded local placeholder for Beige Book insight context.",
+    ingestedAt: DEFAULT_REFRESHED_AT,
+    summaryModel: "deterministic-seed"
+  },
+  {
+    id: 3,
+    sourceName: "Anthropic Economic Index",
+    sourceUrl: "https://www.anthropic.com/economic-index",
+    title: "AI usage signals are directional, not a displacement measure",
+    publishedAt: "2026-03-27T12:00:00.000Z",
+    summary:
+      "Claude usage patterns can help analysts identify where AI tools are entering work activity, but they do not measure economy-wide adoption or job displacement. Labor Pulse surfaces these signals with explicit methodology caveats and keeps them separate from official labor statistics.",
+    category: "ai_impact",
+    tags: ["ai", "claude", "methodology"],
+    rawContent: "Seeded local placeholder for Anthropic Economic Index context.",
+    ingestedAt: DEFAULT_REFRESHED_AT,
+    summaryModel: "deterministic-seed"
+  }
+];
+
+const seededAiExposureScores: AiExposureScore[] = [
+  { occupationSocCode: "15-1252", occupationTitle: "Software Developers", exposureScore: 0.82, exposureCategory: "high" },
+  { occupationSocCode: "13-1111", occupationTitle: "Management Analysts", exposureScore: 0.74, exposureCategory: "high" },
+  { occupationSocCode: "43-4051", occupationTitle: "Customer Service Representatives", exposureScore: 0.58, exposureCategory: "moderate" },
+  { occupationSocCode: "29-1141", occupationTitle: "Registered Nurses", exposureScore: 0.29, exposureCategory: "low" }
+];
+
 function buildInitialStore(): LocalStoreData {
   const series = INDICATOR_CATALOG.map((indicator) => ({
     ...indicator,
@@ -138,6 +241,11 @@ function buildInitialStore(): LocalStoreData {
     series,
     observations,
     definitions: [],
+    composites: compositeDefinitions,
+    compositeObservations: [],
+    insights: seededInsights,
+    briefings: [],
+    aiExposureScores: seededAiExposureScores,
     refreshLog: [
       {
         id: 1,
@@ -197,7 +305,7 @@ async function readNeonStore(): Promise<LocalStoreData> {
   const rows = (await sql`select data from app_store where id = ${STORE_KEY}`) as { data: LocalStoreData }[];
 
   if (rows.length > 0) {
-    return rows[0].data;
+    return normalizeStore(rows[0].data);
   }
 
   const seeded = buildInitialStore();
@@ -231,7 +339,18 @@ export async function readLocalStore(): Promise<LocalStoreData> {
   }
 
   await ensureStoreFile();
-  return JSON.parse(await readFile(STORE_PATH, "utf8")) as LocalStoreData;
+  return normalizeStore(JSON.parse(await readFile(STORE_PATH, "utf8")) as LocalStoreData);
+}
+
+function normalizeStore(data: LocalStoreData): LocalStoreData {
+  return {
+    ...data,
+    composites: data.composites ?? compositeDefinitions,
+    compositeObservations: data.compositeObservations ?? [],
+    insights: data.insights ?? seededInsights,
+    briefings: data.briefings ?? [],
+    aiExposureScores: data.aiExposureScores ?? seededAiExposureScores
+  };
 }
 
 export async function writeLocalStore(data: LocalStoreData) {
