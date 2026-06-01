@@ -1,21 +1,31 @@
 import { getIndicatorById, indicatorCatalog } from "@/lib/indicators/catalog";
+import { getIndicatorExplanation } from "@/lib/indicators/explanations";
 import type { IndicatorCategory, IndicatorMetadata } from "@/server/labor-types";
 
-export const INDICATOR_CATALOG: IndicatorMetadata[] = indicatorCatalog.map((indicator) => ({
-  id: indicator.id,
-  title: indicator.title,
-  shortTitle: indicator.shortTitle,
-  category: indicator.category,
-  source: indicator.source,
-  sourceUrl: indicator.sourceUrl,
-  units: indicator.units,
-  unitLabel: indicator.display.unitLabel,
-  frequency: indicator.frequency,
-  seasonalAdjustment: indicator.seasonalAdjustment ?? null,
-  isProxy: indicator.isProxy,
-  methodologyNote: indicator.methodologyNote,
-  stateSeriesPattern: "stateSeriesPattern" in indicator ? indicator.stateSeriesPattern ?? null : null
-}));
+export const INDICATOR_CATALOG: IndicatorMetadata[] = indicatorCatalog.map((indicator) => {
+  const explanation = getIndicatorExplanation(indicator.id);
+
+  return {
+    id: indicator.id,
+    title: indicator.title,
+    shortTitle: indicator.shortTitle,
+    plainLanguage: explanation.plainLanguage,
+    whyItMatters: explanation.whyItMatters,
+    interpretation: explanation.interpretation,
+    sourceLabel: explanation.sourceLabel,
+    sourceDetail: explanation.sourceDetail,
+    category: indicator.category,
+    source: indicator.source,
+    sourceUrl: indicator.sourceUrl,
+    units: indicator.units,
+    unitLabel: indicator.display.unitLabel,
+    frequency: indicator.frequency,
+    seasonalAdjustment: indicator.seasonalAdjustment ?? null,
+    isProxy: indicator.isProxy,
+    methodologyNote: indicator.methodologyNote,
+    stateSeriesPattern: "stateSeriesPattern" in indicator ? indicator.stateSeriesPattern ?? null : null
+  };
+});
 
 export const CATEGORY_LABELS: Record<IndicatorCategory, { label: string; blurb: string }> = {
   lagging: {
@@ -38,11 +48,17 @@ export function getCatalogIndicator(id: string): IndicatorMetadata | null {
   if (!indicator) {
     return null;
   }
+  const explanation = getIndicatorExplanation(indicator.id);
 
   return {
     id: indicator.id,
     title: indicator.title,
     shortTitle: indicator.shortTitle,
+    plainLanguage: explanation.plainLanguage,
+    whyItMatters: explanation.whyItMatters,
+    interpretation: explanation.interpretation,
+    sourceLabel: explanation.sourceLabel,
+    sourceDetail: explanation.sourceDetail,
     category: indicator.category,
     source: indicator.source,
     sourceUrl: indicator.sourceUrl,

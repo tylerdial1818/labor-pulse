@@ -115,8 +115,8 @@ export async function getOrCreateDefinition(series: IndicatorSeries): Promise<De
 
     return {
       seriesId: series.id,
-      content: "Definition unavailable. Please refresh to try again.",
-      model: null,
+      content: `${series.plainLanguage} ${series.whyItMatters} ${series.sourceDetail}`,
+      model: "deterministic-fallback",
       generatedAt: null,
       cached: false
     };

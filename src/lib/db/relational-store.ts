@@ -2,6 +2,7 @@ import { neon } from "@neondatabase/serverless";
 
 import { COMPOSITE_DEFINITIONS } from "@/lib/composites/calculate";
 import { LABOR_PULSE_SCHEMA_STATEMENTS } from "@/lib/db/schema";
+import { getIndicatorExplanation } from "@/lib/indicators/explanations";
 import { INDICATOR_CATALOG } from "@/server/indicator-catalog";
 import type { IndicatorSeries, ObservationPoint, RefreshStatus } from "@/server/labor-types";
 import type { AiExposureScore, CompositeObservation, StoredBriefing } from "@/types/v15";
@@ -75,10 +76,18 @@ function jsonArray<T>(value: unknown): T[] {
 }
 
 function toSeries(row: Row): IndicatorSeries {
+  const id = stringValue(row.id);
+  const explanation = getIndicatorExplanation(id);
+
   return {
-    id: stringValue(row.id),
+    id,
     title: stringValue(row.title),
     shortTitle: stringValue(row.short_title),
+    plainLanguage: explanation.plainLanguage,
+    whyItMatters: explanation.whyItMatters,
+    interpretation: explanation.interpretation,
+    sourceLabel: explanation.sourceLabel,
+    sourceDetail: explanation.sourceDetail,
     category: stringValue(row.category) as IndicatorSeries["category"],
     source: stringValue(row.source) as IndicatorSeries["source"],
     sourceUrl: stringValue(row.source_url),

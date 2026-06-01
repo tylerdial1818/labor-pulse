@@ -4,8 +4,10 @@ import type { Route } from "next";
 type CompositeSummary = {
   id: string;
   name: string;
+  description: string;
   currentValue: number;
   asOfDate: string;
+  methodologyNote: string;
   interpretation: {
     label: string;
     color: "green" | "yellow" | "orange" | "red" | "gray";
@@ -47,7 +49,8 @@ export function CompositesStrip({ composites }: { composites: CompositeSummary[]
               </span>
             </div>
             <p className="mt-3 font-serif text-3xl font-semibold leading-none text-ink">{composite.currentValue.toFixed(2)}</p>
-            <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.08em] text-sub">As of {composite.asOfDate}</p>
+            <p className="mt-2 font-sans text-[12px] leading-[1.35] text-sub">{composite.description}</p>
+            <p className="mt-3 font-sans text-[10px] uppercase tracking-[0.08em] text-sub">Calculated by Labor Pulse · As of {composite.asOfDate}</p>
           </Link>
         ))}
       </div>

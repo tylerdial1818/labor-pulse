@@ -27,13 +27,21 @@ export default async function AiImpactPage() {
               <p className="mt-4 font-serif text-4xl font-semibold leading-none">
                 {indicator.currentValueFormatted} <span className="text-lg text-sub">{indicator.unitLabel}</span>
               </p>
+              <p className="mt-2 font-sans text-xs leading-[1.35] text-sub">{indicator.plainLanguage}</p>
               <p className="mt-2 font-sans text-xs text-sub">{indicator.delta.formatted} {indicator.delta.periodLabel}</p>
+              <p className="mt-3 border-t border-hair pt-3 font-sans text-[10px] uppercase tracking-[0.08em] text-sub">
+                Source: <span className="font-bold normal-case tracking-normal text-navy">{indicator.sourceLabel}</span> · As of {indicator.currentDate ?? "not available"}
+              </p>
             </article>
           ))}
         </section>
 
         <section className="mt-8 border-y border-rule py-5">
           <h2 className="font-serif text-2xl font-semibold">AI Exposure by Occupation</h2>
+          <p className="mt-2 max-w-4xl font-sans text-sm leading-[1.5] text-sub">
+            Source: Eloundou, Manning, Mishkin, and Rock, “GPTs are GPTs,” using the original OpenAI occupation-level data. Scores show
+            potential task exposure to LLMs, not observed adoption, layoffs, automation, or job loss.
+          </p>
           <div className="mt-4 overflow-x-auto">
             <table className="min-w-full border-collapse font-sans text-sm">
               <thead>

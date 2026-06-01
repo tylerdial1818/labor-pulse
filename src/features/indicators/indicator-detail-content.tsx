@@ -33,6 +33,36 @@ export function IndicatorDetailContent({ detail, definition }: { detail: Indicat
 
   return (
     <div className="space-y-8">
+      <section className="grid gap-5 border-y border-rule py-5 lg:grid-cols-[1.2fr_0.8fr]" aria-label="Metric explanation and source">
+        <div>
+          <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.14em] text-navy">What this number means</p>
+          <p className="mt-2 font-serif text-[18px] leading-[1.45] text-ink">{detail.series.plainLanguage}</p>
+          <p className="mt-3 font-sans text-sm leading-[1.5] text-sub">{detail.series.whyItMatters}</p>
+          <p className="mt-3 border-l-2 border-navy pl-3 font-sans text-sm leading-[1.45] text-ink">{detail.series.interpretation}</p>
+        </div>
+        <aside className="border-l border-rule pl-6 max-lg:border-l-0 max-lg:border-t max-lg:pl-0 max-lg:pt-5">
+          <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.14em] text-navy">Source of this number</p>
+          <dl className="mt-3 space-y-3 font-sans text-sm">
+            <div>
+              <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sub">Source</dt>
+              <dd>
+                <a className="font-semibold text-navy hover:underline" href={detail.series.sourceUrl}>
+                  {detail.series.sourceLabel}
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sub">Series detail</dt>
+              <dd className="text-ink">{detail.series.sourceDetail}</dd>
+            </div>
+            <div>
+              <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sub">Latest observation</dt>
+              <dd className="text-ink">{latestDate ?? "not available"}</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
       <section className="border-y border-rule py-5" aria-label="Indicator history">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
           <div>
@@ -84,9 +114,13 @@ export function IndicatorDetailContent({ detail, definition }: { detail: Indicat
               <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sub">Original source</dt>
               <dd>
                 <a className="font-semibold text-navy hover:underline" href={detail.series.sourceUrl}>
-                  {detail.series.source}
+                  {detail.series.sourceLabel}
                 </a>
               </dd>
+            </div>
+            <div>
+              <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sub">What source publishes</dt>
+              <dd className="text-ink">{detail.series.sourceDetail}</dd>
             </div>
             <div>
               <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sub">Last refreshed</dt>

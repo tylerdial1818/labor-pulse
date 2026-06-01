@@ -19,6 +19,11 @@ type IndicatorCardViewModel = {
   category: CategoryId;
   source: string;
   sourceUrl?: string;
+  plainLanguage: string;
+  whyItMatters: string;
+  interpretation: string;
+  sourceLabel: string;
+  sourceDetail: string;
   frequency: Frequency;
   currentValue: number | null;
   currentValueFormatted: string;
@@ -175,7 +180,7 @@ function IndicatorCard({ indicator }: { indicator: IndicatorCardViewModel }) {
   return (
     <Link
       href={`/indicators/${indicator.id}` as Route}
-      className="group flex min-h-[188px] flex-col border-b border-r border-rule bg-paper px-5 py-[18px] transition-colors hover:bg-[var(--lp-navy-tint)] hover:shadow-[inset_0_2px_0_var(--lp-navy)] focus-visible:bg-[var(--lp-navy-tint)] focus-visible:shadow-[inset_0_2px_0_var(--lp-navy)]"
+      className="group flex min-h-[252px] flex-col border-b border-r border-rule bg-paper px-5 py-[18px] transition-colors hover:bg-[var(--lp-navy-tint)] hover:shadow-[inset_0_2px_0_var(--lp-navy)] focus-visible:bg-[var(--lp-navy-tint)] focus-visible:shadow-[inset_0_2px_0_var(--lp-navy)]"
     >
       <div className="flex items-start justify-between gap-4">
         <h3 className="max-w-[260px] font-serif text-[16.5px] font-semibold leading-[1.2] tracking-[-0.005em] text-ink">{indicator.title}</h3>
@@ -189,7 +194,12 @@ function IndicatorCard({ indicator }: { indicator: IndicatorCardViewModel }) {
         <span className="font-serif text-[38px] font-semibold leading-[0.9] tracking-[-0.01em] text-ink">{indicator.currentValueFormatted}</span>
         <span className="font-serif text-[17px] font-normal text-sub">{indicator.unitLabel}</span>
       </div>
-      {indicator.description ? <p className="mt-[6px] max-w-[230px] font-sans text-[11.5px] leading-[1.35] text-sub">{indicator.description}</p> : null}
+      <p className="mt-[8px] max-w-[320px] font-sans text-[12px] leading-[1.35] text-sub">{indicator.plainLanguage}</p>
+      <div className="mt-[10px] flex flex-wrap items-center gap-2 font-sans text-[10px] uppercase leading-none tracking-[0.08em] text-sub">
+        <span>Source</span>
+        <span className="font-bold normal-case tracking-normal text-navy">{indicator.sourceLabel}</span>
+        <span>As of {indicator.currentDate ?? "not available"}</span>
+      </div>
       <div className="mt-auto flex items-end justify-between gap-4 pt-[14px]">
         <div className="flex min-w-0 items-center gap-[6px]">
           <DeltaArrow direction={indicator.delta.arrowDirection} tone={indicator.delta.tone} />
@@ -205,11 +215,10 @@ function IndicatorCard({ indicator }: { indicator: IndicatorCardViewModel }) {
         </span>
         <span className="flex items-center gap-2 text-right">
           <span>{indicator.frequency.replace("_", " ")}</span>
-          <span>{indicator.source}</span>
           <span className="font-semibold normal-case tracking-normal text-navy">View -&gt;</span>
         </span>
       </div>
-      <p className="mt-2 font-sans text-[10px] uppercase tracking-[0.04em] text-sub">As of {indicator.currentDate ?? "not available"}</p>
+      <p className="mt-2 font-sans text-[11px] leading-[1.35] text-sub">{indicator.interpretation}</p>
     </Link>
   );
 }

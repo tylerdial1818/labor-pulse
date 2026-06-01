@@ -10,6 +10,11 @@ export type IndicatorMetadata = {
   id: string;
   title: string;
   shortTitle: string;
+  plainLanguage: string;
+  whyItMatters: string;
+  interpretation: string;
+  sourceLabel: string;
+  sourceDetail: string;
   category: IndicatorCategory;
   source: IndicatorSource;
   sourceUrl: string;
@@ -47,6 +52,11 @@ export type IndicatorCardViewModel = {
   category: IndicatorCategory;
   source: IndicatorSource;
   sourceUrl: string;
+  plainLanguage: string;
+  whyItMatters: string;
+  interpretation: string;
+  sourceLabel: string;
+  sourceDetail: string;
   frequency: IndicatorFrequency;
   unitLabel: string;
   currentValue: number | null;

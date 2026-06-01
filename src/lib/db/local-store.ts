@@ -6,6 +6,7 @@ import path from "node:path";
 import { neon } from "@neondatabase/serverless";
 
 import { INDICATOR_CATALOG } from "@/server/indicator-catalog";
+import { getIndicatorExplanation } from "@/lib/indicators/explanations";
 import type { DefinitionResponse, IndicatorSeries, ObservationPoint, RefreshStatus } from "@/server/labor-types";
 import type { AiExposureScore, CompositeDefinition, CompositeObservation, StoredBriefing, StoredInsight } from "@/types/v15";
 
@@ -345,6 +346,18 @@ export async function readLocalStore(): Promise<LocalStoreData> {
 function normalizeStore(data: LocalStoreData): LocalStoreData {
   return {
     ...data,
+    series: data.series.map((series) => {
+      const explanation = getIndicatorExplanation(series.id);
+
+      return {
+        ...series,
+        plainLanguage: series.plainLanguage ?? explanation.plainLanguage,
+        whyItMatters: series.whyItMatters ?? explanation.whyItMatters,
+        interpretation: series.interpretation ?? explanation.interpretation,
+        sourceLabel: series.sourceLabel ?? explanation.sourceLabel,
+        sourceDetail: series.sourceDetail ?? explanation.sourceDetail
+      };
+    }),
     composites: data.composites ?? compositeDefinitions,
     compositeObservations: data.compositeObservations ?? [],
     insights: data.insights ?? seededInsights,
