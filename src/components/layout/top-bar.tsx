@@ -1,16 +1,31 @@
+"use client";
+
 import Link from "next/link";
 import type { Route } from "next";
+import { usePathname } from "next/navigation";
+
+import { cn } from "@/lib/utils/cn";
 
 const navItems = [
-  { href: "/", label: "Dashboard", current: true },
-  { href: "/insights", label: "Insights", current: false },
-  { href: "/ai-impact", label: "AI Impact", current: false },
-  { href: "/briefings", label: "Briefings", current: false },
-  { href: "/sources", label: "Sources", current: false },
-  { href: "/about", label: "About", current: false }
-] satisfies Array<{ href: string; label: string; current: boolean }>;
+  { href: "/", label: "Dashboard" },
+  { href: "/insights", label: "Insights" },
+  { href: "/ai-impact", label: "AI Impact" },
+  { href: "/briefings", label: "Briefings" },
+  { href: "/sources", label: "Sources" },
+  { href: "/about", label: "About" }
+] satisfies Array<{ href: string; label: string }>;
+
+function isActiveRoute(pathname: string, href: string) {
+  if (href === "/") {
+    return pathname === "/";
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function TopBar() {
+  const pathname = usePathname();
+
   return (
     <header className="border-b-2 border-ink">
       <div className="mx-auto flex max-w-[1180px] flex-col gap-5 px-4 py-[18px] sm:px-6 md:flex-row md:items-end md:justify-between md:py-5 lg:px-8">
@@ -21,20 +36,23 @@ export function TopBar() {
           </span>
         </Link>
         <nav aria-label="Primary navigation" className="flex items-center gap-[26px] font-sans text-[13.5px] font-medium">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href as Route}
-              aria-current={item.current ? "page" : undefined}
-              className={
-                item.current
-                  ? "border-b-2 border-navy pb-[3px] font-semibold text-ink"
-                  : "pb-[5px] text-sub transition-colors hover:text-ink"
-              }
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const isCurrent = isActiveRoute(pathname, item.href);
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href as Route}
+                aria-current={isCurrent ? "page" : undefined}
+                className={cn(
+                  "border-b-2 border-transparent pb-[5px] text-sub transition-colors hover:text-ink",
+                  isCurrent && "border-navy pb-[3px] font-semibold text-ink"
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>

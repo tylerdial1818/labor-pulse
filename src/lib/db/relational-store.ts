@@ -3,6 +3,7 @@ import { neon } from "@neondatabase/serverless";
 import { COMPOSITE_DEFINITIONS } from "@/lib/composites/calculate";
 import { LABOR_PULSE_SCHEMA_STATEMENTS } from "@/lib/db/schema";
 import { getIndicatorExplanation } from "@/lib/indicators/explanations";
+import { getAllMetricSegmentDefinitions } from "@/lib/segments/catalog";
 import { INDICATOR_CATALOG } from "@/server/indicator-catalog";
 import type { IndicatorSeries, ObservationPoint, RefreshStatus } from "@/server/labor-types";
 import type { AiExposureScore, CompositeObservation, StoredBriefing } from "@/types/v15";
@@ -12,6 +13,8 @@ type Row = Record<string, unknown>;
 
 let cachedSql: NeonSql | null = null;
 let schemaReady: Promise<void> | null = null;
+let catalogSeedReady: Promise<void> | null = null;
+const headlineSeriesIds = new Set(INDICATOR_CATALOG.map((series) => series.id));
 
 export function isRelationalStoreConfigured() {
   return Boolean(process.env.DATABASE_URL);
@@ -112,6 +115,16 @@ function toObservation(row: Row): ObservationPoint {
 }
 
 export async function seedRelationalCatalog() {
+  if (catalogSeedReady) {
+    await catalogSeedReady;
+    return;
+  }
+
+  catalogSeedReady = seedRelationalCatalogInner();
+  await catalogSeedReady;
+}
+
+async function seedRelationalCatalogInner() {
   await ensureRelationalSchema();
   const sql = getSql();
 
@@ -146,6 +159,62 @@ export async function seedRelationalCatalog() {
         ${series.isProxy},
         ${series.methodologyNote},
         ${series.stateSeriesPattern}
+      )
+      on conflict (id) do update set
+        title = excluded.title,
+        short_title = excluded.short_title,
+        category = excluded.category,
+        source = excluded.source,
+        source_url = excluded.source_url,
+        units = excluded.units,
+        unit_label = excluded.unit_label,
+        frequency = excluded.frequency,
+        seasonal_adjustment = excluded.seasonal_adjustment,
+        is_proxy = excluded.is_proxy,
+        methodology_note = excluded.methodology_note,
+        state_series_pattern = excluded.state_series_pattern
+    `;
+  }
+
+  for (const segment of getAllMetricSegmentDefinitions()) {
+    if (headlineSeriesIds.has(segment.seriesId)) {
+      continue;
+    }
+
+    const baseSeries = INDICATOR_CATALOG.find((series) => series.id === segment.baseSeriesId) ?? INDICATOR_CATALOG.find((series) => series.source === "FRED");
+
+    if (!baseSeries) continue;
+
+    await sql`
+      insert into series (
+        id,
+        title,
+        short_title,
+        category,
+        source,
+        source_url,
+        units,
+        unit_label,
+        frequency,
+        seasonal_adjustment,
+        is_proxy,
+        methodology_note,
+        state_series_pattern
+      )
+      values (
+        ${segment.seriesId},
+        ${segment.metricLabel || segment.segmentLabel},
+        ${segment.segmentLabel},
+        ${baseSeries.category}::series_category,
+        'FRED',
+        ${segment.sourceUrl},
+        ${segment.units},
+        '',
+        ${segment.frequency}::frequency,
+        ${segment.seasonalAdjustment ?? baseSeries.seasonalAdjustment},
+        false,
+        ${segment.caveat},
+        null
       )
       on conflict (id) do update set
         title = excluded.title,

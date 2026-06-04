@@ -19,25 +19,36 @@ import {
 } from "@/lib/db/relational-store";
 import { calculateAllComposites, COMPOSITE_DEFINITIONS, interpretComposite } from "@/lib/composites/calculate";
 import { buildHistoricalContext } from "@/lib/context/calculate";
+import { getIndicatorById } from "@/lib/indicators/catalog";
+import { getIndicatorSegments, markSegmentAvailability } from "@/lib/indicators/segments";
 import { CATEGORY_LABELS, INDICATOR_CATALOG, getCatalogIndicator } from "@/server/indicator-catalog";
 import type {
   DefinitionResponse,
+  ExportObservationSeries,
   IndicatorCardViewModel,
   IndicatorDetailResponse,
   IndicatorSeries,
   LaborDashboardData,
   ObservationPoint,
+  ReportExportResponse,
   RefreshStatus,
+  SegmentDimension,
   SourcesPageData
 } from "@/server/labor-types";
 import type { BriefingInput, HistoricalContext, InsightCategory, StoredBriefing } from "@/types/v15";
 
 const STALE_AFTER_MS = 1000 * 60 * 60 * 24 * 10;
+export const REPORT_HISTORY_YEARS = 10;
 const unfavorableWhenRising = new Set(["UNRATE", "U6RATE", "ICSA", "JTSLDR"]);
 const informationalSeries = new Set(["CES0500000003", "USPBS", "USINFO", "ANTHROPIC_ECONOMIC_INDEX"]);
+const headlineSeriesIds = new Set(INDICATOR_CATALOG.map((indicator) => indicator.id));
 
 function toNumber(value: number | null) {
   return value === null || !Number.isFinite(value) ? null : value;
+}
+
+function headlineSeriesOnly(seriesRows: IndicatorSeries[]) {
+  return seriesRows.filter((series) => headlineSeriesIds.has(series.id));
 }
 
 function formatUpdatedDate(value: string | null) {
@@ -52,6 +63,21 @@ function formatObservationDate(value: string | null) {
 
 function latestNonNull(observations: ObservationPoint[]) {
   return observations.filter((observation) => observation.value !== null).sort((a, b) => a.date.localeCompare(b.date)).at(-1) ?? null;
+}
+
+function historyWindowDate(latestDate: string, years = REPORT_HISTORY_YEARS) {
+  const parsed = new Date(`${latestDate}T00:00:00.000Z`);
+  parsed.setUTCFullYear(parsed.getUTCFullYear() - years);
+  return parsed.toISOString().slice(0, 10);
+}
+
+export function trailingHistoryWindow<T extends { date: string }>(rows: T[], years = REPORT_HISTORY_YEARS): T[] {
+  const sorted = [...rows].sort((a, b) => a.date.localeCompare(b.date));
+  const latest = sorted.at(-1);
+  if (!latest) return [];
+
+  const start = historyWindowDate(latest.date, years);
+  return sorted.filter((row) => row.date >= start);
 }
 
 function comparisonDate(date: string, frequency: IndicatorSeries["frequency"]) {
@@ -170,7 +196,7 @@ function toIndicatorCard(series: IndicatorSeries, observations: ObservationPoint
     currentValueFormatted: currentDisplay.value,
     currentDate: formatObservationDate(current?.date ?? null),
     delta: calculateDelta(series, observations),
-    sparkline: observations.slice(-36).map((point) => ({ date: point.date, value: point.value })),
+    sparkline: trailingHistoryWindow(observations).map((point) => ({ date: point.date, value: point.value })),
     lastUpdated: formatUpdatedDate(lastUpdated),
     isProxy: series.isProxy,
     methodologyNote: series.methodologyNote ?? undefined,
@@ -218,7 +244,7 @@ export async function getIndicatorDetail(seriesId: string, db?: DbClient): Promi
 
   return {
     series,
-    observations,
+    observations: trailingHistoryWindow(observations),
     refreshedAt: series.lastRefreshedAt,
     context: buildHistoricalContext(seriesId, observations)
   };
@@ -228,12 +254,14 @@ export async function getDashboardData(db?: DbClient): Promise<LaborDashboardDat
   void db;
   const useRelational = await hasRelationalSeries();
   const store = useRelational ? null : await readLocalStore();
-  const seriesRows = useRelational ? await readRelationalSeries() : store?.series ?? [];
+  const seriesRows = headlineSeriesOnly(useRelational ? await readRelationalSeries() : store?.series ?? []);
   const allObservations = useRelational ? await readRelationalObservations() : store?.observations ?? [];
   const cards = seriesRows.map((series) => {
-    const observations = allObservations
-      .filter((observation) => observation.seriesId === series.id && observation.geography === "US")
-      .sort((a, b) => a.date.localeCompare(b.date));
+    const observations = trailingHistoryWindow(
+      allObservations
+        .filter((observation) => observation.seriesId === series.id && observation.geography === "US")
+        .sort((a, b) => a.date.localeCompare(b.date))
+    );
 
     return toIndicatorCard(series, observations);
   });
@@ -288,7 +316,7 @@ export async function getCompositeSummaries() {
           asOfDate: current.date,
           interpretation: interpretComposite(definition, current.value),
           methodologyNote: definition.methodologyNote,
-          history: history.slice(-36)
+          history: trailingHistoryWindow(history)
         }
       : null;
   }).filter((summary): summary is NonNullable<typeof summary> => summary !== null);
@@ -307,7 +335,7 @@ export async function getCompositeDetail(id: string) {
   const current = observations.at(-1);
   return {
     definition,
-    observations,
+    observations: trailingHistoryWindow(observations),
     current: current
       ? {
           value: current.value,
@@ -315,6 +343,123 @@ export async function getCompositeDetail(id: string) {
           interpretation: interpretComposite(definition, current.value)
         }
       : null
+  };
+}
+
+async function readStoredObservations(seriesId: string, geography = "US") {
+  if (await hasRelationalSeries()) {
+    return readRelationalObservations(seriesId, geography);
+  }
+
+  const store = await readLocalStore();
+  return store.observations
+    .filter((observation) => observation.seriesId === seriesId && observation.geography === geography)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function toExportObservationSeries(series: IndicatorSeries, observations: ObservationPoint[]): ExportObservationSeries {
+  return {
+    id: series.id,
+    title: series.title,
+    source: series.source,
+    sourceUrl: series.sourceUrl,
+    units: series.units,
+    frequency: series.frequency,
+    geography: "US",
+    observations: trailingHistoryWindow(observations),
+    caveat: series.methodologyNote
+  };
+}
+
+export async function getReportExport(input: {
+  seriesIds: string[];
+  compositeIds?: string[];
+  breakdowns?: SegmentDimension[];
+  states?: string[];
+}): Promise<ReportExportResponse> {
+  const seriesIds = Array.from(new Set(input.seriesIds));
+  const compositeIds = Array.from(new Set(input.compositeIds ?? []));
+  const breakdowns: SegmentDimension[] = Array.from(new Set(input.breakdowns ?? []));
+  const states = Array.from(new Set((input.states ?? []).map((state) => state.trim().toUpperCase()).filter(Boolean)));
+  const unavailable: ReportExportResponse["unavailable"] = [];
+  const indicators: ExportObservationSeries[] = [];
+
+  for (const seriesId of seriesIds) {
+    const detail = await getIndicatorDetail(seriesId);
+    if (!detail) {
+      unavailable.push({ id: seriesId, kind: "indicator", reason: "Indicator is not in the Labor Pulse catalog." });
+      continue;
+    }
+    indicators.push(toExportObservationSeries(detail.series, detail.observations));
+  }
+
+  const composites = (
+    await Promise.all(
+      compositeIds.map(async (compositeId) => {
+        const detail = await getCompositeDetail(compositeId);
+        if (!detail) {
+          unavailable.push({ id: compositeId, kind: "composite", reason: "Composite is not in the Labor Pulse catalog." });
+          return null;
+        }
+
+        return {
+          id: detail.definition.id,
+          name: detail.definition.name,
+          source: "Labor Pulse composite" as const,
+          units: "Index" as const,
+          observations: trailingHistoryWindow(detail.observations),
+          methodologyNote: detail.definition.methodologyNote
+        };
+      })
+    )
+  ).filter((row): row is NonNullable<typeof row> => row !== null);
+
+  const segmentGroups = await Promise.all(
+    seriesIds.map(async (baseSeriesId) => {
+      const indicator = getIndicatorById(baseSeriesId);
+      if (!indicator) return null;
+
+      const segments = await Promise.all(
+        getIndicatorSegments(indicator, { dimensions: breakdowns, states }).map(async (segment) => {
+          const readSeriesId = segment.dimension === "state" ? baseSeriesId : segment.seriesId;
+          const geography = segment.dimension === "state" ? segment.geography ?? segment.id : segment.geography ?? "US";
+          const observations = readSeriesId ? trailingHistoryWindow(await readStoredObservations(readSeriesId, geography)) : [];
+          const resolved = markSegmentAvailability(segment, observations.some((observation) => observation.value !== null));
+
+          if (resolved.status === "unavailable") {
+            unavailable.push({
+              id: `${baseSeriesId}:${segment.dimension}:${segment.id}`,
+              kind: "segment",
+              reason: resolved.caveat
+            });
+          }
+
+          return {
+            ...resolved,
+            observations
+          };
+        })
+      );
+
+      return {
+        baseSeriesId,
+        segments
+      };
+    })
+  );
+
+  return {
+    generatedAt: new Date().toISOString(),
+    requested: {
+      seriesIds,
+      compositeIds,
+      breakdowns,
+      states
+    },
+    indicators,
+    composites,
+    breakdowns: segmentGroups.filter((group): group is NonNullable<typeof group> => group !== null),
+    unavailable
   };
 }
 
@@ -404,7 +549,7 @@ export async function getBriefing(id: number) {
 export async function getSourcesData(): Promise<SourcesPageData> {
   const useRelational = await hasRelationalSeries();
   const store = useRelational ? null : await readLocalStore();
-  const seriesRows = useRelational ? await readRelationalSeries() : store?.series ?? [];
+  const seriesRows = headlineSeriesOnly(useRelational ? await readRelationalSeries() : store?.series ?? []);
   const sources = Array.from(new Set(seriesRows.map((series) => series.source))).map((source) => {
     const indicators = seriesRows.filter((series) => series.source === source);
     const lastRefresh = indicators

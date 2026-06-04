@@ -12,6 +12,24 @@ export type IndicatorValueFormat = "percent" | "count" | "currency" | "hours" | 
 
 export type DateString = `${number}-${number}-${number}`;
 
+export type SegmentDimension = "industry" | "gender" | "state" | "age";
+
+export type SegmentAvailabilityStatus = "available" | "unavailable";
+
+export type SegmentMetadata = {
+  dimension: SegmentDimension;
+  id: string;
+  label: string;
+  seriesId: string | null;
+  geography?: LaborPulseGeography;
+  source: IndicatorSource | "FRED-compatible metadata";
+  sourceUrl: string | null;
+  units: string | null;
+  status: SegmentAvailabilityStatus;
+  unavailableReason?: "unsupported_combination" | "not_ingested" | "source_not_confirmed";
+  caveat: string;
+};
+
 export type IndicatorDisplayConfig = {
   valueFormat: IndicatorValueFormat;
   decimals: number;
@@ -33,6 +51,7 @@ export type IndicatorDefinition = {
   isProxy: boolean;
   methodologyNote: string | null;
   stateSeriesPattern?: string | null;
+  segments?: Partial<Record<SegmentDimension, SegmentMetadata[]>>;
   display: IndicatorDisplayConfig;
 };
 

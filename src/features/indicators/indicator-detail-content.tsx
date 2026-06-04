@@ -4,9 +4,11 @@ import { useMemo, useState } from "react";
 import { Download } from "lucide-react";
 
 import { HistoricalContext } from "@/components/indicators/historical-context";
+import { MetricBreakdownsPanel } from "@/components/indicators/metric-breakdowns-panel";
 import { TimeSeriesChart } from "@/components/charts/labor-pulse-charts";
 import { cn } from "@/lib/utils/cn";
 import type { DefinitionResponse, IndicatorDetailResponse } from "@/server/labor-types";
+import type { MetricSegmentBreakdownData } from "@/server/segment-data";
 
 type WindowOption = "1Y" | "5Y" | "10Y" | "MAX";
 
@@ -23,8 +25,16 @@ function cutoffForWindow(option: WindowOption, latestDate: string | null) {
   return cutoff.toISOString().slice(0, 10);
 }
 
-export function IndicatorDetailContent({ detail, definition }: { detail: IndicatorDetailResponse; definition: DefinitionResponse }) {
-  const [windowOption, setWindowOption] = useState<WindowOption>("5Y");
+export function IndicatorDetailContent({
+  detail,
+  definition,
+  breakdowns
+}: {
+  detail: IndicatorDetailResponse;
+  definition: DefinitionResponse;
+  breakdowns: MetricSegmentBreakdownData[];
+}) {
+  const [windowOption, setWindowOption] = useState<WindowOption>("10Y");
   const latestDate = detail.observations.at(-1)?.date ?? null;
   const chartData = useMemo(() => {
     const cutoff = cutoffForWindow(windowOption, latestDate);
@@ -92,13 +102,6 @@ export function IndicatorDetailContent({ detail, definition }: { detail: Indicat
 
       <HistoricalContext context={detail.context ?? null} />
 
-      {detail.series.methodologyNote ? (
-        <section className="border border-rule bg-[var(--lp-navy-tint)] px-5 py-4" aria-label="Methodology note">
-          <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.14em] text-navy">Methodology note</p>
-          <p className="mt-2 max-w-4xl font-serif text-[15px] leading-[1.5] text-ink">{detail.series.methodologyNote}</p>
-        </section>
-      ) : null}
-
       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <div>
           <h2 className="font-serif text-2xl font-semibold">Definition</h2>
@@ -149,6 +152,15 @@ export function IndicatorDetailContent({ detail, definition }: { detail: Indicat
           </div>
         </aside>
       </section>
+
+      {detail.series.methodologyNote ? (
+        <section className="border border-rule bg-[var(--lp-navy-tint)] px-5 py-4" aria-label="Methodology note">
+          <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.14em] text-navy">Methodology note</p>
+          <p className="mt-2 max-w-4xl font-serif text-[15px] leading-[1.5] text-ink">{detail.series.methodologyNote}</p>
+        </section>
+      ) : null}
+
+      <MetricBreakdownsPanel data={breakdowns} />
     </div>
   );
 }

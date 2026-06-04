@@ -235,7 +235,7 @@ function buildInitialStore(): LocalStoreData {
       return buildAnthropicRows();
     }
 
-    return buildTrend(indicator.id, indicator.frequency === "weekly" ? 60 : 72, indicator.frequency === "weekly" ? 4 : 12);
+    return buildTrend(indicator.id, indicator.frequency === "weekly" ? 572 : 132, indicator.frequency === "weekly" ? 4 : 12);
   });
 
   return {
@@ -253,7 +253,7 @@ function buildInitialStore(): LocalStoreData {
         source: "Local seed",
         seriesId: null,
         status: "success",
-        message: "Seeded v1 indicator catalog and sample observation history.",
+        message: "Seeded v1 indicator catalog and 10-year sample observation history.",
         startedAt: DEFAULT_REFRESHED_AT,
         completedAt: DEFAULT_REFRESHED_AT
       }

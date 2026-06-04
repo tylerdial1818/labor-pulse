@@ -4,9 +4,17 @@ import { TopBar } from "@/components/layout/top-bar";
 import { IndicatorDetailContent } from "@/features/indicators/indicator-detail-content";
 import { getIndicatorDetail } from "@/lib/db/queries";
 import { getOrCreateDefinition } from "@/lib/llm/definitions";
+import { getMetricSegmentBreakdownsData } from "@/server/segment-data";
 
-export default async function IndicatorDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function IndicatorDetailPage({
+  params,
+  searchParams
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ breakdown?: string; state?: string }>;
+}) {
   const { id } = await params;
+  const query = await searchParams;
   const detail = await getIndicatorDetail(id);
 
   if (!detail) {
@@ -14,6 +22,7 @@ export default async function IndicatorDetailPage({ params }: { params: Promise<
   }
 
   const definition = await getOrCreateDefinition(detail.series);
+  const breakdowns = await getMetricSegmentBreakdownsData({ seriesId: id, state: query.state });
 
   return (
     <div className="min-h-screen bg-paper text-ink">
@@ -24,7 +33,7 @@ export default async function IndicatorDetailPage({ params }: { params: Promise<
         <p className="mb-8 mt-3 max-w-3xl font-serif text-base italic leading-[1.4] text-sub">
           {detail.series.title} · {detail.series.source} · Data through {detail.observations.at(-1)?.date ?? "not available"}
         </p>
-        <IndicatorDetailContent detail={detail} definition={definition} />
+        <IndicatorDetailContent detail={detail} definition={definition} breakdowns={breakdowns} />
       </main>
     </div>
   );

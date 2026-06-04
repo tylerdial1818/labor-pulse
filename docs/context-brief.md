@@ -17,16 +17,17 @@ Labor Pulse is a public US labor market monitor for researchers preparing execut
 
 1. User opens `/` and sees the Lagging tab by default with 6 indicator cards.
 2. User switches between Lagging, Leading, and Tech & AI Impact tabs; Tech & AI always shows a methodology caveat.
-3. User opens `/indicators/[id]` for full history, definition, source attribution, time windows, and exports.
-4. User opens `/sources` to verify source freshness and refresh logs.
+3. User opens `/indicators/[id]` for full history, definition, source attribution, time windows, metric-specific breakdowns, and exports.
+4. User uses the detail-page breakdown controls where supported, such as unemployment by gender, age, or state and payroll employment by industry.
+5. User opens `/sources` to verify source freshness and refresh logs.
 
 ## Current Implementation Status
 
 | Area | Status | Notes |
 | --- | --- | --- |
-| App shell | v1.5 in progress | Dashboard, detail, sources, about, insights, AI impact, composites, and briefing routes exist locally. |
-| Data | Relational v1.5 scaffold | Normalized Neon schema is initialized when `DATABASE_URL` is configured; local JSON/JSONB fallback remains for development. |
-| Analytics | v1.5 in progress | Current values, deltas, chart axes, composite calculations, and deterministic historical context are implemented with tests. |
+| App shell | v1.6 in progress | Dashboard, detail, sources, about, insights, AI impact, composites, and briefings exist locally. Breakdowns are integrated into metric detail pages. |
+| Data | Relational v1.6 scaffold | Core FRED refresh now targets 11 years; metric-detail breakdowns use explicit FRED series mappings and show top 5 comparison lines when a cut has more than 5 mapped segments. |
+| Analytics | v1.6 in progress | Current values, deltas, chart axes, composite calculations, deterministic historical context, 10-year windows, and metric-detail report rows are implemented. |
 | Auth | v1 omitted | Public app; no user auth. Cron route must require `CRON_SECRET`. |
 | Deployment | Planned | Vercel target with daily 08:00 UTC FRED cron; optional 09:00 UTC insights cron requires tier/quota confirmation. |
 
@@ -47,6 +48,7 @@ Labor Pulse is a public US labor market monitor for researchers preparing execut
 - UI components should consume typed view models and avoid direct data fetching.
 - Contracts live in `docs/api-contracts.md`, `docs/data-contracts.md`, and `src/types`.
 - Labor Pulse uses a deterministic-first rule: every number, delta, and trend comes from the database; LLM output is cached prose only and never quantitative.
+- v1.6 backend read models expose trailing 10-year histories where stored data exists. Detail pages expose all supported industry, gender, age, and state breakdowns for the selected metric when explicit public FRED mappings exist.
 - The design source of truth is `/Users/tylerdial/Downloads/design_handoff_laborpulse_dashboard`, especially `README.md`, `tokens.css`, and screenshots.
 
 ## Deployment Target
@@ -62,6 +64,7 @@ Public app, no user authentication in v1. Service-only cron route requires `Auth
 | Source | Owner | Refresh cadence | Grain | Access method | Status |
 | --- | --- | --- | --- | --- | --- |
 | FRED API | Federal Reserve Bank of St. Louis | Daily app refresh; source frequencies weekly/monthly | Series/date/geography | Server-side API client | 14 indicators; validate with Zod before storing |
+| FRED breakdown series | Federal Reserve Bank of St. Louis | Server-side fetch for metric-detail breakdowns and reports | Series/date/segment | Server-side API client | v1.6 supports verified cuts across payrolls, unemployment, participation, employment-population, claims, earnings, JOLTS, and weekly hours where FRED exposes matching series |
 | Anthropic Economic Index | Anthropic | Ad hoc | Release/occupation usage share | Manual import script | Direct Claude usage signal; file shape still needs confirmation |
 | Qualitative insight sources | BLS, Federal Reserve, Indeed, Brookings, NBER, LinkedIn | Daily app refresh where public source allows | Article/release summary | Server-side fetch with deterministic fallback summaries | Seeded local feed active; live source robustness needs production monitoring |
 | Eloundou GPT exposure | OpenAI GPTs-are-GPTs repository | Manual/ad hoc | O*NET-SOC occupation | Original `occ_level.csv` ingestion | 923 occupation exposure rows imported into Neon locally |

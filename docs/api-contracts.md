@@ -125,7 +125,7 @@ type IndicatorCardViewModel = {
 | Rate limits | Standard platform limits |
 | Source files | `src/app/api/indicators/[id]/route.ts`, `src/server/**`, `src/lib/db/queries.ts` |
 
-Returns indicator metadata, full observation history, source attribution, freshness, and methodology notes for detail pages and export flows.
+Returns indicator metadata, trailing 10-year observation history where stored data exists, source attribution, freshness, and methodology notes for detail pages and export flows.
 
 ### Endpoint: `GET /api/definitions/[id]`
 
@@ -149,11 +149,81 @@ Public CSV export for one indicator's full observation history. Include series I
 
 Public PNG export for one indicator chart. The rendered image must include chart title, date range, and source attribution.
 
+### Endpoint: `GET /api/export/report`
+
+| Field | Value |
+| --- | --- |
+| Method | GET |
+| Path | `/api/export/report` |
+| Owner | Backend/API Agent + Data Model Agent |
+| Status | active |
+| Authentication | public |
+| Rate limits | Standard platform limits |
+| Source files | `src/app/api/export/report/route.ts`, `src/lib/db/queries.ts`, `src/lib/segments/catalog.ts`, `src/server/segment-data.ts` |
+
+Public report export for the metric-detail workflow. Query params: `seriesId`/`seriesIds`, `compositeId`/`compositeIds`, `breakdowns=industry|gender|state|age`, `dimension=industry|gender|state|age`, `state`/`states`, and `format=csv|json`. CSV is the default for download links; `format=json` returns the structured report payload. Detail pages pass the selected metric and selected breakdown so exports match the on-page view.
+
+#### Response Schema
+
+```ts
+type ReportExportResponse = {
+  generatedAt: string;
+  requested: {
+    seriesIds: string[];
+    compositeIds: string[];
+    breakdowns: Array<"industry" | "gender" | "state">;
+    states: string[];
+  };
+  indicators: Array<{
+    id: string;
+    title: string;
+    source: string;
+    sourceUrl: string | null;
+    units: string;
+    frequency: string;
+    geography: string;
+    observations: Array<{ seriesId: string; geography: string; date: string; value: number | null }>;
+    caveat: string | null;
+  }>;
+  composites: Array<{
+    id: string;
+    name: string;
+    source: "Labor Pulse composite";
+    units: "Index";
+    observations: Array<{ compositeId: string; geography: string; date: string; value: number }>;
+    methodologyNote: string;
+  }>;
+  breakdowns: Array<{
+    baseSeriesId: string;
+    segments: Array<SegmentMetadata & { observations: Array<{ seriesId: string; geography: string; date: string; value: number | null }> }>;
+  }>;
+  liveBreakdowns?: Array<{
+    baseSeriesId: string;
+    availableDimensions: Array<"industry" | "gender" | "state">;
+    dimension: "industry" | "gender" | "state";
+    stateAbbreviation: string;
+    series: Array<{
+      segmentLabel: string;
+      metricLabel: string;
+      seriesId: string;
+      units: string;
+      sourceLabel: string;
+      sourceUrl: string;
+      caveat: string;
+      observations: Array<{ seriesId: string; geography: string; date: string; value: number | null }>;
+    }>;
+  }>;
+  unavailable: Array<{ id: string; kind: "indicator" | "composite" | "segment"; reason: string }>;
+};
+```
+
+CSV rows include record type, dimension, segment, metric ID, metric label, source, source URL, retrieval timestamp, observation date, geography, units, value, availability, and caveat. Unsupported metric and breakdown combinations are omitted from the metric-detail export instead of being estimated.
+
 ### Endpoint: `GET /api/cron/refresh-fred`
 
 Service-only Vercel Cron route protected by `Authorization: Bearer $CRON_SECRET`. Refreshes all FRED-sourced indicators, validates responses with Zod, upserts observations, updates series freshness, writes `refresh_log`, and returns a structured summary. Partial failures must not erase last-good dashboard data.
 
-When `DATABASE_URL` is configured, refresh writes to normalized Neon tables (`series`, `observations`, `refresh_log`) after ensuring schema/catalog existence. Local development without relational data falls back to the JSON store.
+When `DATABASE_URL` is configured, refresh writes to normalized Neon tables (`series`, `observations`, `refresh_log`) after ensuring schema/catalog existence. Local development without relational data falls back to the JSON store. v1.6 refreshes 11 years of history so detail pages, composites, dashboard sparklines, and exports can display at least a 10-year window.
 
 ### Endpoint: `GET /api/insights`
 
@@ -165,7 +235,7 @@ Optional service cron route. Protected by `Authorization: Bearer $CRON_SECRET` w
 
 ### Endpoint: `GET /api/composites/[id]`
 
-Public composite detail endpoint. Returns composite definition, historical observations, current value, and deterministic interpretation.
+Public composite detail endpoint. Returns composite definition, trailing 10-year historical observations where derived data exists, current value, and deterministic interpretation.
 
 ### Endpoint: `POST /api/briefings`
 

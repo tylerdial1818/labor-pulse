@@ -14,6 +14,31 @@ Use this lightweight ADR-style log for architecture, data, security, deployment,
 
 ## Decisions
 
+### 2026-06-03: Add age breakdowns only where FRED coverage is verified
+
+- **Decision:** Add age breakdowns to metric detail pages for `UNRATE`, `CIVPART`, and partial `EMRATIO` coverage only.
+- **Rationale:** FRED has clean BLS age series for unemployment and participation, and partial verified coverage for employment-population. Other lagging and leading indicators do not have matching age series in the current public FRED mappings.
+- **Alternatives considered:** Add age tabs to every metric, use adjacent wage-growth or survey proxies, or wait until all age coverage is complete.
+- **Consequences:** Detail pages gain useful age trends without implying unsupported data coverage. Unsupported age cuts remain omitted.
+- **Owner:** Architect/Integrator Agent
+
+### 2026-06-03: Move v1.6 breakdowns into metric detail pages
+
+- **Decision:** Remove the standalone public Breakdowns page and expose industry, gender, age, and state controls only from supported metric detail pages.
+- **Rationale:** Users arrive at a headline metric first. The breakdown should help them interpret that selected metric, not feel like a separate dashboard.
+- **Alternatives considered:** Keep a top-level breakdown workspace, keep both surfaces, or delay breakdowns until every metric has every dimension.
+- **Consequences:** The product flow is clearer, but unsupported metric and breakdown combinations are omitted from the UI. Report exports now match the selected metric detail view.
+- **Owner:** Architect/Integrator Agent
+
+### 2026-06-02: Ship v1.6 breakdowns as supported public FRED cuts only
+
+- **Decision:** Add a Breakdowns route and report export support for industry employment, gender labor-force measures, and selected state unemployment, using explicit FRED series mappings only.
+- **Rationale:** Users asked for industry, gender, and state cuts, but the app should not infer unavailable splits from national metrics.
+- **Alternatives considered:** Wait for a full relational segment table, expose every possible FRED search result, or generate estimated segment data.
+- **Consequences:** v1.6 gives users a useful public-data slice now, while unsupported metric and segment combinations remain unavailable until source and methodology are confirmed.
+- **Status:** Superseded by the 2026-06-03 decision to place breakdowns on metric detail pages instead of a top-level route.
+- **Owner:** Architect/Integrator Agent
+
 ### 2026-05-31: Use relational Neon tables for production data before v1.5 deployment
 
 - **Decision:** Keep the local JSON/JSONB fallback for development, but initialize and use normalized Neon tables for production observations, refresh logs, composites, briefings, and AI exposure scores when `DATABASE_URL` is configured.

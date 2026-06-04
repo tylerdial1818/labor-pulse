@@ -16,6 +16,7 @@ import { filterAccounts, filterRevenueByPeriod, filterSegmentPerformance } from 
 import { parseFredObservationValue, toLaborPulseObservations } from "@/lib/data-processing/observations";
 import { accountRows, revenueSeries, segmentPerformance } from "@/lib/data-processing/sample-data";
 import { getIndicatorById, getIndicatorsByCategory, indicatorCatalog } from "@/lib/indicators/catalog";
+import { getIndicatorSegments, markSegmentAvailability } from "@/lib/indicators/segments";
 import type { Observation } from "@/types/labor-pulse";
 
 describe("analytics metrics", () => {
@@ -76,6 +77,55 @@ describe("labor pulse indicator catalog", () => {
 
     expect(techIndicators.every((indicator) => indicator.isProxy)).toBe(true);
     expect(techIndicators.every((indicator) => Boolean(indicator.methodologyNote))).toBe(true);
+  });
+});
+
+describe("labor pulse segment model", () => {
+  it("exposes FRED-compatible gender metadata without marking missing observations as available", () => {
+    const unemployment = getIndicatorById("UNRATE");
+    if (!unemployment) throw new Error("Expected UNRATE to exist in the catalog.");
+
+    const segments = getIndicatorSegments(unemployment, { dimensions: ["gender"] });
+
+    expect(segments).toHaveLength(2);
+    expect(segments.map((segment) => segment.seriesId)).toEqual(["LNS14000001", "LNS14000002"]);
+    expect(segments.every((segment) => segment.status === "unavailable" && segment.unavailableReason === "not_ingested")).toBe(true);
+  });
+
+  it("marks unsupported indicator and breakdown combinations unavailable", () => {
+    const claims = getIndicatorById("ICSA");
+    if (!claims) throw new Error("Expected ICSA to exist in the catalog.");
+
+    expect(getIndicatorSegments(claims, { dimensions: ["gender"] })).toEqual([
+      expect.objectContaining({
+        dimension: "gender",
+        seriesId: null,
+        status: "unavailable",
+        unavailableReason: "unsupported_combination"
+      })
+    ]);
+  });
+
+  it("exposes source-backed age metadata for supported household-survey metrics", () => {
+    const unemployment = getIndicatorById("UNRATE");
+    if (!unemployment) throw new Error("Expected UNRATE to exist in the catalog.");
+
+    const segments = getIndicatorSegments(unemployment, { dimensions: ["age"] });
+
+    expect(segments).toHaveLength(4);
+    expect(segments.map((segment) => segment.seriesId)).toEqual(["LNS14000012", "LNS14000036", "LNS14000060", "LNS14024230"]);
+    expect(segments.every((segment) => segment.status === "unavailable" && segment.unavailableReason === "not_ingested")).toBe(true);
+  });
+
+  it("only marks a segment available when stored observations exist", () => {
+    const payrolls = getIndicatorById("PAYEMS");
+    if (!payrolls) throw new Error("Expected PAYEMS to exist in the catalog.");
+
+    const [segment] = getIndicatorSegments(payrolls, { dimensions: ["industry"] });
+    if (!segment) throw new Error("Expected PAYEMS industry segment metadata.");
+
+    expect(markSegmentAvailability(segment, false)).toMatchObject({ status: "unavailable", unavailableReason: "not_ingested" });
+    expect(markSegmentAvailability(segment, true)).toMatchObject({ status: "available", unavailableReason: undefined });
   });
 });
 

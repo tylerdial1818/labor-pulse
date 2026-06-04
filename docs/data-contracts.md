@@ -83,6 +83,20 @@ type Observation = {
   date: string;
   value: number | null;
 };
+
+type SegmentMetadata = {
+  dimension: "industry" | "gender" | "state";
+  id: string;
+  label: string;
+  seriesId: string | null;
+  geography?: "US" | string;
+  source: "FRED" | "Anthropic Economic Index" | "FRED-compatible metadata";
+  sourceUrl: string | null;
+  units: string | null;
+  status: "available" | "unavailable";
+  unavailableReason?: "unsupported_combination" | "not_ingested" | "source_not_confirmed";
+  caveat: string;
+};
 ```
 
 #### Metrics Powered
@@ -95,7 +109,7 @@ type Observation = {
 
 #### Transformation Logic
 
-1. Fetch FRED series metadata and observations server-side.
+1. Fetch FRED series metadata and observations server-side. v1.6 FRED refresh requests 11 years so indicator and composite read models can expose at least a 10-year window where source data exists.
 2. Validate response payloads with Zod before insertion.
 3. Convert `"."` observation values to `null`.
 4. Upsert by `(seriesId, geography, date)` into normalized `observations` when `DATABASE_URL` is configured; local development can still fall back to the JSON store.
@@ -108,11 +122,36 @@ type Observation = {
 - Missing values are retained as null, not coerced to 0.
 - Delta returns unavailable when comparison history is insufficient.
 - Refresh failures are logged without deleting last-good values.
+- Metric-detail breakdowns are shown only when Labor Pulse has an explicit source mapping for the selected metric and dimension.
 
 #### Caveats
 
 - FRED values can be revised by source agencies; freshness and source links must be visible.
 - Frequency differs by series, so UI labels must not imply daily data.
+- v1.6 segment support is source-backed but uneven: industry is exposed for payrolls, earnings, JOLTS openings, quits, layoffs where mapped, and weekly hours; gender is exposed for unemployment, participation, and employment-population; state is exposed for unemployment, payrolls, participation, and initial claims; age is exposed for unemployment, participation, and partial employment-population coverage. Unsupported metric/breakdown combinations are not inferred.
+- v1.6 stores and displays at least 10 years of history for core FRED indicators after the next successful FRED refresh.
+
+### Source: FRED Breakdown Series
+
+| Field | Value |
+| --- | --- |
+| Owner | Backend/API Agent + Data Model + Analytics Agent |
+| Status | active in v1.6 |
+| Refresh frequency | Metric detail pages may fetch supported FRED series server-side; report export uses the same metric-specific mappings |
+| Grain | series, segment, observation date |
+| Access method | Server-side FRED API client using `FRED_API_KEY` |
+| Source files | `src/lib/segments/catalog.ts`, `src/lib/indicators/segments.ts`, `src/server/segment-data.ts`, `src/components/indicators/metric-breakdowns-panel.tsx`, `src/app/api/export/report/route.ts` |
+
+#### Supported Dimensions
+
+| Dimension | Supported metrics | Caveat |
+| --- | --- | --- |
+| Industry | `PAYEMS`, `CES0500000003`, `JTSJOL`, `JTSQUR`, `JTSLDR`, `AWHAETP` where public FRED sector series are mapped | Sector series can differ in seasonal adjustment and are comparisons, not always decompositions |
+| Gender | `UNRATE`, `CIVPART`, and `EMRATIO` | Uses BLS/FRED published gender categories |
+| State | `UNRATE`, `PAYEMS`, `CIVPART`, and `ICSA` | State initial claims are not seasonally adjusted |
+| Age | `UNRATE`, `CIVPART`, and partial `EMRATIO` | Uses BLS/FRED published age groups. Employment-population age coverage is partial |
+
+Unsupported combinations must be omitted or marked unavailable. Do not synthesize state, gender, or industry splits from national metrics.
 
 ### Source: Anthropic Economic Index
 

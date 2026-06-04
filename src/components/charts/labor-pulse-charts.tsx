@@ -12,6 +12,14 @@ type NumericPoint = {
   value: number;
 };
 
+export type ComparisonChartSeries = {
+  id: string;
+  label: string;
+  data: PulseChartPoint[];
+};
+
+const comparisonColors = ["#24446b", "#8a2e3b", "#266b3f", "#8c5c17", "#5b4b8a", "#1f6f78", "#9a4f24", "#5d6b2f"];
+
 const toneColor: Record<Tone, string> = {
   up: "var(--lp-up)",
   down: "var(--lp-down)",
@@ -67,7 +75,7 @@ function formatAxisDate(date: string) {
 
   if (Number.isNaN(parsed.getTime())) return date;
 
-  return new Intl.DateTimeFormat("en", { month: "short", year: "2-digit" }).format(parsed);
+  return new Intl.DateTimeFormat("en", { month: "short", year: "numeric" }).format(parsed);
 }
 
 function valueTicks(min: number, max: number, count = 5) {
@@ -76,7 +84,7 @@ function valueTicks(min: number, max: number, count = 5) {
   return Array.from({ length: count }, (_, index) => max - ((max - min) / (count - 1)) * index);
 }
 
-function xTicks(points: NumericPoint[], count = 5) {
+function xTicks(points: NumericPoint[], count = 6) {
   if (points.length <= count) return points;
 
   return Array.from({ length: count }, (_, index) => points[Math.round((index / (count - 1)) * (points.length - 1))]);
@@ -141,7 +149,7 @@ export function TimeSeriesChart({ data, label, units }: { data: PulseChartPoint[
     return <div className="h-[320px] border-y border-hair" role="img" aria-label={label} />;
   }
 
-  const plot = { left: 74, right: 878, top: 22, bottom: 286 };
+  const plot = { left: 86, right: 878, top: 24, bottom: 280 };
   const { min, max, range } = getExtent(points);
   const scaled = scaledPoints(points, plot.right - plot.left, plot.bottom - plot.top, 0).map((point) => ({
     ...point,
@@ -158,13 +166,13 @@ export function TimeSeriesChart({ data, label, units }: { data: PulseChartPoint[
 
   return (
     <svg className="h-[340px] w-full" viewBox="0 0 900 340" role="img" aria-label={label}>
-      <text x="8" y="16" fill="var(--lp-sub)" fontSize="11" fontFamily="var(--font-sans, sans-serif)">
+      <text x="8" y="16" fill="var(--lp-sub)" fontSize="12" fontWeight="600" fontFamily="var(--font-sans, sans-serif)">
         {units ? `Value (${units})` : "Value"}
       </text>
       {yTicks.map((tick) => (
         <g key={tick.value}>
           <line x1={plot.left} x2={plot.right} y1={tick.y} y2={tick.y} stroke="var(--lp-hair)" />
-          <text x={plot.left - 10} y={tick.y + 4} textAnchor="end" fill="var(--lp-sub)" fontSize="11" fontFamily="var(--font-sans, sans-serif)">
+          <text x={plot.left - 12} y={tick.y + 4} textAnchor="end" fill="var(--lp-sub)" fontSize="12" fontFamily="var(--font-sans, sans-serif)">
             {formatAxisValue(tick.value)}
           </text>
         </g>
@@ -186,19 +194,128 @@ export function TimeSeriesChart({ data, label, units }: { data: PulseChartPoint[
           <line x1={tick.x} x2={tick.x} y1={plot.bottom} y2={plot.bottom + 5} stroke="var(--lp-hair)" />
           <text
             x={tick.x}
-            y="312"
+            y="309"
             textAnchor={index === 0 ? "start" : index === xAxisTicks.length - 1 ? "end" : "middle"}
             fill="var(--lp-sub)"
-            fontSize="11"
+            fontSize="12"
             fontFamily="var(--font-sans, sans-serif)"
           >
             {formatAxisDate(tick.date)}
           </text>
         </g>
       ))}
-      <text x={(plot.left + plot.right) / 2} y="332" textAnchor="middle" fill="var(--lp-sub)" fontSize="11" fontFamily="var(--font-sans, sans-serif)">
-        Observation date
+      <text x={(plot.left + plot.right) / 2} y="334" textAnchor="middle" fill="var(--lp-sub)" fontSize="12" fontWeight="600" fontFamily="var(--font-sans, sans-serif)">
+        Observation date, month and year
       </text>
     </svg>
+  );
+}
+
+export function ComparisonTimeSeriesChart({
+  series,
+  label,
+  units
+}: {
+  series: ComparisonChartSeries[];
+  label: string;
+  units?: string;
+}) {
+  const numericSeries = series
+    .map((item) => ({
+      ...item,
+      points: item.data.filter((point): point is NumericPoint => point.value !== null)
+    }))
+    .filter((item) => item.points.length > 1);
+  const allPoints = numericSeries.flatMap((item) => item.points);
+
+  if (numericSeries.length === 0 || allPoints.length < 2) {
+    return <div className="h-[380px] border-y border-hair" role="img" aria-label={label} />;
+  }
+
+  const plot = { left: 86, right: 878, top: 28, bottom: 304 };
+  const { min, max, range } = getExtent(allPoints);
+  const times = allPoints.map((point) => parseDateMs(point.date));
+  const minTime = Math.min(...times);
+  const maxTime = Math.max(...times);
+  const timeRange = maxTime - minTime || 1;
+  const yTicks = valueTicks(min, max).map((value) => ({ value, y: yForValue(value, min, range, plot) }));
+  const representativePoints = Array.from(new Map(allPoints.sort((a, b) => a.date.localeCompare(b.date)).map((point) => [point.date, point])).values());
+  const xAxisTicks = xTicks(representativePoints).map((point) => ({
+    ...point,
+    x: plot.left + ((parseDateMs(point.date) - minTime) / timeRange) * (plot.right - plot.left)
+  }));
+  const zeroY = min < 0 && max > 0 ? yForValue(0, min, range, plot) : null;
+
+  function scale(point: NumericPoint) {
+    return {
+      x: plot.left + ((parseDateMs(point.date) - minTime) / timeRange) * (plot.right - plot.left),
+      y: yForValue(point.value, min, range, plot)
+    };
+  }
+
+  return (
+    <div role="img" aria-label={label}>
+      <svg className="h-[370px] w-full" viewBox="0 0 900 370">
+        <text x="8" y="17" fill="var(--lp-sub)" fontSize="12" fontWeight="600" fontFamily="var(--font-sans, sans-serif)">
+          {units ? `Value (${units})` : "Value"}
+        </text>
+        {yTicks.map((tick) => (
+          <g key={tick.value}>
+            <line x1={plot.left} x2={plot.right} y1={tick.y} y2={tick.y} stroke="var(--lp-hair)" />
+            <text x={plot.left - 12} y={tick.y + 4} textAnchor="end" fill="var(--lp-sub)" fontSize="12" fontFamily="var(--font-sans, sans-serif)">
+              {formatAxisValue(tick.value)}
+            </text>
+          </g>
+        ))}
+        {zeroY !== null ? (
+          <g>
+            <line x1={plot.left} x2={plot.right} y1={zeroY} y2={zeroY} stroke="var(--lp-sub)" strokeDasharray="4 5" opacity="0.55" />
+            <text x={plot.right + 6} y={zeroY + 4} fill="var(--lp-sub)" fontSize="10" fontFamily="var(--font-sans, sans-serif)">
+              0
+            </text>
+          </g>
+        ) : null}
+        <line x1={plot.left} x2={plot.left} y1={plot.top} y2={plot.bottom} stroke="var(--lp-hair)" />
+        <line x1={plot.left} x2={plot.right} y1={plot.bottom} y2={plot.bottom} stroke="var(--lp-hair)" />
+        {numericSeries.map((item, index) => {
+          const color = comparisonColors[index % comparisonColors.length];
+          const scaled = item.points.map(scale);
+          const last = scaled.at(-1);
+
+          return (
+            <g key={item.id}>
+              <path d={linePath(scaled)} fill="none" stroke={color} strokeWidth="2.35" vectorEffect="non-scaling-stroke" />
+              {last ? <circle cx={last.x} cy={last.y} r="3" fill={color} stroke="var(--lp-paper)" strokeWidth="2" /> : null}
+            </g>
+          );
+        })}
+        {xAxisTicks.map((tick, index) => (
+          <g key={tick.date}>
+            <line x1={tick.x} x2={tick.x} y1={plot.bottom} y2={plot.bottom + 5} stroke="var(--lp-hair)" />
+            <text
+              x={tick.x}
+              y="335"
+              textAnchor={index === 0 ? "start" : index === xAxisTicks.length - 1 ? "end" : "middle"}
+              fill="var(--lp-sub)"
+              fontSize="12"
+              fontFamily="var(--font-sans, sans-serif)"
+            >
+              {formatAxisDate(tick.date)}
+            </text>
+          </g>
+        ))}
+        <text x={(plot.left + plot.right) / 2} y="361" textAnchor="middle" fill="var(--lp-sub)" fontSize="12" fontWeight="600" fontFamily="var(--font-sans, sans-serif)">
+          Observation date, month and year
+        </text>
+      </svg>
+      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 font-sans text-xs text-sub">
+        {numericSeries.map((item, index) => (
+          <div key={item.id} className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5" style={{ backgroundColor: comparisonColors[index % comparisonColors.length] }} />
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import { PNG } from "pngjs";
 import { NextResponse } from "next/server";
 
-import { getIndicatorDetail } from "@/lib/db/queries";
+import { getIndicatorDetail, trailingHistoryWindow } from "@/lib/db/queries";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -128,7 +128,9 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
     return NextResponse.json({ error: "Indicator not found" }, { status: 404 });
   }
 
-  const observations = detail.observations.filter((observation): observation is { seriesId: string; geography: string; date: string; value: number } => observation.value !== null).slice(-120);
+  const observations = trailingHistoryWindow(
+    detail.observations.filter((observation): observation is { seriesId: string; geography: string; date: string; value: number } => observation.value !== null)
+  );
   const png = new PNG({ width: 1040, height: 420 });
   drawRect(png, 0, 0, png.width, png.height, paper);
 

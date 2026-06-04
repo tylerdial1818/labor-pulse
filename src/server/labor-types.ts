@@ -145,3 +145,49 @@ export type SourcesPageData = {
   sources: SourceSummary[];
   refreshLog: RefreshLogViewModel[];
 };
+
+export type SegmentDimension = import("@/types/labor-pulse").SegmentDimension;
+
+export type ExportObservationSeries = {
+  id: string;
+  title: string;
+  source: IndicatorSource | "Labor Pulse composite";
+  sourceUrl: string | null;
+  units: string;
+  frequency: IndicatorFrequency | "derived";
+  geography: string;
+  observations: ObservationPoint[];
+  caveat: string | null;
+};
+
+export type ExportSegmentSeries = import("@/types/labor-pulse").SegmentMetadata & {
+  observations: ObservationPoint[];
+};
+
+export type ReportExportResponse = {
+  generatedAt: string;
+  requested: {
+    seriesIds: string[];
+    compositeIds: string[];
+    breakdowns: SegmentDimension[];
+    states: string[];
+  };
+  indicators: ExportObservationSeries[];
+  composites: Array<{
+    id: string;
+    name: string;
+    source: "Labor Pulse composite";
+    units: "Index";
+    observations: Array<{ compositeId: string; geography: string; date: string; value: number }>;
+    methodologyNote: string;
+  }>;
+  breakdowns: Array<{
+    baseSeriesId: string;
+    segments: ExportSegmentSeries[];
+  }>;
+  unavailable: Array<{
+    id: string;
+    kind: "indicator" | "composite" | "segment";
+    reason: string;
+  }>;
+};

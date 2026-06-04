@@ -5,14 +5,14 @@ import { applyFredRefresh } from "@/lib/db/queries";
 import type { FredRefreshResult } from "@/lib/db/queries";
 import { createFredClient } from "@/lib/fred/client";
 import type { FredClient } from "@/lib/fred/client";
+import { getAllMetricSegmentDefinitions } from "@/lib/segments/catalog";
 import { getFredIndicators } from "@/server/indicator-catalog";
 import type { FredRefreshSummary, RefreshAttemptSummary, RefreshStatus } from "@/server/labor-types";
 
-// Only pull a recent window. The dashboard surfaces ~36 trailing points and a
-// year-ago comparison, so a few years of history is plenty and keeps the FRED
-// payloads (and the persisted store) small enough to refresh well within the
-// serverless function time limit.
-const HISTORY_YEARS = 6;
+// v1.6 requires at least 10 years of visible history for every metric. Pull one
+// extra year so year-ago comparisons and composite windows remain available at
+// the beginning of the displayed period.
+const HISTORY_YEARS = 11;
 
 function observationStartDate(): string {
   const start = new Date();
@@ -47,14 +47,20 @@ export async function refreshFredIndicators(input: { db?: DbClient; fred?: FredC
   // whole refresh still finishes in a few seconds.
   const results: Array<FredRefreshResult & { observationsFetched: number }> = [];
 
-  for (const indicator of getFredIndicators()) {
+  const refreshSeries = [
+    ...getFredIndicators().map((indicator) => ({ id: indicator.id, geography: "US" })),
+    ...getAllMetricSegmentDefinitions().map((segment) => ({ id: segment.seriesId, geography: "US" }))
+  ];
+  const uniqueRefreshSeries = Array.from(new Map(refreshSeries.map((series) => [series.id, series])).values());
+
+  for (const indicator of uniqueRefreshSeries) {
     const attemptStartedAt = new Date().toISOString();
 
     try {
       const fetched = await fred.getObservations(indicator.id, { observationStart });
       const observations = fetched.map((observation) => ({
         seriesId: indicator.id,
-        geography: "US",
+        geography: indicator.geography,
         date: observation.date,
         value: observation.value
       }));

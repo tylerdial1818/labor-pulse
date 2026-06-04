@@ -70,7 +70,8 @@ async function callOpenAIForDefinition(series: IndicatorSeries) {
       instructions:
         "Write plain-English methodology definitions for executive readers. Do not include any numerical values, current statistics, dates, rankings, percentages, thresholds, or quantitative claims.",
       input: `Define the labor market indicator "${series.shortTitle}". Cover what it measures, why it matters, source context, and common misinterpretations. Keep it concise and prose-only.`
-    })
+    }),
+    signal: AbortSignal.timeout(5000)
   });
 
   if (!response.ok) {
@@ -92,6 +93,16 @@ export async function getOrCreateDefinition(series: IndicatorSeries): Promise<De
 
   if (cached) {
     return cached;
+  }
+
+  if (process.env.ENABLE_LIVE_DEFINITION_GENERATION !== "true") {
+    return {
+      seriesId: series.id,
+      content: `${series.plainLanguage} ${series.whyItMatters} ${series.sourceDetail}`,
+      model: "deterministic-fallback",
+      generatedAt: null,
+      cached: false
+    };
   }
 
   try {
