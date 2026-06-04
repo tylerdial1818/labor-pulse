@@ -35,6 +35,11 @@ export async function POST(request: Request) {
   const seriesIds = isStringArray(body.seriesIds) ? body.seriesIds : [];
   const compositeIds = isStringArray(body.compositeIds) ? body.compositeIds : [];
   const insightIds = isStringArray(body.insightIds) ? body.insightIds : [];
+  const underemploymentMajorIds = Array.isArray(body.underemploymentMajorIds)
+    ? body.underemploymentMajorIds.map((item) => Number(item)).filter((item) => Number.isInteger(item))
+    : [];
+  const includeUnderemploymentHeadline = body.includeUnderemploymentHeadline === true;
+  const includeUnderemploymentDefinitions = body.includeUnderemploymentDefinitions === true;
   const [dashboard, composites, insightFeed] = await Promise.all([getDashboardData(), getCompositeSummaries(), getInsightFeed({ limit: 100 })]);
   const validSeriesIds = new Set(dashboard.categories.flatMap((category) => category.indicators.map((indicator) => indicator.id)));
   const validCompositeIds = new Set<string>(composites.map((composite) => composite.id));
@@ -46,6 +51,7 @@ export async function POST(request: Request) {
   if (seriesIds.length < 1 || seriesIds.length > 8) errors.push("Select between 1 and 8 indicators.");
   if (compositeIds.length > 6) errors.push("Select 6 or fewer composites.");
   if (insightIds.length > 10) errors.push("Select 10 or fewer insights.");
+  if (underemploymentMajorIds.length > 5) errors.push("Select 5 or fewer underemployment majors.");
 
   const unknownSeries = seriesIds.filter((id) => !validSeriesIds.has(id));
   const unknownComposites = compositeIds.filter((id) => !validCompositeIds.has(id));
@@ -64,6 +70,9 @@ export async function POST(request: Request) {
     seriesIds,
     compositeIds,
     insightIds,
+    underemploymentMajorIds,
+    includeUnderemploymentHeadline,
+    includeUnderemploymentDefinitions,
     geography
   };
   const generated = await generateBriefingMarkdown(input);

@@ -40,6 +40,7 @@ Labor Pulse is a public US labor market monitor for researchers preparing execut
 | Backend/API | Backend/API Agent | ready after contract review | `src/server/**`, `src/lib/db/**`, API routes, `.env.example`, deployment docs | Depends on data schema/types |
 | Frontend/dashboard | Frontend/Dashboard Agent | ready after view-model contract | `src/app/**`, `src/features/**`, layout/forms/states/ui components | Depends on dashboard view-model props |
 | Visualization/design polish | Visualization/Design Polish Agent | ready after frontend skeleton | `src/components/charts/**`, design tokens, responsive/a11y polish | Must follow Editorial handoff exactly |
+| Underemployment v1.7 | Architect/Integrator + parallel specialists | integrated locally | `src/app/underemployment/**`, `src/components/underemployment/**`, `src/lib/underemployment/**`, briefing/dashboard/nav touchpoints | Live NY Fed workbook mapping still needs production hardening |
 
 ## Current Architecture Decisions
 
@@ -68,6 +69,7 @@ Public app, no user authentication in v1. Service-only cron route requires `Auth
 | Anthropic Economic Index | Anthropic | Ad hoc | Release/occupation usage share | Manual import script | Direct Claude usage signal; file shape still needs confirmation |
 | Qualitative insight sources | BLS, Federal Reserve, Indeed, Brookings, NBER, LinkedIn | Daily app refresh where public source allows | Article/release summary | Server-side fetch with deterministic fallback summaries | Seeded local feed active; live source robustness needs production monitoring |
 | Eloundou GPT exposure | OpenAI GPTs-are-GPTs repository | Manual/ad hoc | O*NET-SOC occupation | Original `occ_level.csv` ingestion | 923 occupation exposure rows imported into Neon locally |
+| NY Fed Recent College Graduates | Federal Reserve Bank of New York | Quarterly headline, annual major outcomes | Date/cohort/major | Workbook parser scaffold plus deterministic seed data | v1.7 page uses source-dated seed data until workbook sheet mapping is hardened |
 
 ## Known Risks
 

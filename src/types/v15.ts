@@ -81,6 +81,9 @@ export type BriefingInput = {
   seriesIds: string[];
   compositeIds: string[];
   insightIds: string[];
+  underemploymentMajorIds?: number[];
+  includeUnderemploymentHeadline?: boolean;
+  includeUnderemploymentDefinitions?: boolean;
   geography: string;
 };
 

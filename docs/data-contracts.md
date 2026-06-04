@@ -205,3 +205,50 @@ type AiExposureScore = {
 - This is potential task exposure to LLMs and complementary tools, not observed adoption or employment displacement.
 - Do not present exposure scores as layoff risk, automation probability, or net job impact.
 - Keep source attribution visible on AI Impact surfaces.
+
+### Source: NY Fed Labor Market for Recent College Graduates
+
+| Field | Value |
+| --- | --- |
+| Owner | Data Model + Analytics Agent + Backend/API Agent |
+| Status | scaffolded in v1.7 |
+| Refresh frequency | Quarterly for headline unemployment and underemployment, annual for outcomes by major |
+| Grain | date, cohort, major where available |
+| Access method | Public NY Fed workbook downloaded by `scripts/ingest-underemployment.ts`; deterministic seed data backs local builds |
+| Source files | `src/lib/underemployment/**`, `src/types/underemployment.ts`, `scripts/ingest-underemployment.ts` |
+
+#### Schema
+
+```ts
+type MajorProfile = {
+  id: number;
+  name: string;
+  category: string | null;
+  isCommonOnline: boolean;
+  current: {
+    cohort: "recent_grads" | "all_grads";
+    date: string;
+    underemploymentRate: number;
+    unemploymentRate: number;
+    medianWageCollegeJob: number;
+    medianWageNonCollegeJob: number;
+    shareInLowWageJobs: number;
+    shareWithGraduateDegree: number;
+  };
+  history: Array<{ date: string; underemploymentRate: number }>;
+  wagePremium: number;
+  rankAmongAllMajors: number;
+};
+```
+
+#### Transformation Logic
+
+1. Locate the NY Fed workbook from the college labor market page.
+2. Parse workbook sheets with `xlsx` and validate discovered URLs with Zod.
+3. Preserve public source attribution and as-of dates on every display.
+4. Use deterministic seed rows when the workbook is unavailable so local builds and UI tests remain stable.
+
+#### Caveats
+
+- The current v1.7 build includes normalized schema and ingestion scaffolding, but the workbook sheet-to-table mapping still needs a production hardening pass before relying on live NY Fed rows.
+- Major-level rates are estimates and should be interpreted as broad clusters rather than precise rank positions.

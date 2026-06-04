@@ -219,6 +219,48 @@ type ReportExportResponse = {
 
 CSV rows include record type, dimension, segment, metric ID, metric label, source, source URL, retrieval timestamp, observation date, geography, units, value, availability, and caveat. Unsupported metric and breakdown combinations are omitted from the metric-detail export instead of being estimated.
 
+### Endpoint: `GET /api/underemployment/majors`
+
+| Field | Value |
+| --- | --- |
+| Method | GET |
+| Path | `/api/underemployment/majors` |
+| Owner | Backend/API Agent |
+| Status | active in v1.7 |
+| Authentication | public |
+| Rate limits | Standard platform limits |
+| Source files | `src/app/api/underemployment/majors/route.ts`, `src/lib/underemployment/queries.ts` |
+
+Returns the alphabetized major list for the underemployment lookup tool.
+
+### Endpoint: `GET /api/underemployment/majors/[id]`
+
+| Field | Value |
+| --- | --- |
+| Method | GET |
+| Path | `/api/underemployment/majors/[id]?cohort=recent_grads|all_grads` |
+| Owner | Backend/API Agent |
+| Status | active in v1.7 |
+| Authentication | public |
+| Rate limits | Standard platform limits |
+| Source files | `src/app/api/underemployment/majors/[id]/route.ts`, `src/lib/underemployment/calculate.ts` |
+
+#### Response Schema
+
+```ts
+type Response = {
+  profile: MajorProfile;
+  historicalContext: {
+    percentileRank: number;
+    comparablePeriod: { date: string; value: number } | null;
+    yearsOfHistory: number;
+  };
+  similarMajors: Array<{ id: number; name: string; underemploymentRate: number; difference: number }>;
+};
+```
+
+Invalid ids return `400`; unknown ids return `404`.
+
 ### Endpoint: `GET /api/cron/refresh-fred`
 
 Service-only Vercel Cron route protected by `Authorization: Bearer $CRON_SECRET`. Refreshes all FRED-sourced indicators, validates responses with Zod, upserts observations, updates series freshness, writes `refresh_log`, and returns a structured summary. Partial failures must not erase last-good dashboard data.

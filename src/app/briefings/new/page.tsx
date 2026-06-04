@@ -2,9 +2,15 @@ import { BriefingBuilder } from "@/components/briefings/briefing-builder";
 import { TopBar } from "@/components/layout/top-bar";
 import { getCompositeSummaries, getDashboardData } from "@/lib/db/queries";
 import { getInsightFeed } from "@/lib/insights/queries";
+import { readMajorList } from "@/lib/underemployment/queries";
 
 export default async function NewBriefingPage() {
-  const [dashboard, composites, insights] = await Promise.all([getDashboardData(), getCompositeSummaries(), getInsightFeed({ limit: 20 })]);
+  const [dashboard, composites, insights, underemploymentMajors] = await Promise.all([
+    getDashboardData(),
+    getCompositeSummaries(),
+    getInsightFeed({ limit: 20 }),
+    readMajorList()
+  ]);
   const indicators = dashboard.categories.flatMap((category) => category.indicators);
 
   return (
@@ -16,7 +22,7 @@ export default async function NewBriefingPage() {
         <p className="mb-8 mt-3 max-w-3xl font-serif text-base italic leading-[1.4] text-sub">
           Select source-backed indicators, composite signals, and qualitative insights. The generated markdown keeps every numeric claim traceable to selected data.
         </p>
-        <BriefingBuilder indicators={indicators} composites={composites} insights={insights.insights} />
+        <BriefingBuilder indicators={indicators} composites={composites} insights={insights.insights} underemploymentMajors={underemploymentMajors} />
       </main>
     </div>
   );

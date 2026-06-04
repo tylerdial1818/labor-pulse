@@ -1,5 +1,6 @@
 import { getCompositeSummaries, getIndicatorDetail } from "@/lib/db/queries";
 import { getInsightFeed } from "@/lib/insights/queries";
+import { getCurrentHeadlineRates, getDefinitionalOverlap, getMajorProfile } from "@/lib/underemployment/calculate";
 import { MODELS } from "@/lib/llm/models";
 import type { BriefingInput } from "@/types/v15";
 
@@ -12,6 +13,12 @@ export async function generateBriefingMarkdown(input: BriefingInput) {
   const selectedComposites = composites.filter((composite) => input.compositeIds.includes(composite.id));
   const selectedInsights = insights.insights.filter((insight) => input.insightIds.includes(insight.id));
   const validSeries = seriesDetails.filter((detail): detail is NonNullable<typeof detail> => detail !== null);
+  const underemploymentMajorIds = input.underemploymentMajorIds ?? [];
+  const [underemploymentHeadline, underemploymentOverlap, underemploymentMajors] = await Promise.all([
+    input.includeUnderemploymentHeadline ? getCurrentHeadlineRates() : Promise.resolve(null),
+    input.includeUnderemploymentDefinitions ? getDefinitionalOverlap() : Promise.resolve(null),
+    Promise.all(underemploymentMajorIds.slice(0, 5).map((majorId) => getMajorProfile(majorId)))
+  ]);
 
   const lines = [
     `# ${input.theme}`,
@@ -39,6 +46,30 @@ export async function generateBriefingMarkdown(input: BriefingInput) {
   lines.push("", "## Qualitative Context", "");
   for (const insight of selectedInsights) {
     lines.push(`- **${insight.title}** (${insight.sourceName}): ${insight.summary}`);
+  }
+
+  const validUnderemploymentMajors = underemploymentMajors.filter((major): major is NonNullable<typeof major> => major !== null);
+
+  if (underemploymentHeadline || underemploymentOverlap || validUnderemploymentMajors.length > 0) {
+    lines.push("", "## Underemployment Context", "");
+
+    if (underemploymentHeadline) {
+      lines.push(
+        `- **Headline skills underemployment:** Recent college graduates were at ${underemploymentHeadline.recentGrads.toFixed(1)} percent and all college graduates were at ${underemploymentHeadline.allGrads.toFixed(1)} percent as of ${underemploymentHeadline.asOfDate}. Source: New York Fed.`
+      );
+    }
+
+    if (underemploymentOverlap) {
+      lines.push(
+        `- **Definition frame:** Involuntary part-time work was ${underemploymentOverlap.involuntaryPartTime.toLocaleString("en-US")} thousand workers, while NY Fed skills underemployment was ${underemploymentOverlap.skillsUnderemployment.toFixed(1)} percent. These denominators should not be summed.`
+      );
+    }
+
+    for (const major of validUnderemploymentMajors) {
+      lines.push(
+        `- **${major.name}:** ${major.current.underemploymentRate.toFixed(1)} percent underemployed, ${major.current.unemploymentRate.toFixed(1)} percent unemployed, and ${major.wagePremium.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 })} wage premium as of ${major.current.date}.`
+      );
+    }
   }
 
   lines.push("", "## Methodology", "", "All series values are pulled from the Labor Pulse store with source attribution. AI and qualitative signals are context layers, not direct official measures.");

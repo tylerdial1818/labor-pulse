@@ -10,7 +10,7 @@ const navItems = [
   { href: "/", label: "Dashboard" },
   { href: "/insights", label: "Insights" },
   { href: "/ai-impact", label: "AI Impact" },
-  { href: "/briefings", label: "Briefings" },
+  { href: "/underemployment", label: "Underemployment" },
   { href: "/sources", label: "Sources" },
   { href: "/about", label: "About" }
 ] satisfies Array<{ href: string; label: string }>;
@@ -35,7 +35,7 @@ export function TopBar() {
             US Labor Market Monitor
           </span>
         </Link>
-        <nav aria-label="Primary navigation" className="flex items-center gap-[26px] font-sans text-[13.5px] font-medium">
+        <nav aria-label="Primary navigation" className="flex flex-wrap items-center gap-x-[22px] gap-y-3 font-sans text-[13.5px] font-medium max-[520px]:gap-x-5 max-[520px]:text-[12.5px]">
           {navItems.map((item) => {
             const isCurrent = isActiveRoute(pathname, item.href);
 

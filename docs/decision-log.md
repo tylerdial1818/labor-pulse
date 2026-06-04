@@ -14,6 +14,14 @@ Use this lightweight ADR-style log for architecture, data, security, deployment,
 
 ## Decisions
 
+### 2026-06-03: Underemployment v1.7 follows the existing raw SQL store pattern
+
+- **Decision:** Add normalized underemployment schema statements and a deterministic seed-backed analysis page without introducing Drizzle.
+- **Rationale:** The repository currently uses raw SQL statements through `@neondatabase/serverless` plus a local JSON fallback. Following that pattern avoids a second schema authority during the v1.7 build.
+- **Alternatives considered:** Add Drizzle now, use static page-only data, or block the page until live workbook ingestion is fully mapped.
+- **Consequences:** The page, APIs, briefing integration, and dashboard teaser build locally now. Production ingestion still needs a sheet mapping hardening pass before live NY Fed workbook rows replace seed data.
+- **Owner:** Architect/Integrator Agent
+
 ### 2026-06-03: Add age breakdowns only where FRED coverage is verified
 
 - **Decision:** Add age breakdowns to metric detail pages for `UNRATE`, `CIVPART`, and partial `EMRATIO` coverage only.

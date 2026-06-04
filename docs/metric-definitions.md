@@ -28,6 +28,10 @@ Every client-facing metric must have a clear owner, formula, source, grain, and 
 | 10-year composite history | Trailing derived composite observations from the latest composite observation back 10 calendar years | Labor Pulse composite calculations over stored observations | Composite availability depends on all required input series having enough stored history |
 | Breakdown current value | Latest non-null observation for the supported segment series | Existing Labor Pulse observations and FRED-compatible metadata | Metadata-only segments remain unavailable until observations are ingested |
 | Report history | 10-year indicator, composite, and selected breakdown observations | Database observations plus explicit segment availability metadata | Report rows must include source, URL, units, geography, date, availability, and caveat where applicable |
+| Recent graduate underemployment rate | Share of employed recent college graduates working in occupations classified as non-college jobs | NY Fed Labor Market for Recent College Graduates | Recent graduates are ages 22 to 27 with a bachelor's degree or higher |
+| All graduate underemployment rate | Share of employed college graduates working in occupations classified as non-college jobs | NY Fed Labor Market for Recent College Graduates | Includes college graduates outside the recent graduate age band |
+| Major wage premium | Median wage in college-level jobs minus median wage in non-college jobs for a major | NY Fed outcomes by major | Wage premium is not a causal return to the major |
+| Common online major flag | Major appears in the curated common online and competency-based program list | Labor Pulse curation from public program catalogs | Program category flag does not name or evaluate specific universities |
 
 ## Indicator Catalog
 

@@ -123,7 +123,59 @@ export const LABOR_PULSE_SCHEMA_STATEMENTS = [
     source_name text not null default 'Eloundou et al. 2023',
     source_url text not null default 'https://arxiv.org/abs/2303.10130',
     methodology_note text not null
-  )`
+  )`,
+  `do $$ begin
+    create type underemployment_cohort as enum ('recent_grads', 'all_grads');
+  exception when duplicate_object then null;
+  end $$`,
+  `create table if not exists majors (
+    id serial primary key,
+    name text not null unique,
+    category text,
+    is_common_online boolean not null default false,
+    cip_code_mapping jsonb not null default '[]'::jsonb
+  )`,
+  `create table if not exists underemployment_observations (
+    id serial primary key,
+    major_id integer references majors(id),
+    cohort underemployment_cohort not null,
+    date date not null,
+    underemployment_rate numeric,
+    unemployment_rate numeric,
+    median_wage_college_job numeric,
+    median_wage_non_college_job numeric,
+    share_in_low_wage_jobs numeric,
+    share_with_graduate_degree numeric,
+    source_url text not null,
+    created_at timestamp not null default now()
+  )`,
+  `create unique index if not exists major_cohort_date_unique
+    on underemployment_observations (major_id, cohort, date)`,
+  `create table if not exists involuntary_part_time (
+    id serial primary key,
+    date date not null unique,
+    total_thousands numeric,
+    source text not null default 'BLS CPS'
+  )`,
+  `create table if not exists hours_underemployment (
+    id serial primary key,
+    industry_name text not null,
+    industry_code text,
+    date date not null,
+    average_weekly_hours numeric,
+    year_ago_change numeric
+  )`,
+  `create unique index if not exists hours_underemployment_industry_date_unique
+    on hours_underemployment (industry_name, date)`,
+  `create table if not exists underemployment_trajectory (
+    id serial primary key,
+    age_group text not null,
+    date date not null,
+    underemployment_rate numeric,
+    source text not null
+  )`,
+  `create unique index if not exists underemployment_trajectory_age_date_unique
+    on underemployment_trajectory (age_group, date)`
 ] as const;
 
 export const LABOR_PULSE_SCHEMA_SQL = LABOR_PULSE_SCHEMA_STATEMENTS.join(";\n");
