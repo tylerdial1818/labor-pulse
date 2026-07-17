@@ -1,8 +1,21 @@
 import { notFound } from "next/navigation";
 import { TopBar } from "@/components/layout/top-bar";
 import { getBriefing } from "@/lib/db/queries";
+import { normalizePublicCopy } from "@/lib/utils/public-copy";
 
 export const dynamic = "force-dynamic";
+
+function prepareBriefingForDisplay(content: string) {
+  return normalizePublicCopy(content)
+    .replace(
+      "Labor Pulse generated this briefing from selected source data and deterministic local summaries. It does not add numerical claims beyond the selected indicators and composites.",
+      "This briefing draws from the selected Labor Pulse data and research context. Every number comes from the cited indicators and composites."
+    )
+    .replace(
+      "All series values are pulled from the Labor Pulse store with source attribution. AI and qualitative signals are context layers, not direct official measures.",
+      "All series values come from the Labor Pulse data store with source attribution. Qualitative sources provide context and are not official measures."
+    );
+}
 
 export default async function BriefingDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,10 +32,10 @@ export default async function BriefingDetailPage({ params }: { params: Promise<{
         <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.14em] text-navy">Briefing</p>
         <h1 className="mt-3 font-serif text-[40px] font-bold leading-none tracking-[-0.02em]">{briefing.theme}</h1>
         <p className="mt-3 font-sans text-xs text-sub">
-          {briefing.geography} - {new Date(briefing.createdAt).toLocaleString("en-US", { timeZone: "UTC" })} - {briefing.model}
+          {briefing.geography} · {new Date(briefing.createdAt).toLocaleString("en-US", { timeZone: "UTC" })}
         </p>
         <pre className="mt-8 overflow-auto whitespace-pre-wrap border-y border-rule bg-panel px-4 py-5 font-mono text-[13px] leading-[1.6] text-ink">
-          {briefing.content}
+          {prepareBriefingForDisplay(briefing.content)}
         </pre>
       </main>
     </div>

@@ -14,6 +14,14 @@ Use this lightweight ADR-style log for architecture, data, security, deployment,
 
 ## Decisions
 
+### 2026-07-17: Present Labor Pulse as a maintained public research service
+
+- **Decision:** Use a mission-led Labor Pulse voice across the product, expand `/sources` into Data & Methods, reframe `/insights` as the Research Monitor, add page citations, and credit Dialed Intelligence on About and in the global footer.
+- **Rationale:** The application already has substantial analytical depth. Clear research standards, visible stewardship, citation guidance, and direct professional writing make that depth easier for policy researchers to assess and use.
+- **Alternatives considered:** Use Dialed Intelligence as the primary product brand, add a marketing landing page, or imply a larger team and user base.
+- **Consequences:** Public routes and data contracts remain unchanged. Public copy must avoid internal model and generation labels. Site-authored copy uses no em dashes or semicolons. Adoption claims require evidence.
+- **Owner:** Architect/Integrator Agent
+
 ### 2026-06-03: Underemployment v1.7 follows the existing raw SQL store pattern
 
 - **Decision:** Add normalized underemployment schema statements and a deterministic seed-backed analysis page without introducing Drizzle.

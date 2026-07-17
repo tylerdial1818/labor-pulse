@@ -27,7 +27,7 @@ export function InsightFilters({ filters }: InsightFiltersProps) {
   };
 
   return (
-    <aside className="border-y border-rule py-4" aria-label="Insight filters">
+    <aside className="border-y border-rule py-4" aria-label="Research monitor filters">
       <div className="flex flex-wrap items-center gap-2">
         <a
           href={buildHref({ ...current, category: null })}
@@ -41,17 +41,17 @@ export function InsightFilters({ filters }: InsightFiltersProps) {
             href={buildHref({ ...current, category })}
             className="border border-rule px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-sub"
           >
-            {category.replace(/_/g, " ")}
+            {category === "manual" ? "curated sources" : category.replace(/_/g, " ")}
           </a>
         ))}
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-sub">
-        <span className="font-semibold uppercase tracking-[0.12em]">Tags</span>
+        <span className="font-semibold uppercase tracking-[0.12em]">Topics</span>
         {options.tags.slice(0, 12).map((tag) => (
           <a
             key={tag}
             href={buildHref({ ...current, tags: tag })}
-            className="rounded-badge bg-faint px-2.5 py-1 font-semibold text-ink"
+            className="border border-rule bg-[var(--lp-navy-tint)] px-2.5 py-1 font-semibold text-navy transition-colors hover:border-navy hover:bg-paper"
           >
             {tag.replace(/_/g, " ")}
           </a>

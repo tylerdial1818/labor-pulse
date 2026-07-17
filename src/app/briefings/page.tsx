@@ -22,13 +22,13 @@ export default async function BriefingsPage() {
         </div>
         <section className="mt-8 border-t border-rule">
           {briefings.length === 0 ? (
-            <p className="py-8 font-serif text-base italic text-sub">No briefings generated yet.</p>
+            <p className="py-8 font-serif text-base italic text-sub">No briefings have been created yet.</p>
           ) : (
             briefings.map((briefing) => (
               <Link key={briefing.id} href={`/briefings/${briefing.id}` as Route} className="block border-b border-rule py-5 hover:bg-[var(--lp-navy-tint)]">
                 <h2 className="font-serif text-2xl font-semibold">{briefing.theme}</h2>
                 <p className="mt-2 font-sans text-xs text-sub">
-                  {briefing.geography} · {new Date(briefing.createdAt).toLocaleString("en-US", { timeZone: "UTC" })} · {briefing.model}
+                  {briefing.geography} · {new Date(briefing.createdAt).toLocaleString("en-US", { timeZone: "UTC" })}
                 </p>
               </Link>
             ))

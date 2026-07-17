@@ -1,6 +1,7 @@
 import { TopBar } from "@/components/layout/top-bar";
 import { getAiExposureScores, getDashboardData } from "@/lib/db/queries";
 import { getInsightFeed } from "@/lib/insights/queries";
+import { normalizePublicCopy } from "@/lib/utils/public-copy";
 
 export default async function AiImpactPage() {
   const [dashboard, exposureScores, insights] = await Promise.all([
@@ -73,7 +74,7 @@ export default async function AiImpactPage() {
               <article key={insight.id} className="border border-rule px-4 py-4">
                 <p className="font-sans text-[10px] font-bold uppercase tracking-[0.12em] text-sub">{insight.sourceName}</p>
                 <h3 className="mt-2 font-serif text-lg font-semibold leading-tight">{insight.title}</h3>
-                <p className="mt-2 font-serif text-sm leading-[1.5] text-ink">{insight.summary}</p>
+                <p className="mt-2 font-serif text-sm leading-[1.5] text-ink">{normalizePublicCopy(insight.summary)}</p>
               </article>
             ))}
           </div>

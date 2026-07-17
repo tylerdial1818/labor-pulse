@@ -100,7 +100,7 @@ export function BriefingBuilder({
       ) : null}
 
       <button type="button" onClick={submit} disabled={isSubmitting} className="border border-navy bg-navy px-5 py-3 font-sans text-sm font-semibold text-white disabled:opacity-60">
-        {isSubmitting ? "Generating..." : "Generate briefing"}
+        {isSubmitting ? "Creating..." : "Create briefing"}
       </button>
     </div>
   );

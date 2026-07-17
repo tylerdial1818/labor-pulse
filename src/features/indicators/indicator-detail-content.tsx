@@ -5,8 +5,10 @@ import { Download } from "lucide-react";
 
 import { HistoricalContext } from "@/components/indicators/historical-context";
 import { MetricBreakdownsPanel } from "@/components/indicators/metric-breakdowns-panel";
+import { PageCitation } from "@/components/research/page-citation";
 import { TimeSeriesChart } from "@/components/charts/labor-pulse-charts";
 import { cn } from "@/lib/utils/cn";
+import { normalizePublicCopy } from "@/lib/utils/public-copy";
 import type { DefinitionResponse, IndicatorDetailResponse } from "@/server/labor-types";
 import type { MetricSegmentBreakdownData } from "@/server/segment-data";
 
@@ -105,9 +107,9 @@ export function IndicatorDetailContent({
       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <div>
           <h2 className="font-serif text-2xl font-semibold">Definition</h2>
-          <p className="mt-3 font-serif text-[16px] leading-[1.55] text-ink">{definition.content}</p>
+          <p className="mt-3 font-serif text-[16px] leading-[1.55] text-ink">{normalizePublicCopy(definition.content)}</p>
           <p className="mt-3 font-sans text-xs text-sub">
-            {definition.cached ? "Cached generated definition" : "Generated definition"} · Model: {definition.model ?? "unavailable"}
+            Use this definition with the source notes and methodology shown on this page.
           </p>
         </div>
         <aside className="border-l border-rule pl-6 max-lg:border-l-0 max-lg:border-t max-lg:pl-0 max-lg:pt-5">
@@ -161,6 +163,12 @@ export function IndicatorDetailContent({
       ) : null}
 
       <MetricBreakdownsPanel data={breakdowns} />
+
+      <PageCitation
+        title={detail.series.title}
+        path={`/indicators/${detail.series.id}`}
+        source={detail.series.sourceLabel}
+      />
     </div>
   );
 }

@@ -7,10 +7,10 @@ This is the first strategic document for any client-facing analytical web applic
 | Field | Value |
 | --- | --- |
 | Project name | Labor Pulse |
-| One-sentence description | Public US labor market monitor for researchers, combining lagging, leading, and technology/AI impact indicators with defensible source attribution. |
+| One-sentence description | Continuously maintained public US labor market research service with source-backed indicators, transparent composite measures, and citable analysis. |
 | Current stage | build |
 | Primary owner | Architect/Integrator Agent |
-| Last updated | 2026-05-30 |
+| Last updated | 2026-07-17 |
 
 ## 2. Problem Statement
 
@@ -35,7 +35,7 @@ Describe the problem in plain language.
 | --- | --- | --- | --- | --- |
 | Default browsing | Researcher | Opens `/` | Understand current and directional US labor market conditions | Three tabs expose all 15 indicators with current values, deltas, sparklines, and update dates |
 | Indicator drilldown | Researcher | Clicks an indicator card | Review full history, definition, methodology, and source | Detail route shows chart, time windows, definition, source attribution, and exports |
-| Source verification | Researcher | Opens `/sources` | Verify provenance and freshness | Sources table and refresh log show successful and failed ingestion runs |
+| Source verification | Researcher | Opens Data & Methods at `/sources` | Verify provenance, definitions, and freshness | Research standards, source coverage, citation guidance, and recent refresh activity remain public |
 
 ## 5. Success Metrics
 
@@ -43,6 +43,7 @@ Describe the problem in plain language.
 
 - Dashboard is credible enough for executive-facing screenshots.
 - Users can export chart PNGs and CSV data for external reports.
+- Users can cite Labor Pulse pages and identify the original publisher for the underlying data.
 - Dashboard loads in under 1 second on cached data.
 
 ### Analytical / Business Metrics
@@ -117,6 +118,8 @@ List what this project is intentionally not trying to do. Future agents should t
 - **Aesthetic references:** `design_handoff_laborpulse_dashboard` Editorial dashboard handoff.
 - **Brand guidelines:** Newspaper-grade analytical tool with serif masthead and numerals, hairline rules, navy accent, semantic green/maroon only for labor-market direction.
 - **Tone:** executive, analytical, editorial
+- **Public positioning:** Labor Pulse speaks as a public research service. Dialed Intelligence is credited as steward on About and in the global footer.
+- **Writing standard:** Public copy uses plain professional language, concrete claims, and natural sentence structure. Site-authored copy uses no em dashes or semicolons and does not expose internal model or generation labels.
 - **Accessibility requirements:** AA contrast, visible focus states, semantic landmarks, color never as the only meaning carrier.
 - **Responsive design priorities:** Dashboard tab list collapses to a select at narrow widths; chart, card, and table dimensions remain stable.
 
@@ -153,4 +156,5 @@ Future agents must:
 
 | Date | Editor | Change summary |
 | --- | --- | --- |
+| 2026-07-17 | Codex | Added the institutional public research positioning, Data & Methods standard, citation requirement, Dialed Intelligence stewardship, and public writing rules. |
 | 2026-05-30 | Codex | Promoted Labor Pulse v1 brief into the project charter for build kickoff. |

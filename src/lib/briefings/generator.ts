@@ -40,7 +40,7 @@ function normalizeTitle(title: string) {
 
 function indicatorLine(indicator: IndicatorCardViewModel) {
   const date = indicator.currentDate ?? "date unavailable";
-  return `- **${indicator.title}:** ${indicator.currentValueFormatted}${indicator.unitLabel ? ` ${indicator.unitLabel}` : ""} as of ${date}; ${indicator.delta.formatted} ${indicator.delta.periodLabel}. Source: ${indicator.source}.`;
+  return `- **${indicator.title}:** ${indicator.currentValueFormatted}${indicator.unitLabel ? ` ${indicator.unitLabel}` : ""} as of ${date}. ${indicator.delta.formatted} ${indicator.delta.periodLabel}. Source: ${indicator.source}.`;
 }
 
 function methodologyLine(indicator: IndicatorCardViewModel) {
@@ -58,14 +58,14 @@ export function generateDeterministicBriefing(input: BriefingRequest, data: Labo
 
   const sections = [
     `# ${title}`,
-    `Generated: ${generatedAt.toISOString()}`,
+    `Created: ${generatedAt.toISOString()}`,
     `Audience: ${audienceLabels[input.audience]}`,
     `Frame: ${horizonLabels[input.horizon]}`,
     `Geography: ${input.geography}`,
     "## Evidence Snapshot",
     ...ordered.map(indicatorLine),
     "## Readout",
-    "This briefing is generated from the local Labor Pulse indicator store. It reports only values, dates, deltas, sources, and caveats already present in the application data model.",
+    "This briefing draws from the Labor Pulse indicator store. It reports only values, dates, changes, sources, and caveats already present in the application data model.",
     "## Watch Items",
     "- Compare exposed-sector employment signals with leading labor indicators before inferring broader labor-market impact.",
     "- Treat proxy and ad hoc AI indicators as context, not as direct displacement or adoption measures."
@@ -75,7 +75,7 @@ export function generateDeterministicBriefing(input: BriefingRequest, data: Labo
     sections.push("## Methodology Caveats", ...proxyNotes);
   }
 
-  sections.push("## Source Note", "No new numerical claims were generated beyond the selected Labor Pulse indicators.");
+  sections.push("## Source Note", "No new numerical claims were added beyond the selected Labor Pulse indicators.");
 
   return {
     markdown: `${sections.join("\n\n")}\n`,

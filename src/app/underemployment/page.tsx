@@ -14,13 +14,14 @@ import { TrajectoryChart } from "@/components/underemployment/trajectory-chart";
 import { UnderemploymentSection } from "@/components/underemployment/section";
 import { WagePremiumScatter } from "@/components/underemployment/wage-premium-scatter";
 import { TopBar } from "@/components/layout/top-bar";
+import { PageCitation } from "@/components/research/page-citation";
 import { getUnderemploymentPageData } from "@/lib/underemployment/calculate";
 import { definitionBlocks, underemploymentSections } from "@/lib/underemployment/prose";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Underemployment Analytics | Labor Pulse",
+  title: "Underemployment Analytics",
   description: "A Labor Pulse analytical guide to underemployment definitions, NY Fed recent graduate outcomes, and major-level labor market risk."
 };
 
@@ -43,8 +44,10 @@ export default async function UnderemploymentPage() {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: "Underemployment Analytics",
-    dateModified: data.headline.asOfDate,
-    publisher: { "@type": "Organization", name: "Labor Pulse" }
+    datePublished: "2026-06-04",
+    dateModified: "2026-07-17",
+    author: { "@type": "Organization", name: "Labor Pulse Research" },
+    publisher: { "@type": "Organization", name: "Dialed Intelligence LLC", url: "https://www.dialedintelligence.com/" }
   };
 
   return (
@@ -61,6 +64,9 @@ export default async function UnderemploymentPage() {
               </h1>
               <p className="mt-4 max-w-3xl font-serif text-[18px] italic leading-[1.45] text-sub">
                 A long-form analytical guide to contested definitions, recent graduate outcomes, and the majors where labor market fit is most fragile.
+              </p>
+              <p className="mt-4 font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-sub">
+                Labor Pulse Research · Published June 4, 2026 · Updated July 17, 2026
               </p>
             </div>
             <DataAsOfBadge source={source} asOf={data.headline.asOfDate} href={sourceHref} />
@@ -293,6 +299,15 @@ export default async function UnderemploymentPage() {
               className="mt-8"
               title="Use the lens and keep the blind spots visible"
               interpretation="The underemployment data is most useful when read with its limitations in mind. It is a sharp lens on one slice of the workforce, recent and current college graduates whose education and occupation can both be measured cleanly. It is silent on the workers and credentials that fall outside that frame. A complete picture of underemployment in the United States would require data infrastructure that does not currently exist. Until it does, the NY Fed data is the best public source for the question of what happens to college graduates in the labor market, and the question of what to do about underemployment in workforce policy more broadly remains open."
+            />
+
+            <PageCitation
+              className="mt-8"
+              title="Underemployment Analytics"
+              path="/underemployment"
+              source="Federal Reserve Bank of New York and U.S. Bureau of Labor Statistics"
+              publishedAt="2026-06-04"
+              updatedAt="2026-07-17"
             />
           </article>
         </div>

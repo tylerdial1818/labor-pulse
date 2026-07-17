@@ -4,7 +4,7 @@ This is the shared operating context for all AI agents working in this repositor
 
 ## Project Mission
 
-Labor Pulse is a public US labor market monitor for researchers preparing executive-facing reports. It provides a defensible source of truth for lagging, leading, and technology/AI impact indicators, with visible provenance, freshness, caveats, and exportable chart/data outputs.
+Labor Pulse is a continuously maintained public US labor market research service for people preparing policy and executive-facing work. It provides source-backed indicators, transparent composite measures, visible freshness and caveats, citable pages, and exportable chart and data outputs.
 
 ## Target Users
 
@@ -19,13 +19,14 @@ Labor Pulse is a public US labor market monitor for researchers preparing execut
 2. User switches between Lagging, Leading, and Tech & AI Impact tabs; Tech & AI always shows a methodology caveat.
 3. User opens `/indicators/[id]` for full history, definition, source attribution, time windows, metric-specific breakdowns, and exports.
 4. User uses the detail-page breakdown controls where supported, such as unemployment by gender, age, or state and payroll employment by industry.
-5. User opens `/sources` to verify source freshness and refresh logs.
+5. User opens Data & Methods at `/sources` to review research standards, definitions, source freshness, refresh activity, citation guidance, and corrections contact information.
+6. User opens the Research Monitor at `/insights` to review recurring source profiles and dated source updates.
 
 ## Current Implementation Status
 
 | Area | Status | Notes |
 | --- | --- | --- |
-| App shell | v1.6 in progress | Dashboard, detail, sources, about, insights, AI impact, composites, and briefings exist locally. Breakdowns are integrated into metric detail pages. |
+| App shell | v1.8 institutional refresh integrated locally | Dashboard, detail, Data & Methods, About, Research Monitor, AI impact, composites, briefings, citations, and a global stewardship footer exist locally. |
 | Data | Relational v1.6 scaffold | Core FRED refresh now targets 11 years; metric-detail breakdowns use explicit FRED series mappings and show top 5 comparison lines when a cut has more than 5 mapped segments. |
 | Analytics | v1.6 in progress | Current values, deltas, chart axes, composite calculations, deterministic historical context, 10-year windows, and metric-detail report rows are implemented. |
 | Auth | v1 omitted | Public app; no user auth. Cron route must require `CRON_SECRET`. |
@@ -49,6 +50,8 @@ Labor Pulse is a public US labor market monitor for researchers preparing execut
 - UI components should consume typed view models and avoid direct data fetching.
 - Contracts live in `docs/api-contracts.md`, `docs/data-contracts.md`, and `src/types`.
 - Labor Pulse uses a deterministic-first rule: every number, delta, and trend comes from the database; LLM output is cached prose only and never quantitative.
+- Public copy presents Labor Pulse as a public research service. Dialed Intelligence appears as steward on About and in the footer rather than in the dashboard introduction.
+- Public copy does not expose model names, generation labels, seed labels, or other implementation terms. Site-authored copy uses no em dashes or semicolons.
 - v1.6 backend read models expose trailing 10-year histories where stored data exists. Detail pages expose all supported industry, gender, age, and state breakdowns for the selected metric when explicit public FRED mappings exist.
 - The design source of truth is `/Users/tylerdial/Downloads/design_handoff_laborpulse_dashboard`, especially `README.md`, `tokens.css`, and screenshots.
 

@@ -2,6 +2,7 @@ import { getCompositeSummaries, getIndicatorDetail } from "@/lib/db/queries";
 import { getInsightFeed } from "@/lib/insights/queries";
 import { getCurrentHeadlineRates, getDefinitionalOverlap, getMajorProfile } from "@/lib/underemployment/calculate";
 import { MODELS } from "@/lib/llm/models";
+import { normalizePublicCopy } from "@/lib/utils/public-copy";
 import type { BriefingInput } from "@/types/v15";
 
 export async function generateBriefingMarkdown(input: BriefingInput) {
@@ -27,7 +28,7 @@ export async function generateBriefingMarkdown(input: BriefingInput) {
     "",
     "## Executive Readout",
     "",
-    "Labor Pulse generated this briefing from selected source data and deterministic local summaries. It does not add numerical claims beyond the selected indicators and composites.",
+    "This briefing draws from the selected Labor Pulse data and research context. Every number comes from the cited indicators and composites.",
     "",
     "## Selected Indicators",
     ""
@@ -40,12 +41,12 @@ export async function generateBriefingMarkdown(input: BriefingInput) {
 
   lines.push("", "## Composite Signals", "");
   for (const composite of selectedComposites) {
-    lines.push(`- **${composite.name}**: ${composite.currentValue.toFixed(2)} as of ${composite.asOfDate}; interpretation: ${composite.interpretation.label}.`);
+    lines.push(`- **${composite.name}**: ${composite.currentValue.toFixed(2)} as of ${composite.asOfDate}. Interpretation: ${composite.interpretation.label}.`);
   }
 
   lines.push("", "## Qualitative Context", "");
   for (const insight of selectedInsights) {
-    lines.push(`- **${insight.title}** (${insight.sourceName}): ${insight.summary}`);
+    lines.push(`- **${insight.title}** (${insight.sourceName}): ${normalizePublicCopy(insight.summary)}`);
   }
 
   const validUnderemploymentMajors = underemploymentMajors.filter((major): major is NonNullable<typeof major> => major !== null);
@@ -72,7 +73,7 @@ export async function generateBriefingMarkdown(input: BriefingInput) {
     }
   }
 
-  lines.push("", "## Methodology", "", "All series values are pulled from the Labor Pulse store with source attribution. AI and qualitative signals are context layers, not direct official measures.");
+  lines.push("", "## Methodology", "", "All series values come from the Labor Pulse data store with source attribution. Qualitative sources provide context and are not official measures.");
 
   return {
     content: lines.join("\n"),

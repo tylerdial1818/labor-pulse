@@ -1,76 +1,80 @@
 import { INSIGHT_SOURCES } from "@/lib/insights/sources";
-import type { InsightSummary } from "@/lib/insights/types";
+import type { InsightSourceId, InsightSummary } from "@/lib/insights/types";
 
 const SEED_UPDATED_AT = "2026-05-30T08:00:00.000Z";
 
-const seedText: Record<string, Pick<InsightSummary, "title" | "publishedAt" | "summary" | "keyTakeaways">> = {
+const sourceProfiles: Record<string, Pick<InsightSummary, "title" | "publishedAt" | "summary" | "keyTakeaways">> = {
   bls_employment_situation: {
-    title: "Employment Situation qualitative watch",
-    publishedAt: "2026-05-02",
+    title: "BLS Employment Situation",
+    publishedAt: null,
     summary:
-      "The Employment Situation release is tracked for the balance between payroll growth, unemployment, participation, and wage pressure. The seed note keeps the feed usable until live parsing is configured.",
-    keyTakeaways: ["Use this source for official monthly labor market direction.", "Pair headline payroll signals with participation and wage context."]
+      "The Employment Situation is the main monthly release for payroll employment, unemployment, labor force participation, and earnings. Labor Pulse uses it to anchor the dashboard's current conditions measures.",
+    keyTakeaways: ["Read payroll growth alongside unemployment and participation.", "Expect earlier monthly estimates to be revised as BLS receives more complete reports."]
   },
   bls_jolts: {
-    title: "JOLTS labor demand watch",
-    publishedAt: "2026-05-06",
+    title: "BLS Job Openings and Labor Turnover Survey",
+    publishedAt: null,
     summary:
-      "JOLTS is tracked as a slower but useful view into labor demand, churn, and employer caution. The seed note flags openings, quits, and layoffs as the core qualitative signals.",
-    keyTakeaways: ["Openings frame employer demand.", "Quits and layoffs help separate worker confidence from employer retrenchment."]
+      "JOLTS provides a monthly view of job openings, hiring, quits, and layoffs. Labor Pulse uses it to examine labor demand and the balance between worker confidence and employer caution.",
+    keyTakeaways: ["Openings provide context on employer demand.", "Quits and layoffs help distinguish worker movement from employer retrenchment."]
   },
   beige_book: {
-    title: "Beige Book regional labor conditions watch",
-    publishedAt: "2026-04-23",
+    title: "Federal Reserve Beige Book",
+    publishedAt: null,
     summary:
-      "The Beige Book is tracked for regional anecdotes about hiring difficulty, wage pressure, and sector-specific cooling or resilience. Treat it as qualitative context, not a statistical series.",
-    keyTakeaways: ["Regional anecdotes can explain divergences in national indicators.", "Use Beige Book language to qualify, not replace, measured data."]
+      "The Beige Book gathers reports on business conditions across Federal Reserve districts. Its labor market sections add regional context on hiring, staffing, and wage pressure.",
+    keyTakeaways: ["Regional reports can help explain differences within national trends.", "Use the Beige Book as context rather than as a statistical series."]
   },
   indeed_hiring_lab: {
-    title: "Indeed Hiring Lab posting and hiring context",
-    publishedAt: "2026-05-15",
+    title: "Indeed Hiring Lab",
+    publishedAt: null,
     summary:
-      "Indeed Hiring Lab analysis is tracked for timely hiring and job-posting context. It can surface leading signals before official releases, with clear caveats around platform coverage.",
-    keyTakeaways: ["Useful for near-term hiring intent context.", "Platform coverage should be described whenever citing this source."]
+      "Indeed Hiring Lab publishes research on job postings, hiring demand, wages, and work arrangements. Its platform data can provide timely context before official releases become available.",
+    keyTakeaways: ["Use posting trends as evidence of employer interest, not completed hiring.", "Describe the limits of platform coverage when citing this research."]
   },
   brookings_hamilton_project: {
-    title: "Hamilton Project labor policy research watch",
-    publishedAt: "2026-05-10",
+    title: "The Hamilton Project",
+    publishedAt: null,
     summary:
-      "Hamilton Project research is tracked for policy interpretation around employment, wages, opportunity, and productivity. These notes are best used for framing and literature context.",
-    keyTakeaways: ["Use for policy framing rather than high-frequency monitoring.", "Connect research findings back to the deterministic dashboard indicators."]
+      "The Hamilton Project publishes policy research on employment, wages, economic opportunity, and productivity. Labor Pulse follows this work for policy framing and literature context.",
+    keyTakeaways: ["Use this source for policy analysis rather than current conditions monitoring.", "Connect research findings to the relevant source indicators before drawing conclusions."]
   },
   nber_labor_studies: {
-    title: "NBER Labor Studies research watch",
-    publishedAt: "2026-05-12",
+    title: "NBER Labor Studies",
+    publishedAt: null,
     summary:
-      "NBER Labor Studies is tracked for academic research that can deepen interpretation of labor supply, wage setting, employment, and technology exposure. Working papers require careful caveating.",
-    keyTakeaways: ["Use as research context, not a current conditions measure.", "Avoid presenting working-paper findings as settled consensus."]
+      "The NBER Labor Studies program covers employment, labor supply, wage setting, and related policy questions. Its working papers can deepen interpretation of the public indicators tracked here.",
+    keyTakeaways: ["Use working papers as research evidence rather than current conditions measures.", "Check publication status before describing a finding as settled evidence."]
   },
   linkedin_manual: {
-    title: "LinkedIn workforce reports manual watch",
-    publishedAt: "2026-05-01",
+    title: "LinkedIn Economic Graph",
+    publishedAt: null,
     summary:
-      "LinkedIn workforce content is tracked manually until an approved public feed or repeatable import is available. The feed preserves the source slot without scraping gated or unstable content.",
-    keyTakeaways: ["Manual review protects against brittle scraping.", "Useful for skills and transition context when a public report is approved."]
+      "LinkedIn Economic Graph reports cover skills, hiring, and job transitions within the platform's professional network. Labor Pulse reviews public reports when they offer useful context for workforce research.",
+    keyTakeaways: ["Treat platform findings as a view of LinkedIn members rather than the full labor force.", "Cite the specific public report used in an analysis."]
   }
 };
 
+export function getSourceProfileCopy(sourceId: InsightSourceId) {
+  return sourceProfiles[sourceId];
+}
+
 export function buildSeedInsights(): InsightSummary[] {
   return INSIGHT_SOURCES.map((source) => {
-    const seed = seedText[source.id];
+    const profile = sourceProfiles[source.id];
 
     return {
       id: `seed-${source.id}`,
       sourceId: source.id,
       sourceName: source.name,
       category: source.category,
-      title: seed.title,
+      title: profile.title,
       url: source.url,
-      publishedAt: seed.publishedAt,
+      publishedAt: profile.publishedAt,
       updatedAt: SEED_UPDATED_AT,
       tags: source.tags,
-      summary: seed.summary,
-      keyTakeaways: seed.keyTakeaways,
+      summary: profile.summary,
+      keyTakeaways: profile.keyTakeaways,
       sourceType: source.access === "manual" ? "manual" : "seed"
     };
   });

@@ -1,4 +1,5 @@
 import type { InsightSummary } from "@/types/v15";
+import { normalizePublicCopy } from "@/lib/utils/public-copy";
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(value));
@@ -17,7 +18,7 @@ export function InsightCard({ insight }: { insight: InsightSummary }) {
           {insight.title}
         </a>
       </h2>
-      <p className="mt-3 max-w-4xl font-serif text-[15.5px] leading-[1.55] text-ink">{insight.summary}</p>
+      <p className="mt-3 max-w-4xl font-serif text-[15.5px] leading-[1.55] text-ink">{normalizePublicCopy(insight.summary)}</p>
       <div className="mt-4 flex flex-wrap gap-2">
         <span className="border border-navy px-2 py-1 font-sans text-[10px] font-bold uppercase tracking-[0.10em] text-navy">
           {insight.category.replace("_", " ")}

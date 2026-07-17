@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { TimeSeriesChart } from "@/components/charts/labor-pulse-charts";
 import { TopBar } from "@/components/layout/top-bar";
+import { PageCitation } from "@/components/research/page-citation";
 import { getCompositeDetail } from "@/lib/db/queries";
 
 const interpretationGuidance: Record<string, string> = {
@@ -79,6 +80,13 @@ export default async function CompositeDetailPage({ params }: { params: Promise<
             ))}
           </div>
         </section>
+
+        <PageCitation
+          className="mt-8"
+          title={detail.definition.name}
+          path={`/composites/${detail.definition.id}`}
+          source={detail.definition.inputSeries.join(", ")}
+        />
       </main>
     </div>
   );
