@@ -16,6 +16,33 @@ let schemaReady: Promise<void> | null = null;
 let catalogSeedReady: Promise<void> | null = null;
 const headlineSeriesIds = new Set(INDICATOR_CATALOG.map((series) => series.id));
 
+const OBSERVATION_CHUNK_SIZE = 2000;
+
+export function toObservationColumns(observations: ObservationPoint[], chunkSize = OBSERVATION_CHUNK_SIZE) {
+  const chunks: Array<{ seriesIds: string[]; geographies: string[]; dates: string[]; values: Array<number | null> }> = [];
+
+  for (let start = 0; start < observations.length; start += chunkSize) {
+    const slice = observations.slice(start, start + chunkSize);
+    chunks.push({
+      seriesIds: slice.map((point) => point.seriesId),
+      geographies: slice.map((point) => point.geography),
+      dates: slice.map((point) => point.date),
+      values: slice.map((point) => point.value)
+    });
+  }
+
+  return chunks;
+}
+
+export function toCompositeColumns(observations: CompositeObservation[]) {
+  return {
+    compositeIds: observations.map((point) => point.compositeId),
+    geographies: observations.map((point) => point.geography),
+    dates: observations.map((point) => point.date),
+    values: observations.map((point) => point.value)
+  };
+}
+
 export function isRelationalStoreConfigured() {
   return Boolean(process.env.DATABASE_URL);
 }
@@ -342,10 +369,18 @@ export async function applyRelationalFredRefresh(
 
   for (const result of results) {
     if (result.observations) {
-      for (const point of result.observations) {
+      // One statement per chunk instead of one round trip per row. Row-by-row
+      // inserts over the HTTP driver could not finish inside the cron's time
+      // limit once segment series were added, which left composites stale.
+      for (const chunk of toObservationColumns(result.observations)) {
         await sql`
           insert into observations (series_id, geography, date, value)
-          values (${point.seriesId}, ${point.geography}, ${point.date}, ${point.value})
+          select * from unnest(
+            ${chunk.seriesIds}::text[],
+            ${chunk.geographies}::text[],
+            ${chunk.dates}::date[],
+            ${chunk.values}::numeric[]
+          )
           on conflict (series_id, geography, date) do update set value = excluded.value
         `;
       }
@@ -363,15 +398,23 @@ export async function applyRelationalFredRefresh(
 export async function replaceRelationalCompositeObservations(observations: CompositeObservation[]) {
   await seedRelationalCatalog();
   const sql = getSql();
-  await sql`delete from composite_observations`;
+  const columns = toCompositeColumns(observations);
 
-  for (const point of observations) {
-    await sql`
+  // Delete and insert in one transaction so a failed write never leaves the
+  // table empty or half filled.
+  await sql.transaction([
+    sql`delete from composite_observations`,
+    sql`
       insert into composite_observations (composite_id, geography, date, value)
-      values (${point.compositeId}, ${point.geography}, ${point.date}, ${point.value})
+      select * from unnest(
+        ${columns.compositeIds}::text[],
+        ${columns.geographies}::text[],
+        ${columns.dates}::date[],
+        ${columns.values}::numeric[]
+      )
       on conflict (composite_id, geography, date) do update set value = excluded.value
-    `;
-  }
+    `
+  ]);
 }
 
 export async function readRelationalCompositeObservations() {

@@ -4,6 +4,10 @@ import type { Route } from "next";
 import { TopBar } from "@/components/layout/top-bar";
 import { listBriefings } from "@/lib/db/queries";
 
+// Read the store on each request. Static prerendering froze this page at
+// its last deploy, so it showed months-old data.
+export const dynamic = "force-dynamic";
+
 export default async function BriefingsPage() {
   const briefings = await listBriefings();
 

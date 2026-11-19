@@ -34,8 +34,8 @@ npm run build
 2. Set framework preset to Next.js.
 3. Add environment variables for preview and production.
 4. Confirm public app URL and domain for each environment.
-5. Configure Vercel Cron: `0 8 * * *` for `/api/cron/refresh-fred`.
-6. Optional v1.5 cron: configure `0 9 * * *` for `/api/cron/refresh-insights` after confirming cron quota/tier.
+5. Vercel Cron is configured in `vercel.json`: `0 8 * * *` for `/api/cron/refresh-fred` and `0 9 * * *` for `/api/cron/refresh-insights`. Both require `CRON_SECRET` and return 401 without it.
+6. The `Data freshness` GitHub Action (`.github/workflows/freshness.yml`) calls `/api/health/freshness` at 10:00 UTC and fails when any dataset is past its release-schedule limit. GitHub emails the repository owner about failed scheduled runs.
 7. Run the relational catalog/schema initializer by invoking a route or script that calls `seedCatalog()` with production `DATABASE_URL`.
 8. Run FRED refresh once with `Authorization: Bearer $CRON_SECRET` so normalized `series`, `observations`, and `refresh_log` are populated.
 9. Run `scripts/ingest-eloundou-exposure.ts` with production `DATABASE_URL` to populate `ai_exposure_scores`.

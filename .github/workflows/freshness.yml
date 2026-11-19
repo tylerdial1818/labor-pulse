@@ -1,0 +1,24 @@
+name: Data freshness
+
+# Checks every public dataset against its release schedule once a day, two
+# hours after the FRED and Research Monitor crons. A stale dataset fails the
+# run, and GitHub emails the repository owner about failed scheduled runs.
+on:
+  schedule:
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check freshness report
+        env:
+          SITE_URL: https://www.laborpulse.org
+        run: |
+          status=$(curl -sS -o report.json -w "%{http_code}" "$SITE_URL/api/health/freshness")
+          jq -r '.checks[] | select(.status != "current") | "\(.status): \(.label) (latest \(.latestDate // "none"), \(.ageDays // "-") days old, limit \(.maxAgeDays))"' report.json || cat report.json
+          if [ "$status" != "200" ]; then
+            echo "::error::Freshness check returned HTTP $status"
+            exit 1
+          fi

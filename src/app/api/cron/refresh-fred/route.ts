@@ -1,34 +1,45 @@
 import { NextResponse } from "next/server";
 
+import { isCronAuthorized } from "@/lib/cron/auth";
 import { recomputeComposites } from "@/lib/db/queries";
 import { refreshFredIndicators } from "@/lib/fred/ingest";
 
 export const dynamic = "force-dynamic";
-
-function isAuthorized(request: Request) {
-  const cronSecret = process.env.CRON_SECRET;
-  const authorization = request.headers.get("authorization");
-
-  if (!cronSecret) {
-    return false;
-  }
-
-  return authorization === `Bearer ${cronSecret}`;
-}
+// The segment refresh covers a few hundred FRED series. Allow the full
+// function window so it can finish after the headline layer is saved.
+export const maxDuration = 300;
 
 export async function GET(request: Request) {
-  if (!isAuthorized(request)) {
+  if (!isCronAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const summary = await refreshFredIndicators();
-    const compositeObservations = summary.status === "failed" ? [] : await recomputeComposites();
-    const status = summary.status === "failed" ? 500 : 200;
+    // 1. Headline indicators, then composites, so the dashboard is current even
+    //    if the larger segment refresh later runs out of time.
+    const core = await refreshFredIndicators({ scope: "core" });
+    const compositeObservations = core.status === "failed" ? [] : await recomputeComposites();
 
-    return NextResponse.json({ ...summary, compositesRecomputed: compositeObservations.length }, { status });
+    // 2. Breakdown series for indicator detail pages.
+    const segments = await refreshFredIndicators({ scope: "segments" });
+
+    const status = core.status === "failed" ? 500 : 200;
+
+    return NextResponse.json(
+      {
+        source: "FRED",
+        status: core.status === "success" && segments.status === "success" ? "success" : core.status === "failed" ? "failed" : "partial",
+        startedAt: core.startedAt,
+        completedAt: segments.completedAt,
+        core: { status: core.status, attempts: core.attempts.length },
+        segments: { status: segments.status, attempts: segments.attempts.length },
+        compositesRecomputed: compositeObservations.length,
+        attempts: [...core.attempts, ...segments.attempts].filter((attempt) => attempt.status !== "success")
+      },
+      { status }
+    );
   } catch (error) {
-    console.error("FRED cron refresh failed before series attempts", {
+    console.error("FRED cron refresh failed", {
       message: error instanceof Error ? error.message : "Unknown cron refresh error."
     });
 
@@ -36,7 +47,7 @@ export async function GET(request: Request) {
       {
         source: "FRED",
         status: "failed",
-        message: "FRED refresh failed before series attempts."
+        message: "FRED refresh failed."
       },
       { status: 500 }
     );

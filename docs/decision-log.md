@@ -14,6 +14,14 @@ Use this lightweight ADR-style log for architecture, data, security, deployment,
 
 ## Decisions
 
+### 2026-11-19: Batch production writes and monitor freshness
+
+- **Decision:** Write FRED observations and composites with batched `unnest` statements, split the FRED cron into headline, composite, and segment steps, schedule the Research Monitor cron, render AI Impact and Briefings per request, and add a public freshness report checked daily by a GitHub Action.
+- **Rationale:** After v1.6 added about 260 segment series, the cron issued tens of thousands of one-row inserts and could not finish, so composites stopped at April and May 2026. The insights cron was never scheduled, and AI Impact and Briefings were prerendered at build time, so they froze at the last deploy.
+- **Alternatives considered:** A separate segment cron, a paid monitoring service, or email alerts from the app.
+- **Consequences:** The dashboard and composites refresh before segment data. Stale data now fails a scheduled GitHub run instead of going unnoticed. The cron routes now refuse requests when `CRON_SECRET` is missing.
+- **Owner:** Architect/Integrator Agent
+
 ### 2026-07-17: Present Labor Pulse as a maintained public research service
 
 - **Decision:** Use a mission-led Labor Pulse voice across the product, expand `/sources` into Data & Methods, reframe `/insights` as the Research Monitor, add page citations, and credit Dialed Intelligence on About and in the global footer.

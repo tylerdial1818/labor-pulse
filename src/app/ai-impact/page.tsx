@@ -3,6 +3,10 @@ import { getAiExposureScores, getDashboardData } from "@/lib/db/queries";
 import { getInsightFeed } from "@/lib/insights/queries";
 import { normalizePublicCopy } from "@/lib/utils/public-copy";
 
+// Read the store on each request. Static prerendering froze this page at
+// its last deploy, so it showed months-old data.
+export const dynamic = "force-dynamic";
+
 export default async function AiImpactPage() {
   const [dashboard, exposureScores, insights] = await Promise.all([
     getDashboardData(),
