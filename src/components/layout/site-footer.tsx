@@ -5,6 +5,7 @@ import { appConfig } from "@/config/app";
 
 const footerLinks = [
   { href: "/", label: "Dashboard" },
+  { href: "/research", label: "Research" },
   { href: "/insights", label: "Research Monitor" },
   { href: "/ai-impact", label: "AI Impact" },
   { href: "/underemployment", label: "Underemployment" },
