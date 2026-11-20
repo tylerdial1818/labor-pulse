@@ -5,8 +5,7 @@ import { applyFredRefresh } from "@/lib/db/queries";
 import type { FredRefreshResult } from "@/lib/db/queries";
 import { createFredClient } from "@/lib/fred/client";
 import type { FredClient } from "@/lib/fred/client";
-import { getAllMetricSegmentDefinitions } from "@/lib/segments/catalog";
-import { getFredIndicators } from "@/server/indicator-catalog";
+import { selectRefreshSeries, type FredRefreshScope } from "@/lib/fred/refresh-scope";
 import type { FredRefreshSummary, RefreshAttemptSummary, RefreshStatus } from "@/server/labor-types";
 
 // v1.6 requires at least 10 years of visible history for every metric. Pull one
@@ -36,22 +35,19 @@ function summarizeStatus(attempts: RefreshAttemptSummary[]): RefreshStatus {
   return "failed";
 }
 
-export async function refreshFredIndicators(input: { db?: DbClient; fred?: FredClient } = {}): Promise<FredRefreshSummary> {
+export async function refreshFredIndicators(
+  input: { db?: DbClient; fred?: FredClient; scope?: FredRefreshScope } = {}
+): Promise<FredRefreshSummary> {
   void input.db;
   const startedAt = new Date().toISOString();
   const fred = input.fred ?? createFredClient();
   const observationStart = observationStartDate();
 
   // Fetch series sequentially to stay within FRED's burst rate limit (the
-  // client retries transient 429/5xx with backoff). Payloads are small, so the
-  // whole refresh still finishes in a few seconds.
+  // client retries transient 429/5xx with backoff).
   const results: Array<FredRefreshResult & { observationsFetched: number }> = [];
 
-  const refreshSeries = [
-    ...getFredIndicators().map((indicator) => ({ id: indicator.id, geography: "US" })),
-    ...getAllMetricSegmentDefinitions().map((segment) => ({ id: segment.seriesId, geography: "US" }))
-  ];
-  const uniqueRefreshSeries = Array.from(new Map(refreshSeries.map((series) => [series.id, series])).values());
+  const uniqueRefreshSeries = selectRefreshSeries(input.scope ?? "all");
 
   for (const indicator of uniqueRefreshSeries) {
     const attemptStartedAt = new Date().toISOString();

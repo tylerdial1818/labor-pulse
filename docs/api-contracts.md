@@ -263,7 +263,7 @@ Invalid ids return `400`; unknown ids return `404`.
 
 ### Endpoint: `GET /api/cron/refresh-fred`
 
-Service-only Vercel Cron route protected by `Authorization: Bearer $CRON_SECRET`. Refreshes all FRED-sourced indicators, validates responses with Zod, upserts observations, updates series freshness, writes `refresh_log`, and returns a structured summary. Partial failures must not erase last-good dashboard data.
+Service-only Vercel Cron route protected by `Authorization: Bearer $CRON_SECRET` (`maxDuration` 300 seconds). Runs in three steps: headline indicators, then composite recomputation, then breakdown segment series, so the dashboard and composites stay current even if the larger segment step runs long. Observations and composites are written with batched `unnest` statements rather than one statement per row. Refreshes all FRED-sourced indicators, validates responses with Zod, upserts observations, updates series freshness, writes `refresh_log`, and returns a structured summary. Partial failures must not erase last-good dashboard data.
 
 When `DATABASE_URL` is configured, refresh writes to normalized Neon tables (`series`, `observations`, `refresh_log`) after ensuring schema/catalog existence. Local development without relational data falls back to the JSON store. v1.6 refreshes 11 years of history so detail pages, composites, dashboard sparklines, and exports can display at least a 10-year window.
 
@@ -273,7 +273,11 @@ Public feed endpoint. Query params: `category`, `tags`, `since`, `limit`, `sort`
 
 ### Endpoint: `GET /api/cron/refresh-insights`
 
-Optional service cron route. Protected by `Authorization: Bearer $CRON_SECRET` when `CRON_SECRET` is set. Fetches configured qualitative sources, summarizes new items with OpenAI when configured, and falls back to deterministic summaries.
+Scheduled daily at 09:00 UTC. Protected by `Authorization: Bearer $CRON_SECRET` and closed (401) when no secret is configured. Fetches configured qualitative sources, summarizes new items with OpenAI when configured, and falls back to deterministic summaries.
+
+### Endpoint: `GET /api/health/freshness`
+
+Public, read-only freshness report. Compares the latest date of each headline indicator, composite, the Research Monitor refresh, and NY Fed underemployment data with a release-schedule limit (`daily` 3 days, `weekly` 14, `monthly` 100, `quarterly` 200). Returns `{ checkedAt, ok, staleCount, checks[] }` with HTTP 200 when everything is current and 503 when anything is stale or missing.
 
 ### Endpoint: `GET /api/composites/[id]`
 
