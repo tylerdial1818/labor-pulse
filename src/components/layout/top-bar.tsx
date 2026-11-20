@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils/cn";
 
 const navItems = [
   { href: "/", label: "Dashboard" },
+  { href: "/research", label: "Research" },
   { href: "/insights", label: "Research Monitor" },
   { href: "/ai-impact", label: "AI Impact" },
   { href: "/underemployment", label: "Underemployment" },
