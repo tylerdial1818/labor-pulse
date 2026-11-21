@@ -32,6 +32,7 @@ Every client-facing metric must have a clear owner, formula, source, grain, and 
 | All graduate underemployment rate | Share of employed college graduates working in occupations classified as non-college jobs | NY Fed Labor Market for Recent College Graduates | Includes college graduates outside the recent graduate age band |
 | Major wage premium | Median wage in college-level jobs minus median wage in non-college jobs for a major | NY Fed outcomes by major | Wage premium is not a causal return to the major |
 | Common online major flag | Major appears in the curated common online and competency-based program list | Labor Pulse curation from public program catalogs | Program category flag does not name or evaluate specific universities |
+| Underemployment measures comparison (home chart) | Three bars on one 0 to max scale: recent graduate underemployment rate, U-6 (`U6RATE`), unemployment rate (`UNRATE`), each at its latest observation. Bar length is value divided by the largest available value. Missing values show "Not available yet" and no bar | NY Fed recent graduate data via the underemployment store, BLS via FRED | Definitions and populations differ, so the bars are not directly comparable. The caveat stays visible under the chart. Each bar shows its own source and as-of date, which can differ by months |
 
 ## Indicator Catalog
 

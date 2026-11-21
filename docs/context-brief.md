@@ -54,6 +54,7 @@ Labor Pulse is a continuously maintained public US labor market research service
 - Public copy does not expose model names, generation labels, seed labels, or other implementation terms. Site-authored copy uses no em dashes or semicolons.
 - v1.6 backend read models expose trailing 10-year histories where stored data exists. Detail pages expose all supported industry, gender, age, and state breakdowns for the selected metric when explicit public FRED mappings exist.
 - The design source of truth is `/Users/tylerdial/Downloads/design_handoff_laborpulse_dashboard`, especially `README.md`, `tokens.css`, and screenshots.
+- The home page follows the scroll-led Ledger handoff in `docs/design-handoff/` (option A2, approved 2026-11-21): home-only masthead, sticky nav with a scroll progress line on every page, featured underemployment analysis with a three-measure chart, and a scroll-snap card row inside the indicator tabs. See the decision log for the six approved deviations and `docs/design-system.md` for the motion rules.
 
 ## Deployment Target
 

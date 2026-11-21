@@ -54,12 +54,9 @@ export function DashboardContent({ data }: { data: LaborDashboardData }) {
 
   return (
     <>
-      <PageHeader />
       <CompositesStrip composites={data.composites ?? []} />
-      <section aria-labelledby="dashboard-tabs">
-        <h2 id="dashboard-tabs" className="sr-only">
-          Indicator groups
-        </h2>
+      <section aria-labelledby="indicator-dashboard" className="pt-4">
+        <PageHeader />
         <div className="max-[620px]:hidden">
           <div role="tablist" aria-label="Labor market indicator groups" className="flex gap-1 border-b border-rule">
             {data.categories.map((category) => (
@@ -104,7 +101,7 @@ export function DashboardContent({ data }: { data: LaborDashboardData }) {
         </label>
         <p className="mb-[22px] mt-[14px] font-serif text-[14.5px] italic leading-[1.4] text-sub">{activeCategory.blurb}</p>
         {activeCategory.id === "tech_impact" ? <MethodologyNote /> : null}
-        <IndicatorGrid indicators={activeCategory.indicators} />
+        <IndicatorRow label={activeCategory.label} indicators={activeCategory.indicators} />
       </section>
     </>
   );
@@ -112,9 +109,11 @@ export function DashboardContent({ data }: { data: LaborDashboardData }) {
 
 function PageHeader() {
   return (
-    <header className="flex flex-wrap items-end justify-between gap-5 py-[26px]">
+    <div className="flex flex-wrap items-end justify-between gap-5 py-[26px]">
       <div>
-        <h2 className="font-serif text-2xl font-semibold text-ink">Indicator Dashboard</h2>
+        <h2 id="indicator-dashboard" className="font-serif text-[30px] font-semibold tracking-[-0.01em] text-ink md:text-[36px]">
+          Indicator Dashboard
+        </h2>
         <p className="mt-2 font-serif text-base italic leading-[1.4] text-sub">
           Every indicator we track: current conditions, <Term id="leading-indicator">leading signals</Term>, and measures of technological change.
         </p>
@@ -129,7 +128,7 @@ function PageHeader() {
           Color shows the change&apos;s direction for the labor market. Arrows show whether the value rose or fell.
         </p>
       </div>
-    </header>
+    </div>
   );
 }
 
@@ -169,13 +168,24 @@ function MethodologyNote() {
   );
 }
 
-function IndicatorGrid({ indicators }: { indicators: IndicatorCardViewModel[] }) {
+/** Active tab's cards in a horizontal snap row; focusable so arrow keys can scroll it. */
+function IndicatorRow({ label, indicators }: { label: string; indicators: IndicatorCardViewModel[] }) {
   return (
-    <div className="grid border-l border-t border-rule sm:grid-cols-2 xl:grid-cols-3">
-      {indicators.map((indicator) => (
-        <IndicatorCard key={indicator.id} indicator={indicator} />
-      ))}
-    </div>
+    <>
+      <p className="mb-3 font-sans text-[12.5px] text-sub">
+        {indicators.length} indicators in this group. Scroll sideways to see them all.
+      </p>
+      <div
+        role="region"
+        aria-label={`${label} indicator cards`}
+        tabIndex={0}
+        className="lp-snap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+      >
+        {indicators.map((indicator) => (
+          <IndicatorCard key={indicator.id} indicator={indicator} />
+        ))}
+      </div>
+    </>
   );
 }
 
@@ -183,7 +193,7 @@ function IndicatorCard({ indicator }: { indicator: IndicatorCardViewModel }) {
   return (
     <Link
       href={`/indicators/${indicator.id}` as Route}
-      className="group flex min-h-[252px] flex-col border-b border-r border-rule bg-paper px-5 py-[18px] transition-colors hover:bg-[var(--lp-navy-tint)] hover:shadow-[inset_0_2px_0_var(--lp-navy)] focus-visible:bg-[var(--lp-navy-tint)] focus-visible:shadow-[inset_0_2px_0_var(--lp-navy)]"
+      className="group flex min-h-[252px] flex-col border border-rule bg-panel px-5 py-[18px] transition-colors hover:bg-[var(--lp-navy-tint)] hover:shadow-[inset_0_2px_0_var(--lp-navy)] focus-visible:bg-[var(--lp-navy-tint)] focus-visible:shadow-[inset_0_2px_0_var(--lp-navy)]"
     >
       <div className="flex items-start justify-between gap-4">
         <h3 className="max-w-[260px] font-serif text-[16.5px] font-semibold leading-[1.2] tracking-[-0.005em] text-ink">{indicator.title}</h3>
