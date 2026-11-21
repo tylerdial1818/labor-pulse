@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import { formatSourceDate } from "@/components/ai-impact/format";
-import { AI_CHAIN, EVIDENCE_NO_EFFECT, EVIDENCE_SLOWDOWN } from "@/lib/ai-impact/content";
+import { AI_CHAIN, AI_PAGE_SECTIONS, EVIDENCE_NO_EFFECT, EVIDENCE_SLOWDOWN } from "@/lib/ai-impact/content";
 import { exposureDistribution, filterExposureScores } from "@/lib/ai-impact/exposure";
 import { splitFeatured } from "@/lib/ai-impact/featured";
 import { LANDMARK_PAPERS, SCORECARD } from "@/lib/ai-impact/papers";
 import { AI_SIGNALS, quarterLabel, summarizeSignal } from "@/lib/ai-impact/signals";
 import { getGlossaryTerm } from "@/lib/glossary/terms";
+import { getTopic } from "@/lib/questions/topics";
 import type { AiExposureScore } from "@/types/v15";
 
 const signal = (id: string) => {
@@ -130,6 +131,12 @@ describe("AI Impact content integrity", () => {
     for (const id of ["ai-exposure", "observed-exposure", "augmentation-vs-automation", "early-career-worker", "job-finding-rate", "total-factor-productivity", "labor-share", "difference-in-differences"]) {
       expect(getGlossaryTerm(id), id).toBeDefined();
     }
+  });
+
+  it("has a section for every chain step and every AI topic-hub question", () => {
+    const anchors = new Set(AI_PAGE_SECTIONS.map((section) => section.id));
+    for (const step of AI_CHAIN) expect(anchors.has(step.anchor), step.anchor).toBe(true);
+    for (const question of getTopic("ai").questions) expect(anchors.has(question.id), question.id).toBe(true);
   });
 
   it("formats day and month-only source dates", () => {

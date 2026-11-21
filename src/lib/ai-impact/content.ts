@@ -4,15 +4,30 @@
 // Live numbers come from FRED via signals.ts, never from this file. When a
 // study is revised, update its entry and its `checked` date together.
 
-export type ChainStep = { id: string; label: string; question: string };
+/** `anchor` is the page section for the step; the topic hub links to the same anchors (src/lib/questions/topics.ts). */
+export type ChainStep = { id: string; anchor: string; label: string; question: string };
 
 /** The page's spine: each landmark paper makes a claim about one of these links. */
 export const AI_CHAIN: ChainStep[] = [
-  { id: "capability", label: "What AI can do", question: "Which jobs could AI change?" },
-  { id: "adoption", label: "Who uses it", question: "Who is using AI?" },
-  { id: "tasks", label: "Which tasks change", question: "Is AI replacing tasks or helping with them?" },
-  { id: "jobs", label: "Jobs and wages", question: "Are jobs and wages changing?" },
-  { id: "economy", label: "The economy", question: "Will AI make the economy more productive, and who gains?" }
+  { id: "capability", anchor: "exposure", label: "What AI can do", question: "Which jobs could AI change?" },
+  { id: "adoption", anchor: "usage", label: "Who uses it", question: "Who is using AI?" },
+  { id: "tasks", anchor: "tasks", label: "Which tasks change", question: "Is AI replacing tasks or helping with them?" },
+  { id: "jobs", anchor: "employment", label: "Jobs and wages", question: "Are jobs and wages changing?" },
+  { id: "economy", anchor: "economy", label: "The economy", question: "Will AI make the economy more productive, and who gains?" }
+];
+
+/** Section anchors on /ai-impact, in page order. Topic hub questions link to these ids. */
+export const AI_PAGE_SECTIONS = [
+  { id: "employment", label: "Is AI changing jobs yet?" },
+  { id: "exposure", label: "Which jobs are exposed?" },
+  { id: "usage", label: "Who is using AI?" },
+  { id: "tasks", label: "Replacing or helping?" },
+  { id: "economy", label: "The bigger economy" },
+  { id: "predictions", label: "What economists predict" },
+  { id: "scorecard", label: "Predictions scorecard" },
+  { id: "disagree", label: "Why studies disagree" },
+  { id: "latest", label: "Latest research" },
+  { id: "methods", label: "Methods and limits" }
 ];
 
 export const SHORT_ANSWER = {

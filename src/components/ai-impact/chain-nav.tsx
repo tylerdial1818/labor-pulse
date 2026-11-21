@@ -11,7 +11,7 @@ export function ChainNav() {
       <ol className="mt-4 grid gap-2 sm:grid-cols-5">
         {AI_CHAIN.map((step, index) => (
           <li key={step.id}>
-            <a href={`#${step.id}`} className="flex h-full flex-col border border-rule px-3 py-3 hover:bg-[var(--lp-navy-tint)]">
+            <a href={`#${step.anchor}`} className="flex h-full flex-col border border-rule px-3 py-3 hover:bg-[var(--lp-navy-tint)]">
               <span className="font-sans text-[10px] font-bold uppercase tracking-[0.12em] text-navy">Step {index + 1}</span>
               <span className="mt-1 font-serif text-[16px] font-semibold leading-tight text-ink">{step.label}</span>
               <span className="mt-1 font-sans text-xs leading-[1.35] text-sub">{step.question}</span>

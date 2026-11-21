@@ -58,7 +58,6 @@ export function WagePremiumScatter({
               type="number"
               dataKey="underemploymentRate"
               name="Underemployment rate"
-              unit={underemploymentUnit}
               tickLine={false}
               axisLine={{ stroke: "var(--lp-hair)" }}
               tick={{ fill: "var(--lp-sub)", fontSize: 11 }}
@@ -68,7 +67,6 @@ export function WagePremiumScatter({
               type="number"
               dataKey="wagePremium"
               name="Wage premium"
-              unit={wagePremiumUnit}
               tickLine={false}
               axisLine={{ stroke: "var(--lp-hair)" }}
               tick={{ fill: "var(--lp-sub)", fontSize: 11 }}
@@ -93,7 +91,9 @@ export function WagePremiumScatter({
       </div>
       <figcaption className="mt-2 flex flex-wrap gap-x-4 gap-y-2 font-sans text-xs text-sub">
         <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 bg-navy" /> Majors</span>
-        <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 bg-down" /> Highlighted majors</span>
+        {highlightedData.length > 0 ? (
+          <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 bg-down" /> Highlighted majors</span>
+        ) : null}
       </figcaption>
     </figure>
   );
@@ -101,6 +101,7 @@ export function WagePremiumScatter({
 
 function formatNumber(value: number, unit?: string) {
   const formatted = new Intl.NumberFormat("en", { maximumFractionDigits: Math.abs(value) < 10 ? 1 : 0 }).format(value);
+  if (unit === "$") return `$${formatted}`;
   return unit ? `${formatted}${unit}` : formatted;
 }
 

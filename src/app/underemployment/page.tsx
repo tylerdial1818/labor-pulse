@@ -16,6 +16,9 @@ import { WagePremiumScatter } from "@/components/underemployment/wage-premium-sc
 import { TopBar } from "@/components/layout/top-bar";
 import { PageCitation } from "@/components/research/page-citation";
 import { getUnderemploymentPageData } from "@/lib/underemployment/calculate";
+import { Term } from "@/components/glossary/term";
+import { answerGraduateUnderemployment, answerUnderemploymentWithExperience } from "@/lib/questions/answers";
+import { getTopic } from "@/lib/questions/topics";
 import { definitionBlocks, underemploymentSections } from "@/lib/underemployment/prose";
 
 export const dynamic = "force-dynamic";
@@ -72,6 +75,8 @@ export default async function UnderemploymentPage() {
             <DataAsOfBadge source={source} asOf={data.headline.asOfDate} href={sourceHref} />
           </div>
         </header>
+
+        <ShortAnswers recentGrads={data.headline.recentGrads} allGrads={data.headline.allGrads} asOfDate={data.headline.asOfDate} />
 
         <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
           <aside className="lg:sticky lg:top-5 lg:self-start">
@@ -313,5 +318,40 @@ export default async function UnderemploymentPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+function ShortAnswers({ recentGrads, allGrads, asOfDate }: { recentGrads: number; allGrads: number; asOfDate: string }) {
+  const education = getTopic("education");
+  const answers = [
+    { id: "degree-jobs", answer: answerGraduateUnderemployment(recentGrads, asOfDate) },
+    { id: "experience", answer: answerUnderemploymentWithExperience(recentGrads, allGrads, asOfDate) }
+  ];
+
+  return (
+    <section aria-labelledby="short-answers" className="border-b border-rule py-6">
+      <h2 id="short-answers" className="font-sans text-[10.5px] font-bold uppercase tracking-[0.14em] text-navy">
+        Short answers
+      </h2>
+      <dl className="mt-3 grid gap-5 md:grid-cols-2">
+        {answers.map(({ id, answer }) => {
+          const question = education.questions.find((item) => item.id === id);
+          if (!question || !answer) return null;
+          return (
+            <div key={id} className="border-l-[3px] border-navy pl-4">
+              <dt className="font-serif text-[18px] font-semibold leading-snug text-ink">{question.question}</dt>
+              <dd className="mt-1 font-serif text-[16px] leading-[1.5] text-ink">{answer.text}</dd>
+            </div>
+          );
+        })}
+      </dl>
+      <p className="mt-4 font-sans text-[13px] text-sub">
+        New to this topic? Start with what <Term id="skills-underemployment">skills underemployment</Term> means, or see{" "}
+        <a href={education.href} className="font-semibold text-navy hover:underline">
+          all education questions
+        </a>
+        .
+      </p>
+    </section>
   );
 }

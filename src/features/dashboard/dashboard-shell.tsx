@@ -1,7 +1,7 @@
 import { TopBar } from "@/components/layout/top-bar";
-import { FeaturedAnalysisCard } from "@/components/dashboard/featured-analysis-card";
+import { HomeQuestions } from "@/components/dashboard/home-questions";
 import { DashboardContent } from "@/features/dashboard/dashboard-content";
-import { getCurrentHeadlineRates } from "@/lib/underemployment/calculate";
+import { answerJobMarketNow } from "@/lib/questions/answers";
 import { getDashboardData } from "@/server/dashboard-data";
 
 function formatPublicDate(value: string) {
@@ -14,8 +14,11 @@ function formatPublicDate(value: string) {
 }
 
 export async function DashboardShell() {
-  const [data, underemploymentHeadline] = await Promise.all([getDashboardData(), getCurrentHeadlineRates()]);
+  const data = await getDashboardData();
   const indicatorCount = data.categories.reduce((count, category) => count + category.indicators.length, 0);
+  const unemployment = data.categories.flatMap((category) => category.indicators).find((indicator) => indicator.id === "UNRATE");
+  const tightness = data.composites?.find((composite) => composite.id === "labor_tightness");
+  const rightNow = answerJobMarketNow(unemployment, tightness);
 
   return (
     <div className="min-h-screen bg-paper text-ink">
@@ -27,7 +30,7 @@ export async function DashboardShell() {
             U.S. Labor Market Monitor
           </h1>
           <p className="mt-3 max-w-3xl font-serif text-base italic leading-[1.4] text-sub">
-            Labor Pulse is a continuously maintained public research service for understanding change in the U.S. labor market. It brings official indicators, transparent composite measures, and careful analysis into one citable workspace for policy researchers and workforce leaders.
+            Clear answers to questions about jobs, wages, education, and AI, built from official data. Labor Pulse is a continuously maintained public research service: every number links to its source, and the full indicator dashboard and methods are here for researchers.
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-sans text-[10.5px] font-bold uppercase tracking-[0.14em] text-sub">
             <span>{indicatorCount} core indicators</span>
@@ -43,7 +46,7 @@ export async function DashboardShell() {
             )}
           </div>
         </section>
-        <FeaturedAnalysisCard recentRate={underemploymentHeadline.recentGrads} asOfDate={underemploymentHeadline.asOfDate} />
+        <HomeQuestions rightNow={rightNow} />
         <DashboardContent data={data} />
       </main>
     </div>

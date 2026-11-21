@@ -14,7 +14,7 @@ import { TopBar } from "@/components/layout/top-bar";
 import { PageCitation } from "@/components/research/page-citation";
 import { PageToc } from "@/components/underemployment/page-toc";
 import { UnderemploymentSection as Section } from "@/components/underemployment/section";
-import { DISAGREEMENT_REASONS, EVIDENCE_NO_EFFECT, EVIDENCE_SLOWDOWN, FIRM_ADOPTION } from "@/lib/ai-impact/content";
+import { AI_PAGE_SECTIONS, DISAGREEMENT_REASONS, EVIDENCE_NO_EFFECT, EVIDENCE_SLOWDOWN, FIRM_ADOPTION } from "@/lib/ai-impact/content";
 import { ELOUNDOU_METHODOLOGY_NOTE } from "@/lib/ai-impact/eloundou";
 import { exposureDistribution } from "@/lib/ai-impact/exposure";
 import { getFeaturedResearch } from "@/lib/ai-impact/featured";
@@ -30,19 +30,6 @@ export const metadata: Metadata = {
   description:
     "What the data and leading economists say about AI's effect on jobs and wages, with live adoption data, an occupation exposure lookup, and a scorecard of predictions."
 };
-
-const SECTIONS = [
-  { id: "evidence", label: "Is AI changing jobs yet?" },
-  { id: "capability", label: "Which jobs are exposed?" },
-  { id: "adoption", label: "Who is using AI?" },
-  { id: "tasks", label: "Replacing or helping?" },
-  { id: "economy", label: "The bigger economy" },
-  { id: "predictions", label: "What economists predict" },
-  { id: "scorecard", label: "Predictions scorecard" },
-  { id: "disagree", label: "Why studies disagree" },
-  { id: "latest", label: "Latest research" },
-  { id: "methods", label: "Methods and limits" }
-];
 
 const CURATION_GUIDE_URL = `${RESEARCH_REPO_URL}/blob/main/docs/curating-featured-research.md`;
 
@@ -69,12 +56,12 @@ export default async function AiImpactPage() {
 
         <div className="mt-6 grid gap-8 lg:grid-cols-[240px_1fr]">
           <aside className="lg:sticky lg:top-5 lg:self-start">
-            <PageToc items={SECTIONS} />
+            <PageToc items={AI_PAGE_SECTIONS} />
           </aside>
 
           <article className="min-w-0">
             <Section
-              id="evidence"
+              id="employment"
               title="Is AI changing jobs yet?"
               description="Researchers agree there has been no broad wave of AI job losses. They disagree about an early warning sign: slower hiring of young workers in the jobs most exposed to AI."
             >
@@ -87,7 +74,7 @@ export default async function AiImpactPage() {
             </Section>
 
             <Section
-              id="capability"
+              id="exposure"
               eyebrow="Step 1 · What AI can do"
               title="Which jobs are most exposed to AI?"
               description="Exposure measures how much of a job's work an AI language model could speed up. It is a measure of potential, not a forecast of job loss."
@@ -103,7 +90,7 @@ export default async function AiImpactPage() {
             </Section>
 
             <Section
-              id="adoption"
+              id="usage"
               eyebrow="Step 2 · Who uses it"
               title="Who is using AI?"
               description="Worker surveys and business surveys answer different questions, so their numbers differ. Both are shown here."
