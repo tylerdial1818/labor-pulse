@@ -114,8 +114,10 @@ function PageHeader() {
   return (
     <header className="flex flex-wrap items-end justify-between gap-5 py-[26px]">
       <div>
-        <h2 className="font-serif text-2xl font-semibold text-ink">Labor Market Dashboard</h2>
-        <p className="mt-2 font-serif text-base italic leading-[1.4] text-sub">Current conditions, leading signals, and measures of technological change.</p>
+        <h2 className="font-serif text-2xl font-semibold text-ink">Indicator Dashboard</h2>
+        <p className="mt-2 font-serif text-base italic leading-[1.4] text-sub">
+          Every indicator we track: current conditions, <Term id="leading-indicator">leading signals</Term>, and measures of technological change.
+        </p>
       </div>
       <div aria-label="Color legend" className="font-sans">
         <div className="flex flex-wrap items-center gap-4 text-xs text-sub">
