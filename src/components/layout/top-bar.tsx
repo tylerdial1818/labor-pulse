@@ -15,6 +15,7 @@ const navItems = [
   { href: "/composites", label: "Composites" },
   { href: "/briefings", label: "Briefings" },
   { href: "/sources", label: "Data & Methods" },
+  { href: "/glossary", label: "Glossary" },
   { href: "/about", label: "About" }
 ] satisfies Array<{ href: string; label: string }>;
 

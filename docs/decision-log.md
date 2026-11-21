@@ -14,6 +14,14 @@ Use this lightweight ADR-style log for architecture, data, security, deployment,
 
 ## Decisions
 
+### 2026-11-21: One shared glossary for every page
+
+- **Decision:** Terms are defined once in `src/lib/glossary/terms.ts` and shown through the `<Term>` tooltip and the `/glossary` page. Pages, including AI Impact, link to these entries instead of defining terms locally.
+- **Rationale:** The site is being reorganized so readers without an economics background can follow it. One source keeps wording consistent and lets every definition cite its source.
+- **Alternatives considered:** Per-page definition boxes; a JSON file loaded at runtime.
+- **Consequences:** Each entry needs a plain definition and a source link (official page or a LaborPulse methods page). Definitions carry no live statistics. `src/tests/glossary.test.ts` checks ids, links, and sources.
+- **Owner:** Product/UX
+
 ### 2026-11-19: Batch production writes and monitor freshness
 
 - **Decision:** Write FRED observations and composites with batched `unnest` statements, split the FRED cron into headline, composite, and segment steps, schedule the Research Monitor cron, render AI Impact and Briefings per request, and add a public freshness report checked daily by a GitHub Action.

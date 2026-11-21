@@ -12,6 +12,7 @@ const footerLinks = [
   { href: "/composites", label: "Composite Signals" },
   { href: "/briefings", label: "Briefings" },
   { href: "/sources", label: "Data & Methods" },
+  { href: "/glossary", label: "Glossary" },
   { href: "/about", label: "About" },
   { href: "/sources#corrections", label: "Corrections" }
 ] satisfies Array<{ href: string; label: string }>;
