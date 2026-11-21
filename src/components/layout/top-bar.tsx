@@ -7,23 +7,18 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils/cn";
 
 const navItems = [
-  { href: "/", label: "Dashboard" },
+  { href: "/jobs", label: "Jobs" },
+  { href: "/wages", label: "Wages" },
+  { href: "/education", label: "Education", alsoActiveFor: ["/underemployment"] },
+  { href: "/ai-impact", label: "AI Impact" },
   { href: "/research", label: "Research" },
   { href: "/insights", label: "Research Monitor" },
-  { href: "/ai-impact", label: "AI Impact" },
-  { href: "/underemployment", label: "Underemployment" },
-  { href: "/composites", label: "Composites" },
-  { href: "/briefings", label: "Briefings" },
   { href: "/sources", label: "Data & Methods" },
-  { href: "/about", label: "About" }
-] satisfies Array<{ href: string; label: string }>;
+  { href: "/glossary", label: "Glossary" }
+] satisfies Array<{ href: string; label: string; alsoActiveFor?: string[] }>;
 
-function isActiveRoute(pathname: string, href: string) {
-  if (href === "/") {
-    return pathname === "/";
-  }
-
-  return pathname === href || pathname.startsWith(`${href}/`);
+function isActiveRoute(pathname: string, href: string, alsoActiveFor: string[] = []) {
+  return [href, ...alsoActiveFor].some((path) => pathname === path || pathname.startsWith(`${path}/`));
 }
 
 export function TopBar() {
@@ -40,7 +35,7 @@ export function TopBar() {
         </Link>
         <nav aria-label="Primary navigation" className="flex flex-wrap items-center gap-x-[22px] gap-y-3 font-sans text-[13.5px] font-medium max-[520px]:gap-x-5 max-[520px]:text-[12.5px]">
           {navItems.map((item) => {
-            const isCurrent = isActiveRoute(pathname, item.href);
+            const isCurrent = isActiveRoute(pathname, item.href, "alsoActiveFor" in item ? item.alsoActiveFor : undefined);
 
             return (
               <Link

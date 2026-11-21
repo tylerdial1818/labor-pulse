@@ -14,6 +14,22 @@ Use this lightweight ADR-style log for architecture, data, security, deployment,
 
 ## Decisions
 
+### 2026-11-21: Organize the public site around plain-language questions
+
+- **Decision:** Top navigation is Jobs, Wages, Education, AI Impact, Research, Research Monitor, Data & Methods, Glossary. Topic hubs (`/jobs`, `/wages`, `/education`) answer questions listed in `src/lib/questions/topics.ts`. Each short answer is generated from stored data by a rule in `src/lib/questions/answers.ts`. Composites and Briefings move to the footer; their URLs are unchanged. Indicator and composite pages link back to the questions they help answer.
+- **Rationale:** Readers without an economics background should find clear answers without losing the technical depth researchers need. Rule-generated answers keep written copy consistent with the data and free of stale numbers.
+- **Alternatives considered:** Hand-written answer copy updated each release; keeping the data-type navigation (Dashboard, Composites, Briefings).
+- **Consequences:** New questions need a rule with tests in `src/tests/questions.test.ts` (or a navigational card with no number). The AI Impact page is rebuilt separately and should adopt the same card pattern and question anchors.
+- **Owner:** Product/UX
+
+### 2026-11-21: One shared glossary for every page
+
+- **Decision:** Terms are defined once in `src/lib/glossary/terms.ts` and shown through the `<Term>` tooltip and the `/glossary` page. Pages, including AI Impact, link to these entries instead of defining terms locally.
+- **Rationale:** The site is being reorganized so readers without an economics background can follow it. One source keeps wording consistent and lets every definition cite its source.
+- **Alternatives considered:** Per-page definition boxes; a JSON file loaded at runtime.
+- **Consequences:** Each entry needs a plain definition and a source link (official page or a LaborPulse methods page). Definitions carry no live statistics. `src/tests/glossary.test.ts` checks ids, links, and sources.
+- **Owner:** Product/UX
+
 ### 2026-11-19: Batch production writes and monitor freshness
 
 - **Decision:** Write FRED observations and composites with batched `unnest` statements, split the FRED cron into headline, composite, and segment steps, schedule the Research Monitor cron, render AI Impact and Briefings per request, and add a public freshness report checked daily by a GitHub Action.

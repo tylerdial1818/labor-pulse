@@ -3,10 +3,12 @@
 import { useMemo, useState } from "react";
 import { Download } from "lucide-react";
 
+import { Term } from "@/components/glossary/term";
 import { HistoricalContext } from "@/components/indicators/historical-context";
 import { MetricBreakdownsPanel } from "@/components/indicators/metric-breakdowns-panel";
 import { PageCitation } from "@/components/research/page-citation";
 import { TimeSeriesChart } from "@/components/charts/labor-pulse-charts";
+import { getGlossaryTerm, getTermsForIndicator, type GlossaryTerm } from "@/lib/glossary/terms";
 import { cn } from "@/lib/utils/cn";
 import { normalizePublicCopy } from "@/lib/utils/public-copy";
 import type { DefinitionResponse, IndicatorDetailResponse } from "@/server/labor-types";
@@ -38,6 +40,7 @@ export function IndicatorDetailContent({
 }) {
   const [windowOption, setWindowOption] = useState<WindowOption>("10Y");
   const latestDate = detail.observations.at(-1)?.date ?? null;
+  const keyTerms = useMemo(() => keyTermsForIndicator(detail.series.id), [detail.series.id]);
   const chartData = useMemo(() => {
     const cutoff = cutoffForWindow(windowOption, latestDate);
     return cutoff ? detail.observations.filter((observation) => observation.date >= cutoff) : detail.observations;
@@ -71,6 +74,16 @@ export function IndicatorDetailContent({
               <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sub">Latest observation</dt>
               <dd className="text-ink">{latestDate ?? "not available"}</dd>
             </div>
+            {keyTerms.length > 0 ? (
+              <div>
+                <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sub">Key terms</dt>
+                <dd className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-ink">
+                  {keyTerms.map((entry) => (
+                    <Term key={entry.id} id={entry.id} />
+                  ))}
+                </dd>
+              </div>
+            ) : null}
           </dl>
         </aside>
       </section>
@@ -171,4 +184,16 @@ export function IndicatorDetailContent({
       />
     </div>
   );
+}
+
+/** The indicator's own glossary entry first, then its related terms. */
+function keyTermsForIndicator(indicatorId: string): GlossaryTerm[] {
+  const own = getTermsForIndicator(indicatorId);
+  const related = own.flatMap((entry) => entry.related ?? []).map((id) => getGlossaryTerm(id));
+  const seen = new Set<string>();
+  return [...own, ...related].filter((entry): entry is GlossaryTerm => {
+    if (!entry || seen.has(entry.id)) return false;
+    seen.add(entry.id);
+    return true;
+  });
 }

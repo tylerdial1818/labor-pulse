@@ -4,14 +4,18 @@ import type { Route } from "next";
 import { appConfig } from "@/config/app";
 
 const footerLinks = [
-  { href: "/", label: "Dashboard" },
+  { href: "/", label: "Indicator Dashboard" },
+  { href: "/jobs", label: "Jobs" },
+  { href: "/wages", label: "Wages" },
+  { href: "/education", label: "Education" },
+  { href: "/ai-impact", label: "AI Impact" },
+  { href: "/underemployment", label: "Underemployment Analysis" },
   { href: "/research", label: "Research" },
   { href: "/insights", label: "Research Monitor" },
-  { href: "/ai-impact", label: "AI Impact" },
-  { href: "/underemployment", label: "Underemployment" },
   { href: "/composites", label: "Composite Signals" },
   { href: "/briefings", label: "Briefings" },
   { href: "/sources", label: "Data & Methods" },
+  { href: "/glossary", label: "Glossary" },
   { href: "/about", label: "About" },
   { href: "/sources#corrections", label: "Corrections" }
 ] satisfies Array<{ href: string; label: string }>;
@@ -28,7 +32,7 @@ export function SiteFooter() {
         </div>
         <nav aria-label="Footer navigation">
           <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.14em] text-navy">Explore</p>
-          <ul className="mt-3 grid gap-2 font-sans text-sm text-sub">
+          <ul className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 font-sans text-sm text-sub">
             {footerLinks.map((item) => (
               <li key={item.href}>
                 <Link className="hover:text-ink hover:underline" href={item.href as Route}>

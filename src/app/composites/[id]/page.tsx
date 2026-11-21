@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { TimeSeriesChart } from "@/components/charts/labor-pulse-charts";
 import { TopBar } from "@/components/layout/top-bar";
+import { RelatedQuestions } from "@/components/questions/related-questions";
 import { PageCitation } from "@/components/research/page-citation";
 import { getCompositeDetail } from "@/lib/db/queries";
 
@@ -28,7 +29,8 @@ export default async function CompositeDetailPage({ params }: { params: Promise<
       <main className="mx-auto max-w-[1180px] px-4 py-[26px] sm:px-6 lg:px-8">
         <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.14em] text-navy">Composite detail</p>
         <h1 className="mt-3 font-serif text-[40px] font-bold leading-none tracking-[-0.02em]">{detail.definition.name}</h1>
-        <p className="mb-8 mt-3 max-w-3xl font-serif text-base italic leading-[1.4] text-sub">{detail.definition.description}</p>
+        <p className="mt-3 max-w-3xl font-serif text-base italic leading-[1.4] text-sub">{detail.definition.description}</p>
+        <RelatedQuestions sourceId={detail.definition.id} className="mb-8 mt-4" />
 
         {detail.current ? (
           <section className="mb-8 grid gap-4 border-y border-rule py-5 md:grid-cols-[240px_1fr]">

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { useMemo, useState } from "react";
+import { Term } from "@/components/glossary/term";
 import { CompositesStrip } from "@/components/dashboard/composites-strip";
 import { IndicatorSparkline, type PulseChartPoint } from "@/components/charts/labor-pulse-charts";
 import { cn } from "@/lib/utils/cn";
@@ -43,8 +44,6 @@ type IndicatorCardViewModel = {
   description?: string;
 };
 
-const methodologyNote =
-  "Professional and Business Services and Information Sector employment are proxies for AI labor market impact, not direct measurements. They reflect employment in sectors most exposed to AI tools. The Anthropic Economic Index measures Claude usage specifically, not all AI tools. Use these indicators as directional signals, not definitive evidence.";
 
 export function DashboardContent({ data }: { data: LaborDashboardData }) {
   const [activeCategoryId, setActiveCategoryId] = useState<CategoryId>("lagging");
@@ -115,8 +114,10 @@ function PageHeader() {
   return (
     <header className="flex flex-wrap items-end justify-between gap-5 py-[26px]">
       <div>
-        <h2 className="font-serif text-2xl font-semibold text-ink">Labor Market Dashboard</h2>
-        <p className="mt-2 font-serif text-base italic leading-[1.4] text-sub">Current conditions, leading signals, and measures of technological change.</p>
+        <h2 className="font-serif text-2xl font-semibold text-ink">Indicator Dashboard</h2>
+        <p className="mt-2 font-serif text-base italic leading-[1.4] text-sub">
+          Every indicator we track: current conditions, <Term id="leading-indicator">leading signals</Term>, and measures of technological change.
+        </p>
       </div>
       <div aria-label="Color legend" className="font-sans">
         <div className="flex flex-wrap items-center gap-4 text-xs text-sub">
@@ -159,7 +160,11 @@ function MethodologyNote() {
   return (
     <div className="mb-[22px] flex gap-4 border border-rule bg-[var(--lp-navy-tint)] px-5 py-4 max-sm:flex-col" role="note" aria-label="Tech and AI methodology note">
       <p className="w-[120px] shrink-0 font-sans text-[10.5px] font-bold uppercase leading-[1.3] tracking-[0.14em] text-navy">Methodology note</p>
-      <p className="max-w-[880px] font-serif text-[15px] leading-[1.5] text-ink">{methodologyNote}</p>
+      <p className="max-w-[880px] font-serif text-[15px] leading-[1.5] text-ink">
+        Professional and Business Services and Information Sector employment are <Term id="proxy-indicator">proxies</Term> for AI labor market impact, not
+        direct measurements. They reflect employment in sectors most <Term id="ai-exposure">exposed</Term> to AI tools. The Anthropic Economic Index
+        measures Claude usage specifically, not all AI tools. Use these indicators as directional signals, not definitive evidence.
+      </p>
     </div>
   );
 }
