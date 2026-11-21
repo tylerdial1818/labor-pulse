@@ -8,6 +8,8 @@ const FRED_API_BASE_URL = "https://api.stlouisfed.org/fred";
 type FredClientOptions = {
   apiKey?: string;
   baseUrl?: string;
+  /** Seconds Next.js may cache a response. Default 0 (always fetch), which the cron ingest relies on. */
+  revalidateSeconds?: number;
 };
 
 export type FredClient = {
@@ -50,7 +52,7 @@ async function fetchFredJson(path: string, params: Record<string, string>, optio
         accept: "application/json"
       },
       next: {
-        revalidate: 0
+        revalidate: options.revalidateSeconds ?? 0
       }
     });
 

@@ -43,6 +43,17 @@ type SourceRecord = {
 
 ## Current Sources
 
+### Source: AI Impact page inputs
+
+| Field | Value |
+| --- | --- |
+| Status | live (added 2026-11-21) |
+| Series | FRED `RPSGENAIUSAGESHAREWORK`, `RPSGENAIUSAGESHAREALL`, `OPHNFB`, `PRS85006173` (quarterly) |
+| Access method | `createFredClient({ revalidateSeconds: 86400 })` in `src/server/ai-impact-signals.ts`; not stored |
+| Featured research | `ai_impact/featured.json` in labor-pulse-research, validated by `src/lib/ai-impact/featured.ts` (zod) |
+| Exposure scores | Relational `ai_exposure_scores`, else the Eloundou et al. `occ_level.csv` on GitHub (`dv_rating_beta`) |
+| Caveats | Survey adoption readings can move a few points quarter to quarter; BTOS firm adoption is quoted, not ingested, until the Phase 2 pipeline |
+
 ### Source: FRED API
 
 | Field | Value |

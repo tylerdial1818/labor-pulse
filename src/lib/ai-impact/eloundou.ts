@@ -84,10 +84,10 @@ export function parseEloundouOccupationCsv(contents: string): AiExposureScore[] 
   });
 }
 
-export async function fetchEloundouOccupationScores(url = ELOUNDOU_OCC_LEVEL_URL) {
+export async function fetchEloundouOccupationScores(url = ELOUNDOU_OCC_LEVEL_URL, revalidateSeconds = 0) {
   const response = await fetch(url, {
     headers: { accept: "text/csv,text/plain" },
-    next: { revalidate: 0 }
+    next: { revalidate: revalidateSeconds }
   });
 
   if (!response.ok) {
