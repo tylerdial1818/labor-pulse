@@ -46,7 +46,14 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Keeps focused or anchored elements clear of the sticky nav (TopBar). */
+  scroll-padding-top: var(--lp-nav-height);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -74,4 +81,89 @@ a {
 :focus-visible {
   outline: 2px solid var(--lp-navy);
   outline-offset: 2px;
+}
+
+/*
+ * Scroll-led Ledger motion (docs/design-handoff/home-ledger-scroll-led.md).
+ * CSS only. Base styles show the finished page; animation applies only where
+ * scroll-driven timelines are supported and motion is not reduced. The progress
+ * line is the one exception: it starts empty because it has no meaning at rest.
+ */
+:root {
+  --lp-nav-height: 64px;
+}
+
+@keyframes lp-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes lp-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lp-progress {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.lp-bar {
+  transform-origin: left;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .lp-progress {
+      animation: lp-grow linear both;
+      animation-timeline: scroll(root);
+    }
+
+    .lp-bar {
+      animation: lp-grow ease-out both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+
+    .lp-brand-fade {
+      animation: lp-fade-in linear both;
+      animation-timeline: scroll(root);
+      animation-range: 120px 260px;
+    }
+
+    /* Never leave a keyboard-focused link invisible. */
+    .lp-brand-fade:focus-visible {
+      animation: none;
+    }
+  }
+}
+
+/* Horizontal card row with snap points, used inside the active indicator tab. */
+.lp-snap {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 18px;
+}
+
+.lp-snap > * {
+  flex: 0 0 min(340px, 82%);
+  scroll-snap-align: start;
+}
+
+@media (max-width: 767px) {
+  :root {
+    /* Wordmark row plus a nav row that wraps to two lines. */
+    --lp-nav-height: 124px;
+  }
 }

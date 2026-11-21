@@ -32,7 +32,7 @@ Typography:
 
 - `src/components/ui`: shadcn primitives restyled to the Editorial system.
 - `src/components/charts`: Recharts sparkline, time-series, and diverging-bar wrappers with no dashboard-card animations.
-- `src/components/layout`: top navigation with LaborPulse masthead and Dashboard/Sources/About links.
+- `src/components/layout`: compact sticky `TopBar` on every page (wordmark, primary nav, decorative 3px navy scroll progress line). The large centered masthead (`src/features/dashboard/home-masthead.tsx`) appears on `/` only, above the sticky bar, which then carries a double rule and fades its wordmark in as the masthead scrolls away.
 - `src/components/forms`: time-window controls and future disabled geography selector slot.
 - `src/components/states`: loading, empty, and error states
 
@@ -45,4 +45,12 @@ Typography:
 - Keep dates, units, sources, and freshness visible without hover.
 - Prefer explicit labels over clever copy.
 - At narrow widths, replace the tab list with a select.
-- No nested cards, decorative emoji, decorative icons, delayed animations, hero sections, or marketing copy.
+- No nested cards, decorative emoji, decorative icons, delayed animations, hero sections, or marketing copy. The home masthead is a newspaper nameplate, not a hero: it holds the wordmark, the H1, and the service introduction only.
+- Home layout (2026-11-21, design option A2): masthead, sticky nav, right-now answer and topic doors, featured analysis (H2 plus a three-measure bar chart), composite signals in three hairline-separated columns, then the indicator tabs. The active tab's cards sit in a horizontal scroll-snap row that is keyboard focusable and named.
+
+## Motion
+
+- Allowed motion is scroll-linked and CSS only: the nav progress line (`.lp-progress`), the home nav wordmark fade (`.lp-brand-fade`), and chart bars growing on entry (`.lp-bar`). Classes and keyframes live in `src/styles/globals.css`.
+- Wrap scroll-driven rules in `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`. Base styles must show the finished state. The progress line is the only element whose base state is empty.
+- Smooth scrolling applies only when motion is not reduced. `html` sets `scroll-padding-top: var(--lp-nav-height)` so the sticky nav never covers a focused or anchored element.
+- No entrance fades or slide-ups on sections or cards, and no continuously moving content. A ticker would need a visible pause control first.
