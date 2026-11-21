@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Labor Pulse home, scroll-led Ledger (visual reference only)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:4px}
+@keyframes ld-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes ld-fadein{from{opacity:0}to{opacity:1}}
+@keyframes ld-tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ld-progress{transform:scaleX(0);transform-origin:left}
+.ld-bar{transform-origin:left}
+@supports (animation-timeline: view()){
+.ld-progress{animation:ld-grow linear both;animation-timeline:scroll(root)}
+.ld-bar{animation:ld-grow ease-out both;animation-timeline:view();animation-range:entry 10% cover 45%}
+.ld-brand{animation:ld-fadein linear both;animation-timeline:scroll(root);animation-range:120px 260px}
+}
+.ld-track{display:flex;width:max-content;animation:ld-tick 80s linear infinite}
+.ld-tickerwrap:hover .ld-track{animation-play-state:paused}
+.ld-snap{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:18px}
+.ld-snap>*{flex:0 0 min(300px,80%);scroll-snap-align:start;box-sizing:border-box}
+@media (prefers-reduced-motion: reduce){
+.ld-track{animation:none}
+.ld-bar,.ld-progress,.ld-brand{animation:none}
+.ld-bar{transform:none}
+}
+</style>
+
+</head>
+<body>
+
+<div style="background:#FBFAF6;color:#1C1815;font-family:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;min-height:1800px">
+
+<div class="ld-tickerwrap" style="background:#1C1815;color:#FBFAF6;overflow:hidden;font-size:14px">
+<div class="ld-track" style="padding:11px 0">
+<span style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Unemployment Rate</span> <strong>4.1%</strong></span>
+<span style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">U-6</span> <strong>7.9%</strong></span>
+<span style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Average Hourly Earnings</span> <strong>$38.00</strong></span>
+<span style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Labor Force Participation</span> <strong>61.9%</strong></span>
+<span style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Employment-Population Ratio</span> <strong>59.3%</strong></span>
+<span style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Nonfarm Payrolls</span> <strong>159.3M</strong></span>
+<span style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Sahm Rule</span> <strong>0.00</strong></span>
+<span style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Tightness</span> <strong>0.41</strong></span>
+<span style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Stress</span> <strong>-0.10</strong></span>
+<span aria-hidden="true" style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Unemployment Rate</span> <strong>4.1%</strong></span>
+<span aria-hidden="true" style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">U-6</span> <strong>7.9%</strong></span>
+<span aria-hidden="true" style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Average Hourly Earnings</span> <strong>$38.00</strong></span>
+<span aria-hidden="true" style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Labor Force Participation</span> <strong>61.9%</strong></span>
+<span aria-hidden="true" style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Employment-Population Ratio</span> <strong>59.3%</strong></span>
+<span aria-hidden="true" style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Nonfarm Payrolls</span> <strong>159.3M</strong></span>
+<span aria-hidden="true" style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Sahm Rule</span> <strong>0.00</strong></span>
+<span aria-hidden="true" style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Tightness</span> <strong>0.41</strong></span>
+<span aria-hidden="true" style="padding:0 28px;white-space:nowrap"><span style="color:#B7C2CE">Stress</span> <strong>-0.10</strong></span>
+</div>
+</div>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 40px">
+<header style="text-align:center;padding:40px 0 22px">
+<div style="font-family:'Newsreader',Georgia,serif;font-size:76px;font-weight:600;letter-spacing:-0.025em;line-height:1">Labor Pulse</div>
+<div style="font-family:'Newsreader',Georgia,serif;font-style:italic;font-size:21px;color:#6B6258;margin-top:12px">U.S. Labor Market Monitor</div>
+</header>
+</div>
+
+<div style="position:sticky;top:0;z-index:10;background:#FBFAF6;border-top:4px double #1C1815;border-bottom:1px solid #1C1815">
+<div style="max-width:1200px;margin:0 auto;padding:0 40px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 32px;min-height:52px;font-size:15px;font-weight:500;position:relative">
+<a class="ld-brand" href="#" style="font-family:'Newsreader',Georgia,serif;font-size:22px;font-weight:600;position:absolute;left:40px">Labor Pulse</a>
+<nav aria-label="Primary" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 32px;padding:14px 0">
+<a href="#">Jobs</a><a href="#">Wages</a><a href="#">Education</a><a href="#">AI Impact</a><a href="#">Research</a><a href="#">Research Monitor</a><a href="#">Data &amp; Methods</a><a href="#">Glossary</a>
+</nav>
+</div>
+<div class="ld-progress" style="height:3px;background:#24446B"></div>
+</div>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 40px">
+<section style="display:flex;flex-wrap:wrap;gap:56px;padding:52px 0;border-bottom:1px solid rgba(28,24,21,0.16)">
+<div style="flex:1.35 1 460px;min-width:0">
+<div style="font-size:14px;font-weight:600;color:#24446B;margin-bottom:16px">Featured analysis</div>
+<h1 style="font-family:'Newsreader',Georgia,serif;font-size:64px;line-height:1.02;font-weight:600;letter-spacing:-0.02em;margin:0 0 22px">Underemployment Analytics</h1>
+<p style="font-family:'Newsreader',Georgia,serif;font-size:23px;line-height:1.5;margin:0 0 28px;max-width:34em;color:#1C1815">A long-form guide to competing underemployment definitions, New York Fed outcomes for recent graduates, and risk by college major.</p>
+<a href="#" style="display:inline-block;background:#1C1815;color:#FBFAF6;padding:14px 24px;font-size:15px;font-weight:600">Read the full analysis</a>
+</div>
+<figure style="flex:1 1 380px;min-width:0;margin:0;padding:28px 28px 24px;background:#fff;border:1px solid rgba(28,24,21,0.16)">
+<figcaption style="font-family:'Newsreader',Georgia,serif;font-size:22px;font-weight:600;line-height:1.25;margin-bottom:6px">Three measures, three definitions</figcaption>
+<div style="font-size:13px;color:#6B6258;margin-bottom:24px">Percent of the relevant population</div>
+<div style="margin-bottom:20px">
+<div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px"><span>Recent graduates, underemployed</span><strong>41.5%</strong></div>
+<div style="height:14px;background:#F1EFE9"><div class="ld-bar" style="width:100%;height:14px;background:#24446B"></div></div>
+</div>
+<div style="margin-bottom:20px">
+<div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px"><span>U-6 underemployment</span><strong>7.9%</strong></div>
+<div style="height:14px;background:#F1EFE9"><div class="ld-bar" style="width:19%;height:14px;background:#1C1815"></div></div>
+</div>
+<div style="margin-bottom:24px">
+<div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px"><span>Unemployment rate</span><strong>4.1%</strong></div>
+<div style="height:14px;background:#F1EFE9"><div class="ld-bar" style="width:10%;height:14px;background:#1C1815"></div></div>
+</div>
+<div style="font-size:12px;line-height:1.5;color:#6B6258;border-top:1px solid rgba(28,24,21,0.16);padding-top:12px">Recent graduate figure as of March 31, 2026. Definitions differ, so the bars are not directly comparable. BLS data via FRED, New York Fed.</div>
+</figure>
+</section>
+
+<section style="padding:52px 0;border-bottom:1px solid rgba(28,24,21,0.16)">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:32px">
+<h2 style="font-family:'Newsreader',Georgia,serif;font-size:36px;font-weight:600;margin:0;letter-spacing:-0.01em">Composite signals</h2>
+<div style="font-size:15px;color:#6B6258">Measures Labor Pulse calculates from public data</div>
+</div>
+<div style="display:flex;flex-wrap:wrap">
+<div style="flex:1 1 280px;padding:4px 32px 4px 0;margin-bottom:24px">
+<div style="font-size:15px;font-weight:600">Sahm Rule Recession Indicator</div>
+<div style="font-family:'Newsreader',Georgia,serif;font-size:80px;line-height:1.1">0.00</div>
+<div style="font-size:15px;font-weight:600;color:#8C5C17">Caution</div>
+<div style="font-size:13px;color:#6B6258;margin-top:4px">As of October 1, 2026</div>
+</div>
+<div style="flex:1 1 280px;padding:4px 32px;border-left:1px solid rgba(28,24,21,0.16);margin-bottom:24px">
+<div style="font-size:15px;font-weight:600">Labor Market Tightness</div>
+<div style="font-family:'Newsreader',Georgia,serif;font-size:80px;line-height:1.1">0.41</div>
+<div style="font-size:15px;font-weight:600;color:#24446B">Balanced</div>
+<div style="font-size:13px;color:#6B6258;margin-top:4px">As of October 1, 2026</div>
+</div>
+<div style="flex:1 1 280px;padding:4px 0 4px 32px;border-left:1px solid rgba(28,24,21,0.16);margin-bottom:24px">
+<div style="font-size:15px;font-weight:600">Labor Market Stress</div>
+<div style="font-family:'Newsreader',Georgia,serif;font-size:80px;line-height:1.1">-0.10</div>
+<div style="font-size:15px;font-weight:600;color:#8C5C17">Watch</div>
+<div style="font-size:13px;color:#6B6258;margin-top:4px">As of November 14, 2026</div>
+</div>
+</div>
+</section>
+
+<section style="padding:52px 0 40px">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px">
+<h2 style="font-family:'Newsreader',Georgia,serif;font-size:36px;font-weight:600;margin:0;letter-spacing:-0.01em">The indicators</h2>
+<span style="font-size:14px;color:#6B6258">Scroll sideways for all fifteen groups and measures</span>
+</div>
+<div style="font-size:15px;color:#6B6258;margin-bottom:24px">Each one cites BLS data via FRED.</div>
+<div class="ld-snap">
+<a href="#" style="display:flex;flex-direction:column;justify-content:space-between;min-height:180px;background:#fff;border:1px solid rgba(28,24,21,0.16);padding:22px"><span style="font-size:16px">Unemployment Rate</span><strong style="font-family:'Newsreader',Georgia,serif;font-size:48px;font-weight:600">4.1%</strong></a>
+<a href="#" style="display:flex;flex-direction:column;justify-content:space-between;min-height:180px;background:#fff;border:1px solid rgba(28,24,21,0.16);padding:22px"><span style="font-size:16px">U-6 Underemployment</span><strong style="font-family:'Newsreader',Georgia,serif;font-size:48px;font-weight:600">7.9%</strong></a>
+<a href="#" style="display:flex;flex-direction:column;justify-content:space-between;min-height:180px;background:#fff;border:1px solid rgba(28,24,21,0.16);padding:22px"><span style="font-size:16px">Average Hourly Earnings</span><strong style="font-family:'Newsreader',Georgia,serif;font-size:48px;font-weight:600">$38.00</strong></a>
+<a href="#" style="display:flex;flex-direction:column;justify-content:space-between;min-height:180px;background:#fff;border:1px solid rgba(28,24,21,0.16);padding:22px"><span style="font-size:16px">Labor Force Participation</span><strong style="font-family:'Newsreader',Georgia,serif;font-size:48px;font-weight:600">61.9%</strong></a>
+<a href="#" style="display:flex;flex-direction:column;justify-content:space-between;min-height:180px;background:#fff;border:1px solid rgba(28,24,21,0.16);padding:22px"><span style="font-size:16px">Employment-Population Ratio</span><strong style="font-family:'Newsreader',Georgia,serif;font-size:48px;font-weight:600">59.3%</strong></a>
+<a href="#" style="display:flex;flex-direction:column;justify-content:space-between;min-height:180px;background:#fff;border:1px solid rgba(28,24,21,0.16);padding:22px"><span style="font-size:16px">Nonfarm Payrolls</span><strong style="font-family:'Newsreader',Georgia,serif;font-size:48px;font-weight:600">159.3M</strong></a>
+<a href="#" style="display:flex;flex-direction:column;justify-content:space-between;min-height:180px;background:#1C1815;color:#FBFAF6;padding:22px"><span style="font-size:16px">Leading indicators</span><strong style="font-family:'Newsreader',Georgia,serif;font-size:48px;font-weight:600">6</strong></a>
+<a href="#" style="display:flex;flex-direction:column;justify-content:space-between;min-height:180px;background:#1C1815;color:#FBFAF6;padding:22px"><span style="font-size:16px">Tech &amp; AI Impact</span><strong style="font-family:'Newsreader',Georgia,serif;font-size:48px;font-weight:600">3</strong></a>
+</div>
+</section>
+
+<footer style="border-top:4px double #1C1815;padding:28px 0 56px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;font-size:14px;color:#6B6258;line-height:1.6">
+<div style="max-width:440px">Labor Pulse is stewarded by Dialed Intelligence LLC. Research collaborations and corrections [CONTACT EMAIL].</div>
+<div style="display:flex;gap:24px;flex-wrap:wrap"><a href="#">Data &amp; Methods</a><a href="#">Corrections</a><a href="#">About</a><span>© 2026 Labor Pulse</span></div>
+</footer>
+</div>
+
+</div>
+
+</body>
+</html>
