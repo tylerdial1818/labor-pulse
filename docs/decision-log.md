@@ -14,6 +14,14 @@ Use this lightweight ADR-style log for architecture, data, security, deployment,
 
 ## Decisions
 
+### 2026-11-21: AI Impact page reads live FRED series directly and featured research from the research repo
+
+- **Decision:** `/ai-impact` is organized as a five-step chain (capability, adoption, tasks, jobs and wages, economy) with a predictions scorecard for five landmark papers. Its four FRED series (RPS generative AI adoption, nonfarm productivity, labor share) are fetched at request time with a one-day cache instead of joining the cron-ingested catalog. Featured research comes from `ai_impact/featured.json` in labor-pulse-research, read from `main` with an hourly cache. Study findings and paper claims live in `src/lib/ai-impact/content.ts` and `papers.ts`, each with a source link and checked date; scorecard statuses are editorial and change only in reviewed PRs.
+- **Rationale:** The quarterly series would otherwise need catalog, enum and test changes that affect the dashboard. Keeping featured research in the research repo means a monthly curation PR publishes without a site deploy and reuses that repo's number checks, with no paid API calls.
+- **Alternatives considered:** Adding the series to the indicator catalog; storing featured research in this repo; LLM-API summarization of new papers.
+- **Consequences:** If FRED is unreachable the tiles show "not available" and the page still renders. The Eloundou exposure table falls back to the published CSV when the relational store has not been ingested.
+- **Owner:** AI Impact thread
+
 ### 2026-11-21: Organize the public site around plain-language questions
 
 - **Decision:** Top navigation is Jobs, Wages, Education, AI Impact, Research, Research Monitor, Data & Methods, Glossary. Topic hubs (`/jobs`, `/wages`, `/education`) answer questions listed in `src/lib/questions/topics.ts`. Each short answer is generated from stored data by a rule in `src/lib/questions/answers.ts`. Composites and Briefings move to the footer; their URLs are unchanged. Indicator and composite pages link back to the questions they help answer.

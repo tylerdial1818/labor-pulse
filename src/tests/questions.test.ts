@@ -158,7 +158,8 @@ describe("topics", () => {
     const jobs = TOPICS.find((topic) => topic.id === "jobs")!;
     const ai = TOPICS.find((topic) => topic.id === "ai")!;
     expect(questionHref(jobs, "recession")).toBe("/jobs#recession");
-    expect(questionHref(ai, "exposure")).toBe("/ai-impact");
+    expect(questionHref(ai, "exposure")).toBe("/ai-impact#exposure");
+    expect(questionHref({ ...ai, anchoredQuestions: false }, "exposure")).toBe("/ai-impact");
   });
 });
 
