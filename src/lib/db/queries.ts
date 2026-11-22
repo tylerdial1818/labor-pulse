@@ -1,5 +1,7 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
+
 import type { DbClient } from "@/lib/db/client";
 import { readLocalStore, resetLocalStore, writeLocalStore } from "@/lib/db/local-store";
 import {
@@ -12,6 +14,7 @@ import {
   readRelationalAiExposureScores,
   readRelationalCompositeObservations,
   readRelationalObservations,
+  readRelationalObservationsForSeries,
   readRelationalRefreshLog,
   readRelationalSeries,
   replaceRelationalCompositeObservations,
@@ -42,6 +45,8 @@ export const REPORT_HISTORY_YEARS = 10;
 const unfavorableWhenRising = new Set(["UNRATE", "U6RATE", "ICSA", "JTSLDR"]);
 const informationalSeries = new Set(["CES0500000003", "USPBS", "USINFO", "ANTHROPIC_ECONOMIC_INDEX"]);
 const headlineSeriesIds = new Set(INDICATOR_CATALOG.map((indicator) => indicator.id));
+// Inputs the composites are computed from.
+const COMPOSITE_INPUT_SERIES = [...new Set(COMPOSITE_DEFINITIONS.flatMap((definition) => definition.inputSeries))];
 
 function toNumber(value: number | null) {
   return value === null || !Number.isFinite(value) ? null : value;
@@ -250,12 +255,27 @@ export async function getIndicatorDetail(seriesId: string, db?: DbClient): Promi
   };
 }
 
+// Page data is cached for an hour so traffic does not turn into database
+// reads. The FRED and Research Monitor crons run once a day, so an hour of
+// lag is invisible to readers and keeps Neon network transfer small.
+const PAGE_DATA_REVALIDATE_SECONDS = 60 * 60;
+
 export async function getDashboardData(db?: DbClient): Promise<LaborDashboardData> {
   void db;
+  return getCachedDashboardData();
+}
+
+const getCachedDashboardData = unstable_cache(() => loadDashboardData(), ["labor-dashboard-data"], {
+  revalidate: PAGE_DATA_REVALIDATE_SECONDS
+});
+
+async function loadDashboardData(): Promise<LaborDashboardData> {
   const useRelational = await hasRelationalSeries();
   const store = useRelational ? null : await readLocalStore();
   const seriesRows = headlineSeriesOnly(useRelational ? await readRelationalSeries() : store?.series ?? []);
-  const allObservations = useRelational ? await readRelationalObservations() : store?.observations ?? [];
+  const allObservations = useRelational
+    ? await readRelationalObservationsForSeries(seriesRows.map((series) => series.id))
+    : store?.observations ?? [];
   const cards = seriesRows.map((series) => {
     const observations = trailingHistoryWindow(
       allObservations
@@ -284,7 +304,7 @@ export async function getDashboardData(db?: DbClient): Promise<LaborDashboardDat
 
 export async function recomputeComposites() {
   if (await hasRelationalSeries()) {
-    const observations = await readRelationalObservations();
+    const observations = await readRelationalObservationsForSeries(COMPOSITE_INPUT_SERIES);
     const compositeObservations = calculateAllComposites(observations);
     await replaceRelationalCompositeObservations(compositeObservations);
     return compositeObservations;
@@ -297,12 +317,28 @@ export async function recomputeComposites() {
   return store.compositeObservations;
 }
 
-export async function getCompositeSummaries() {
+async function readCompositeObservations() {
   const useRelational = await hasRelationalSeries();
-  const store = useRelational ? null : await readLocalStore();
-  const storedComposites = useRelational ? await readRelationalCompositeObservations() : store?.compositeObservations ?? [];
-  const sourceObservations = useRelational ? await readRelationalObservations() : store?.observations ?? [];
-  const observations = storedComposites.length > 0 ? storedComposites : calculateAllComposites(sourceObservations);
+  if (!useRelational) {
+    const store = await readLocalStore();
+    return store.compositeObservations.length > 0 ? store.compositeObservations : calculateAllComposites(store.observations);
+  }
+
+  const storedComposites = await readRelationalCompositeObservations();
+  if (storedComposites.length > 0) return storedComposites;
+  return calculateAllComposites(await readRelationalObservationsForSeries(COMPOSITE_INPUT_SERIES));
+}
+
+export async function getCompositeSummaries() {
+  return getCachedCompositeSummaries();
+}
+
+const getCachedCompositeSummaries = unstable_cache(() => loadCompositeSummaries(), ["labor-composite-summaries"], {
+  revalidate: PAGE_DATA_REVALIDATE_SECONDS
+});
+
+async function loadCompositeSummaries() {
+  const observations = await readCompositeObservations();
 
   return COMPOSITE_DEFINITIONS.map((definition) => {
     const history = observations.filter((row) => row.compositeId === definition.id).sort((a, b) => a.date.localeCompare(b.date));
@@ -323,13 +359,9 @@ export async function getCompositeSummaries() {
 }
 
 export async function getCompositeDetail(id: string) {
-  const useRelational = await hasRelationalSeries();
-  const store = useRelational ? null : await readLocalStore();
   const definition = COMPOSITE_DEFINITIONS.find((item) => item.id === id);
   if (!definition) return null;
-  const storedComposites = useRelational ? await readRelationalCompositeObservations() : store?.compositeObservations ?? [];
-  const sourceObservations = useRelational ? await readRelationalObservations() : store?.observations ?? [];
-  const observations = (storedComposites.length > 0 ? storedComposites : calculateAllComposites(sourceObservations))
+  const observations = (await readCompositeObservations())
     .filter((row) => row.compositeId === id)
     .sort((a, b) => a.date.localeCompare(b.date));
   const current = observations.at(-1);
