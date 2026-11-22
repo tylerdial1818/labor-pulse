@@ -22,6 +22,20 @@ Use this lightweight ADR-style log for architecture, data, security, deployment,
 - **Consequences:** If FRED is unreachable the tiles show "not available" and the page still renders. The Eloundou exposure table falls back to the published CSV when the relational store has not been ingested.
 - **Owner:** AI Impact thread
 
+### 2026-11-21: Home page uses the scroll-led Ledger layout (design option A2)
+
+- **Decision:** Tyler approved six answers to conflicts between the A2 handoff (`docs/design-handoff/home-ledger-scroll-led.md`) and the design system:
+  1. Motion: allow a scroll progress line on the sticky nav, chart bars that grow as they enter view, and a sticky nav. CSS only, behind `@supports (animation-timeline: view())`, off under `prefers-reduced-motion`. Base styles show the finished page.
+  2. Ticker: not shipped. If added later it needs a visible Pause button, a fixed "Latest refresh" label, and a link from each item to its indicator page (WCAG 2.2.2).
+  3. Headings: "U.S. Labor Market Monitor" stays the single H1 (in the home masthead). Underemployment Analytics is an H2 featured section.
+  4. Indicators: Lagging, Leading, and Tech & AI Impact tabs stay (select at narrow widths). Only the card row inside the active tab scroll-snaps. Card content is unchanged.
+  5. Masthead: large centered masthead on `/` only. Every page gets the compact sticky `TopBar` with the wordmark.
+  6. Three-measure chart: the recent-graduate underemployment rate, U-6, and the unemployment rate share one axis with a visible "definitions differ" caveat, values from the underemployment store and the dashboard data. Documented in `docs/metric-definitions.md`.
+- **Rationale:** Adds a sense of motion and editorial presence without dropping provenance, accessibility, or the analytical first screen.
+- **Alternatives considered:** Ship A2 as drawn (ticker, featured analysis as H1, snap strip replacing tabs).
+- **Consequences:** `globals.css` owns the `.lp-*` motion classes and `--lp-nav-height` (used for `scroll-padding-top`). Smooth scrolling now applies only when motion is not reduced. New motion must follow the same static-first rules.
+- **Owner:** Frontend/Dashboard Agent
+
 ### 2026-11-21: Organize the public site around plain-language questions
 
 - **Decision:** Top navigation is Jobs, Wages, Education, AI Impact, Research, Research Monitor, Data & Methods, Glossary. Topic hubs (`/jobs`, `/wages`, `/education`) answer questions listed in `src/lib/questions/topics.ts`. Each short answer is generated from stored data by a rule in `src/lib/questions/answers.ts`. Composites and Briefings move to the footer; their URLs are unchanged. Indicator and composite pages link back to the questions they help answer.
