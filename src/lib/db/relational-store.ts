@@ -334,6 +334,22 @@ export async function readRelationalObservations(seriesId?: string, geography = 
   return rows.map(toObservation);
 }
 
+// Reads only the named series. The observations table also holds every
+// state and industry breakdown series, so a full read is tens of thousands of
+// rows. Pages that show headline cards or composites need a handful of series.
+export async function readRelationalObservationsForSeries(seriesIds: readonly string[], geography = "US") {
+  if (seriesIds.length === 0) return [];
+  await seedRelationalCatalog();
+  const sql = getSql();
+  const rows = (await sql`
+    select series_id, geography, date, value
+    from observations
+    where geography = ${geography} and series_id = any(${[...seriesIds]})
+    order by series_id, date
+  `) as Row[];
+  return rows.map(toObservation);
+}
+
 export async function readRelationalRefreshLog() {
   await seedRelationalCatalog();
   const sql = getSql();
