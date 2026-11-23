@@ -90,7 +90,7 @@ a {
  * line is the one exception: it starts empty because it has no meaning at rest.
  */
 :root {
-  --lp-nav-height: 64px;
+  --lp-nav-height: 84px;
 }
 
 @keyframes lp-grow {

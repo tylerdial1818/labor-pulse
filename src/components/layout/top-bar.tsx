@@ -36,7 +36,8 @@ export function TopBar({ variant = "default" }: TopBarProps) {
 
   return (
     <header className={cn("sticky top-0 z-30 border-b border-ink bg-paper", isHome && "border-t-4 border-double border-t-ink")}>
-      <div className="mx-auto flex max-w-[1180px] flex-col gap-2 px-4 py-[10px] sm:px-6 md:min-h-[56px] md:flex-row md:items-center md:justify-between md:gap-6 md:py-2 lg:px-8">
+      {/* Wordmark on top, nav centered under it. The nav is too wide to center on the same row as the wordmark without overlapping it. Keep --lp-nav-height in globals.css in step with this height. */}
+      <div className="mx-auto flex max-w-[1180px] flex-col items-center gap-1.5 px-4 py-[10px] sm:px-6 md:py-2 lg:px-8">
         <Link
           href="/"
           className={cn(
@@ -49,7 +50,7 @@ export function TopBar({ variant = "default" }: TopBarProps) {
             US Labor Market Monitor
           </span>
         </Link>
-        <nav aria-label="Primary navigation" className="flex flex-wrap items-center gap-x-[22px] gap-y-2 font-sans text-[13.5px] font-medium max-[767px]:gap-x-4 max-[767px]:text-[12.5px]">
+        <nav aria-label="Primary navigation" className="flex flex-wrap items-center justify-center gap-x-[22px] gap-y-2 font-sans text-[13.5px] font-medium max-[767px]:gap-x-4 max-[767px]:text-[12.5px]">
           {navItems.map((item) => {
             const isCurrent = isActiveRoute(pathname, item.href, "alsoActiveFor" in item ? item.alsoActiveFor : undefined);
 
