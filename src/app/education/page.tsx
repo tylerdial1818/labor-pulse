@@ -60,7 +60,7 @@ export default async function EducationPage() {
               ]}
               source={source}
               sourceHref={sourceHref}
-              asOf={asOfDate}
+              asOf={data.headlineTrend.at(-1)?.date ?? asOfDate}
               valueLabel="Underemployment rate"
               unit="%"
             />

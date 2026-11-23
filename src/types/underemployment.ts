@@ -51,7 +51,7 @@ export type HeadlineTrendPoint = {
 export type UnderemploymentPageData = {
   headline: {
     recentGrads: number;
-    allGrads: number;
+    allGrads: number | null;
     asOfDate: string;
   };
   headlineTrend: HeadlineTrendPoint[];

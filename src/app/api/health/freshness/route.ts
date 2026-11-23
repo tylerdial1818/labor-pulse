@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getCompositeSummaries, getDashboardData } from "@/lib/db/queries";
 import { assessFreshness, type FreshnessFrequency, type FreshnessInput } from "@/lib/freshness/assess";
 import { getInsightFeed } from "@/lib/insights/queries";
-import { readHeadlineTrend } from "@/lib/underemployment/queries";
+import { readLatestRelease } from "@/lib/underemployment/queries";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +25,7 @@ export async function GET() {
     getDashboardData(),
     getCompositeSummaries(),
     getInsightFeed({ limit: 50 }),
-    readHeadlineTrend()
+    readLatestRelease()
   ]);
 
   const inputs: FreshnessInput[] = [
@@ -57,7 +57,7 @@ export async function GET() {
       id: "underemployment",
       label: "NY Fed recent graduate underemployment",
       frequency: "quarterly",
-      latestDate: latest(underemployment.map((row) => row.date))
+      latestDate: underemployment.date
     }
   ];
 

@@ -56,7 +56,9 @@ export async function generateBriefingMarkdown(input: BriefingInput) {
 
     if (underemploymentHeadline) {
       lines.push(
-        `- **Headline skills underemployment:** Recent college graduates were at ${underemploymentHeadline.recentGrads.toFixed(1)} percent and all college graduates were at ${underemploymentHeadline.allGrads.toFixed(1)} percent as of ${underemploymentHeadline.asOfDate}. Source: New York Fed.`
+        underemploymentHeadline.allGrads === null
+          ? `- **Headline skills underemployment:** Recent college graduates were at ${underemploymentHeadline.recentGrads.toFixed(1)} percent as of ${underemploymentHeadline.asOfDate}. Source: New York Fed.`
+          : `- **Headline skills underemployment:** Recent college graduates were at ${underemploymentHeadline.recentGrads.toFixed(1)} percent and all college graduates were at ${underemploymentHeadline.allGrads.toFixed(1)} percent as of ${underemploymentHeadline.asOfDate}. Source: New York Fed.`
       );
     }
 
