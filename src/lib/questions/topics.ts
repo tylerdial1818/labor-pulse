@@ -69,7 +69,6 @@ export const TOPICS: Topic[] = [
     label: "AI",
     href: "/ai-impact",
     summary: "Which jobs AI touches, how people use it at work, and what the evidence shows so far.",
-    anchoredQuestions: false,
     questions: [
       { id: "exposure", question: "Which jobs are most exposed to AI?", featured: true },
       { id: "usage", question: "How are people actually using AI at work?", featured: true },

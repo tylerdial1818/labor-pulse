@@ -391,9 +391,10 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     id: "observed-exposure",
     term: "Observed exposure",
     topic: "ai",
-    plain: "AI exposure measured from how people actually use AI tools at work, rather than from what researchers predict AI could do. It shows where AI is already being used, not where it might be used later.",
-    sourceLabel: "Anthropic Economic Index",
-    sourceUrl: "https://www.anthropic.com/economic-index",
+    plain: "AI exposure that counts only the tasks people are already using AI for at work, rather than every task researchers predict AI could do. It shows where AI is being used now, not where it might be used later.",
+    technical: "Massenkoff and McCrory (Anthropic, 2026) count a task as covered when it is rated feasible for an LLM (Eloundou et al. beta score) and has enough work-related usage in the Anthropic Economic Index. Automated uses get full weight, augmentative uses half weight, and task coverage is averaged to occupations by time share.",
+    sourceLabel: "Massenkoff and McCrory, Anthropic (2026)",
+    sourceUrl: "https://www.anthropic.com/research/labor-market-impacts",
     related: ["ai-exposure", "augmentation-vs-automation"]
   },
   {
@@ -401,8 +402,9 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     term: "Early-career worker",
     topic: "ai",
     plain: "A worker near the start of their career. Studies define the group by age or by years since finishing school, and each states its own cutoff. They are watched closely in AI research because entry-level tasks may be the easiest for AI to take on.",
-    sourceLabel: "LaborPulse AI Impact",
-    sourceUrl: "/ai-impact",
+    technical: "Cutoffs differ by study: Brynjolfsson, Chandar and Chen use ages 22 to 25 in ADP payroll data; the Dallas Fed uses ages 20 to 24 in the Current Population Survey. Compare results only when the age bands match.",
+    sourceLabel: "Brynjolfsson, Chandar and Chen, Stanford Digital Economy Lab",
+    sourceUrl: "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/",
     related: ["ai-exposure", "experience-premium", "recent-graduate"]
   },
   {
@@ -410,8 +412,9 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     term: "Experience premium",
     topic: "wages",
     plain: "The extra pay that comes with more years of work experience. If AI makes less experienced workers more productive, this gap could narrow; if AI replaces entry-level tasks, it could widen.",
-    sourceLabel: "LaborPulse AI Impact",
-    sourceUrl: "/ai-impact",
+    technical: "The Dallas Fed measures it as the percentage difference between experienced and entry-level wages in an occupation, using BLS modeled wage estimates.",
+    sourceLabel: "Davis, Federal Reserve Bank of Dallas (2026)",
+    sourceUrl: "https://www.dallasfed.org/research/economics/2026/0224",
     related: ["wage-premium", "early-career-worker"]
   },
   {
