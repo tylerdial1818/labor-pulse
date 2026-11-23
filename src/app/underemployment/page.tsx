@@ -41,6 +41,9 @@ function money(value: number) {
 
 export default async function UnderemploymentPage() {
   const data = await getUnderemploymentPageData();
+  // The headline comes from the latest NY Fed release. The trend and major
+  // data come from an older checked-in snapshot, so they carry their own date.
+  const snapshotAsOf = data.headlineTrend.at(-1)?.date ?? data.headline.asOfDate;
   const averageWageGap =
     data.majorRanking.reduce((sum, major) => sum + major.wagePremium, 0) / Math.max(data.majorRanking.length, 1);
   const schema = {
@@ -138,7 +141,7 @@ export default async function UnderemploymentPage() {
                   }
                 ]}
                 source="BLS and NY Fed"
-                asOf={data.headline.asOfDate}
+                asOf={snapshotAsOf}
                 valueLabel="Magnitude"
                 unit=""
                 description={data.definitionalOverlap.overlapNotes}
@@ -152,7 +155,11 @@ export default async function UnderemploymentPage() {
 
             <UnderemploymentSection id="headline-data" title="The headline data">
               <p className="font-serif text-[17px] leading-[1.58] text-ink">
-                As of {data.headline.asOfDate}, the underemployment rate for recent college graduates is {percent(data.headline.recentGrads)}. The rate for all college graduates is {percent(data.headline.allGrads)}. The recent graduate rate has historically run several points above the all-graduate rate.
+                As of {data.headline.asOfDate}, the underemployment rate for recent college graduates is {percent(data.headline.recentGrads)}.{" "}
+                {data.headline.allGrads === null
+                  ? "The New York Fed's latest highlight does not state the all-graduate rate, so the chart below shows it through the last checked-in data point."
+                  : `The rate for all college graduates is ${percent(data.headline.allGrads)}.`}{" "}
+                The recent graduate rate has historically run several points above the all-graduate rate.
               </p>
               <p className="mt-4 font-serif text-[17px] leading-[1.58] text-ink">
                 The recent graduate underemployment rate has hovered between 38 and 45 percent for most of the past two decades. It rose sharply during the 2008 recession, partially recovered, then climbed again in the early 2020s. The all-graduate rate has been more stable, suggesting that underemployment tends to resolve as workers age into the labor market, but only partially.
@@ -166,7 +173,7 @@ export default async function UnderemploymentPage() {
                 ]}
                 source={source}
                 sourceHref={sourceHref}
-                asOf={data.headline.asOfDate}
+                asOf={snapshotAsOf}
                 valueLabel="Underemployment rate"
                 unit="%"
               />
@@ -190,7 +197,7 @@ export default async function UnderemploymentPage() {
                 }))}
                 source={source}
                 sourceHref={sourceHref}
-                asOf={data.headline.asOfDate}
+                asOf={snapshotAsOf}
                 valueLabel="Underemployment rate"
                 unit="%"
                 maxItems={30}
@@ -213,13 +220,13 @@ export default async function UnderemploymentPage() {
                   sampleNote: major.isCommonOnline ? "Common online program area" : "NY Fed major category"
                 }))}
                 source={source}
-                asOf={data.headline.asOfDate}
+                asOf={snapshotAsOf}
               />
             </UnderemploymentSection>
 
             <UnderemploymentSection id="wage-premium" title="The wage premium question">
               <p className="font-serif text-[17px] leading-[1.58] text-ink">
-                Underemployment is costly in part because workers in non-college jobs earn substantially less than workers in college-level jobs. As of {data.headline.asOfDate}, the median wage gap between college and non-college jobs for recent graduates is {money(averageWageGap)} per year.
+                Underemployment is costly in part because workers in non-college jobs earn substantially less than workers in college-level jobs. As of {snapshotAsOf}, the median wage gap between college and non-college jobs for recent graduates is {money(averageWageGap)} per year.
               </p>
               <p className="mt-4 font-serif text-[17px] leading-[1.58] text-ink">
                 The wage premium varies sharply by major. Some majors with high underemployment rates also show small wage gaps, meaning the cost of underemployment for those workers is relatively modest. Other majors combine low underemployment with very large wage premiums, meaning workers who land college-level jobs are well rewarded but workers who do not are significantly worse off than the headline rate suggests. This two-dimensional view is more useful than the underemployment rate alone.
@@ -236,7 +243,7 @@ export default async function UnderemploymentPage() {
                 }))}
                 source={source}
                 sourceHref={sourceHref}
-                asOf={data.headline.asOfDate}
+                asOf={snapshotAsOf}
                 wagePremiumUnit="$"
               />
             </UnderemploymentSection>
@@ -248,6 +255,10 @@ export default async function UnderemploymentPage() {
               <p className="mt-4 font-serif text-[17px] leading-[1.58] text-ink">
                 The gap between recent graduate underemployment and all-graduate underemployment is the best available trajectory signal. The fact that the all-graduate rate is meaningfully lower indicates that some workers escape underemployment as they age. The fact that it is not dramatically lower indicates that escape is incomplete. For policy purposes, the more useful question is which underemployed workers escape and which do not. The available data is not granular enough to answer this directly, but the major-level patterns offer suggestive evidence.
               </p>
+              <p className="mt-4 font-serif text-[17px] leading-[1.58] text-ink">
+                The headline chart above shows that gap. The New York Fed publishes underemployment for recent graduates (ages 22 to 27) and all college graduates (ages 22 to 65) only, so this page does not chart narrower age bands.
+              </p>
+              {data.trajectory.length > 0 ? (
               <TrajectoryChart
                 className="mt-6"
                 title="Underemployment falls with experience, but not to zero"
@@ -258,15 +269,16 @@ export default async function UnderemploymentPage() {
                 }))}
                 source={source}
                 sourceHref={sourceHref}
-                asOf={data.headline.asOfDate}
+                asOf={snapshotAsOf}
                 valueLabel="Underemployment rate"
                 unit="%"
               />
+              ) : null}
             </UnderemploymentSection>
 
             <UnderemploymentSection id="major-lookup" title="Major lookup tool">
               <p className="font-serif text-[17px] leading-[1.58] text-ink">
-                The ranking chart shows the landscape. The lookup tool below gives the full picture for any single major. Each major has a profile including current underemployment rate, historical trend, wage data, and comparison to similar majors.
+                The ranking chart shows the landscape. The lookup tool below gives the full picture for any single major. Each major has a profile including its current underemployment rate, wage data, and comparison to similar majors. The New York Fed publishes one year of major-level data, so the profiles show no historical trend.
               </p>
               <Suspense fallback={<div className="mt-6 border border-rule px-4 py-8 font-sans text-sm text-sub">Loading major lookup...</div>}>
                 <MajorLookupTool majors={data.allMajors} />
@@ -291,7 +303,7 @@ export default async function UnderemploymentPage() {
                 }))}
                 source={source}
                 sourceHref={sourceHref}
-                asOf={data.headline.asOfDate}
+                asOf={snapshotAsOf}
                 valueLabel="Underemployment rate"
                 unit="%"
               />
@@ -321,7 +333,7 @@ export default async function UnderemploymentPage() {
   );
 }
 
-function ShortAnswers({ recentGrads, allGrads, asOfDate }: { recentGrads: number; allGrads: number; asOfDate: string }) {
+function ShortAnswers({ recentGrads, allGrads, asOfDate }: { recentGrads: number; allGrads: number | null; asOfDate: string }) {
   const education = getTopic("education");
   const answers = [
     { id: "degree-jobs", answer: answerGraduateUnderemployment(recentGrads, asOfDate) },

@@ -89,8 +89,11 @@ export function MajorLookupTool({ majors }: { majors: MajorListItem[] }) {
 
 export function MajorProfilePanel({ data }: { data: LookupResponse }) {
   const { profile, historicalContext, similarMajors } = data;
-  const latest = profile.history.at(-2);
+  // Only draw a trend from real published history, never a single point.
+  const hasHistory = profile.history.length > 1;
+  const latest = hasHistory ? profile.history.at(-2) : undefined;
   const yearAgoChange = latest ? profile.current.underemploymentRate - latest.underemploymentRate : null;
+  const showContext = hasHistory && historicalContext.yearsOfHistory > 0;
   const maxRate = Math.max(...profile.history.map((point) => point.underemploymentRate), 1);
 
   return (
@@ -107,6 +110,7 @@ export function MajorProfilePanel({ data }: { data: LookupResponse }) {
             <Metric label="Wage premium" value={formatCurrency(profile.wagePremium)} note="College job wage less non-college job wage" />
             <Metric label="Rank" value={`#${profile.rankAmongAllMajors}`} note="Among majors shown" />
           </div>
+          {hasHistory ? (
           <div className="mt-6" role="img" aria-label={`${profile.name} underemployment trend`}>
             <div className="flex h-28 items-end gap-1 border-b border-rule">
               {profile.history.map((point) => (
@@ -123,18 +127,27 @@ export function MajorProfilePanel({ data }: { data: LookupResponse }) {
               <span>{profile.current.date.slice(0, 4)}</span>
             </div>
           </div>
+          ) : (
+            <p className="mt-6 font-sans text-xs leading-[1.45] text-sub">
+              The New York Fed publishes one year of data by major, so there is no trend to show.
+            </p>
+          )}
         </div>
         <div className="p-5">
-          <h4 className="font-sans text-[11px] font-bold uppercase tracking-[0.14em] text-sub">Historical context</h4>
-          <p className="mt-2 font-serif text-[15px] leading-[1.45] text-ink">
-            Current underemployment sits at the {historicalContext.percentileRank}th percentile across {historicalContext.yearsOfHistory} years of available history.
-          </p>
-          {historicalContext.comparablePeriod ? (
-            <p className="mt-2 font-sans text-xs text-sub">
-              Comparable period: {historicalContext.comparablePeriod.date}, {formatPercent(historicalContext.comparablePeriod.value)}.
-            </p>
+          {showContext ? (
+            <>
+              <h4 className="font-sans text-[11px] font-bold uppercase tracking-[0.14em] text-sub">Historical context</h4>
+              <p className="mt-2 font-serif text-[15px] leading-[1.45] text-ink">
+                Current underemployment sits at the {historicalContext.percentileRank}th percentile across {historicalContext.yearsOfHistory} years of available history.
+              </p>
+              {historicalContext.comparablePeriod ? (
+                <p className="mt-2 font-sans text-xs text-sub">
+                  Comparable period: {historicalContext.comparablePeriod.date}, {formatPercent(historicalContext.comparablePeriod.value)}.
+                </p>
+              ) : null}
+            </>
           ) : null}
-          <h4 className="mt-6 font-sans text-[11px] font-bold uppercase tracking-[0.14em] text-sub">Similar majors</h4>
+          <h4 className={`${showContext ? "mt-6 " : ""}font-sans text-[11px] font-bold uppercase tracking-[0.14em] text-sub`}>Similar majors</h4>
           <ul className="mt-3 space-y-2">
             {similarMajors.map((major) => (
               <li key={major.id} className="flex justify-between gap-4 border-t border-hair pt-2 font-sans text-sm">

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { headlineTrend, majorSeeds, NY_FED_AS_OF_DATE, toMajorProfile, trajectorySeries } from "@/lib/underemployment/sample-data";
+import { headlineTrend, majorSeeds, NY_FED_AS_OF_DATE, NY_FED_LATEST_RELEASE, toMajorProfile, trajectorySeries } from "@/lib/underemployment/sample-data";
 import type { DefinitionalOverlap, MajorListItem, MajorProfile, UnderemploymentCohort } from "@/types/underemployment";
 
 function rankedProfiles(cohort: UnderemploymentCohort) {
@@ -11,6 +11,10 @@ function rankedProfiles(cohort: UnderemploymentCohort) {
 
 export async function readHeadlineTrend() {
   return headlineTrend;
+}
+
+export async function readLatestRelease() {
+  return NY_FED_LATEST_RELEASE;
 }
 
 export async function readMajorProfiles(cohort: UnderemploymentCohort = "recent_grads"): Promise<MajorProfile[]> {

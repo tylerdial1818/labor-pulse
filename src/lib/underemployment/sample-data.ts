@@ -2,7 +2,20 @@ import { isCommonOnlineMajor } from "@/lib/underemployment/common-online-majors"
 import type { HeadlineTrendPoint, MajorProfile, TrajectorySeries, UnderemploymentCohort } from "@/types/underemployment";
 
 export const NY_FED_SOURCE_URL = "https://www.newyorkfed.org/research/college-labor-market";
+
+// Date of the checked-in snapshot below (headline trend and major table).
 export const NY_FED_AS_OF_DATE = "2026-03-31";
+
+// Latest quarterly headline, copied by hand from the NY Fed's
+// "2026:Q3 Quarterly Highlights" (released November 2, 2026). The highlight
+// states the recent-graduate rate only, so the all-graduate rate stays null
+// until it is read from the NY Fed data. Update this each quarter
+// (releases come in February, May, August and November).
+export const NY_FED_LATEST_RELEASE: { date: string; recentGrads: number; allGrads: number | null } = {
+  date: "2026-09-30",
+  recentGrads: 42.5,
+  allGrads: null
+};
 
 type MajorSeed = {
   id: number;
@@ -47,13 +60,6 @@ export const majorSeeds: MajorSeed[] = [
   { id: 15, name: "Performing Arts", category: "Arts", recentRate: 62.1, allRate: 49.7, unemploymentRate: 6.6, collegeWage: 48000, nonCollegeWage: 34000, lowWageShare: 35.6, graduateDegreeShare: 24.2 }
 ];
 
-function buildHistory(currentRate: number) {
-  return headlineTrend.map((point, index) => ({
-    date: point.date,
-    underemploymentRate: Number((currentRate - 2.8 + Math.sin(index * 0.9) * 2.1 + index * 0.26).toFixed(1))
-  }));
-}
-
 export function toMajorProfile(seed: MajorSeed, cohort: UnderemploymentCohort, rank: number): MajorProfile {
   const underemploymentRate = cohort === "recent_grads" ? seed.recentRate : seed.allRate;
 
@@ -72,23 +78,15 @@ export function toMajorProfile(seed: MajorSeed, cohort: UnderemploymentCohort, r
       shareInLowWageJobs: seed.lowWageShare,
       shareWithGraduateDegree: seed.graduateDegreeShare
     },
-    history: buildHistory(underemploymentRate),
+    // The NY Fed publishes one year of major-level data, so there is no
+    // history to show. Never fill this with generated values.
+    history: [],
     wagePremium: seed.collegeWage - seed.nonCollegeWage,
     rankAmongAllMajors: rank
   };
 }
 
-export const trajectorySeries: TrajectorySeries[] = [
-  {
-    ageGroup: "22 to 27",
-    observations: headlineTrend.map((point) => ({ date: point.date, rate: point.recentGrads }))
-  },
-  {
-    ageGroup: "28 to 34",
-    observations: headlineTrend.map((point) => ({ date: point.date, rate: Number((point.recentGrads - 4.3).toFixed(1)) }))
-  },
-  {
-    ageGroup: "35 to 45",
-    observations: headlineTrend.map((point) => ({ date: point.date, rate: point.allGrads }))
-  }
-];
+// The NY Fed publishes underemployment for two groups only: recent graduates
+// (ages 22 to 27) and all college graduates (ages 22 to 65). It has no series
+// for narrower age bands, so there is no age trajectory to chart.
+export const trajectorySeries: TrajectorySeries[] = [];

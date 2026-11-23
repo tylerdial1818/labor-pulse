@@ -1,9 +1,9 @@
 import "server-only";
 
 import {
-  getUnderemploymentAsOfDate,
   readDefinitionalOverlap,
   readHeadlineTrend,
+  readLatestRelease,
   readMajorList,
   readMajorProfile,
   readMajorProfiles,
@@ -24,13 +24,12 @@ function sortProfiles(profiles: MajorProfile[], sortBy: MajorSort) {
 }
 
 export async function getCurrentHeadlineRates() {
-  const trend = await readHeadlineTrend();
-  const latest = trend.at(-1);
+  const latest = await readLatestRelease();
 
   return {
-    recentGrads: latest?.recentGrads ?? 41.5,
-    allGrads: latest?.allGrads ?? 33.4,
-    asOfDate: latest?.date ?? getUnderemploymentAsOfDate()
+    recentGrads: latest.recentGrads,
+    allGrads: latest.allGrads,
+    asOfDate: latest.date
   };
 }
 
